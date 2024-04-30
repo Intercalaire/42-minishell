@@ -46,9 +46,6 @@ SRC = ft_atoi.c \
 	ft_strmapi.c \
 	ft_striteri.c \
 	ft_itoa.c \
-	ft_printf.c \
-	ft_putnbr_base_fd.c \
-	ft_hexa_fd.c \
 	get_next_line.c \
 	get_next_line_utils.c \
 	
