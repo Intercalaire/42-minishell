@@ -1,0 +1,9 @@
+recup commande env | execve() getenv() /bin/????
+gerer ctrl
+pwd | readdir()
+cd | opendir(), closedir()
+exit -> mettre arg dans $?
+echo
+export
+unset | unlink()
+pipe
