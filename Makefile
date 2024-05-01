@@ -12,13 +12,15 @@
 
 # Basic variables
 NAME = minishell
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CC = clang
+CFLAGS = -Wall -Wextra -Werror 
 RM = rm -f
 CLEAR = clear
 
 # Files
-SRC	= ./src/\
+SRC	= ./src/parsing/init.c \
+		./src/parsing/parsing.c \
+		./src/parsing/utils.c \
 
 OBJ	= $(SRC:.c=.o)
 
@@ -31,7 +33,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT_PATH)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT_NAME)
+	@$(CC) -lreadline $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT_NAME)
 
 .c.o:
 	@$(CC) $(CFLAGS) -c $< -o $@

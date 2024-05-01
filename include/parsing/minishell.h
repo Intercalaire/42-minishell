@@ -13,8 +13,18 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../../Libft/libft.h"
 # include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
+typedef struct s_data
+{
+	int	len_arg;
+}	t_data;
 
+void try_ft_strtok(char *str);
 
 #endif
