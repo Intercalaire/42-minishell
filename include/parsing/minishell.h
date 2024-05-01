@@ -22,9 +22,21 @@
 
 typedef struct s_data
 {
-	int	len_arg;
+	char				**arg;
+	struct s_data		*next;
+	struct s_data		*prev;
+	int					count;
 }	t_data;
 
-void try_ft_strtok(char *str);
+typedef struct s_lst
+{
+	char				*content;
+	int				index;
+	struct s_lst	*next;
+	struct s_lst	*prev;
+}				t_lst;
+
+void try_ft_strtok(t_data *data, char *str);
+void	init_data(t_data *data);
 
 #endif

@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgodart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 14:41:52 by vgodart           #+#    #+#             */
-/*   Updated: 2024/04/30 14:41:53 by vgodart          ###   ########.fr       */
+/*   Created: 2024/05/01 17:30:40 by vgodart           #+#    #+#             */
+/*   Updated: 2024/05/01 17:30:44 by vgodart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-#include "../../include/parsing/minishell.h"
-
-void	init_data(t_data *data)
+void	*ft_realloc(void *ptr, size_t newsize)
 {
-	data->arg = NULL;
-	data->next = NULL;
-	data->prev = NULL;
+	char	*newptr;
+	size_t	cursize;
+
+	if (ptr == 0)
+		return (malloc(newsize));
+	cursize = sizeof(ptr);
+	if (newsize <= cursize)
+		return (ptr);
+	newptr = malloc(newsize);
+	ft_memcpy(ptr, newptr, cursize);
+	free(ptr);
+	return (newptr);
 }

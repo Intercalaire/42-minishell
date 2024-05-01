@@ -70,9 +70,13 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
+int		ft_printf(const	char *sign, ...);
+int		ft_base_fd(unsigned int n, char	*base, int fd);
+int		ft_hexa_fd(unsigned long n, char *base, int fd);
 char	*get_next_line(int fd);
 char	*ft_strchr2(const char *str, int to_find);
 size_t	ft_strlen2(char const *str);
 char	*ft_strjoin2(char const *s1, char const *s2);
 size_t	ft_strlcpy2(char *dst, const char *src, size_t size);
+void	*ft_realloc(void *ptr, size_t newsize);
 #endif

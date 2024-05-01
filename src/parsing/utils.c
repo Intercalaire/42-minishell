@@ -43,13 +43,59 @@ static char *ft_strtok(char *str, const char *delim) {
     return ret;
 }
 
+// static t_lst	*lst_new(char *content)
+// {
+// 	t_lst	*stack;
 
-void try_ft_strtok(char *str) {
+// 	stack = malloc(sizeof(t_lst));
+// 	if (!stack)
+// 		return (NULL);
+// 	stack->content = content;
+// 	stack->index = -1;
+// 	stack->next = NULL;
+// 	stack->prev = NULL;
+// 	return (stack);
+// }
+
+// static void	lst_addfront(t_data *data, t_data *news)
+// {
+// 	if (!data || !news)
+// 		return ;
+// 	if (!(data))
+// 	{
+// 		data = news;
+// 		(data)->prev = NULL;
+// 		(data)->next = NULL;
+// 		return ;
+// 	}
+// 	(data)->prev = news;
+// 	news->next = data;
+// 	data = news;
+// 	news->prev = NULL;
+// }
+
+void add_token(t_data *data, char *token) {
+    data->arg = (char **)ft_realloc(data->arg, (data->count + 1) * sizeof(char *));
+    data->arg[data->count] = strdup(token);
+    data->count++;
+}
+
+void try_ft_strtok(t_data *data, char *str)
+{
     char *token;
+    int i;
 
+    (void)data;
     token = ft_strtok(str, " \t\"<|>'"); // " " is the delimiter
-    while (token != NULL) {
-        printf("%s\n", token);
+    i = 0;
+    while (token != NULL)
+    {
+        add_token(data, token);
+        if (i == 0)
+            printf("Commande : %s\n", data->arg[i]);
+        else
+            printf("Arguments : %s\n", data->arg[i]);
         token = ft_strtok(NULL, " \t\"<|>'");
+        i++;
     }
 }
