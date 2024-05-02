@@ -15,16 +15,16 @@
 
 static char *ft_strtok(char *str, const char *delim) {
     static char *src = NULL;
-    char *p;
-	char *ret;
+    char        *p;
+	char        *ret;
 
-	ret = 0;
+    ret = 0;
 	p = 0;
-    if(str != NULL)
+    if (str != NULL)
         src = str;
-    if(src == NULL)
+    if (src == NULL)
         return NULL;
-    while (ft_strchr(delim, *src))
+    while (ft_strchr(delim, *src) && *src != '\0')
         src++;
     p = src;
     while (*p != '\0' && !ft_strchr(delim, *p))
@@ -40,7 +40,22 @@ static char *ft_strtok(char *str, const char *delim) {
         ret = src;
         src = NULL;
     }
-    return ret;
+    return (ret);
+}
+
+static int len_ft_strtok(char *str)
+{
+    int count;
+    char *token;
+
+    count = 0;
+    token = ft_strtok(str, " \t\"<>'"); // " " is the delimiter
+    while (token != NULL)
+    {
+        count++;
+        token = ft_strtok(NULL , " \t\"<>'");
+    }
+    return (count);
 }
 
 // static t_lst	*lst_new(char *content)
@@ -74,9 +89,9 @@ static char *ft_strtok(char *str, const char *delim) {
 // 	news->prev = NULL;
 // }
 
-void add_token(t_data *data, char *token) {
-    data->arg = (char **)ft_realloc(data->arg, (data->count + 1) * sizeof(char *));
-    data->arg[data->count] = strdup(token);
+void add_token(t_data *data, char *token)
+{
+    data->arg[data->count] = ft_strdup(token);
     data->count++;
 }
 
@@ -84,18 +99,23 @@ void try_ft_strtok(t_data *data, char *str)
 {
     char *token;
     int i;
+    char    *tmp;
 
-    (void)data;
-    token = ft_strtok(str, " \t\"<|>'"); // " " is the delimiter
     i = 0;
+    tmp = ft_strdup(str);
+    data->count = len_ft_strtok(tmp);
+    free(tmp);
+    data->arg = ft_calloc((data->count + 1) , sizeof(char **));
+    if (!data->arg)
+        ft_error_prog(data, str, "Error");
+    token = ft_strtok(str, " \t\"<>'");
+    data->count = 0;
     while (token != NULL)
     {
         add_token(data, token);
-        if (i == 0)
-            printf("Commande : %s\n", data->arg[i]);
-        else
-            printf("Arguments : %s\n", data->arg[i]);
-        token = ft_strtok(NULL, " \t\"<|>'");
+        printf("arg : %s\n", data->arg[i]);
+        token = ft_strtok(NULL, " \t\"<>'");
         i++;
     }
 }
+

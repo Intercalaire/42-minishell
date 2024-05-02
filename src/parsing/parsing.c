@@ -12,13 +12,6 @@
 
 #include "../../include/parsing/minishell.h"
 
-void ft_error(t_data *data, char *str)
-{
-	printf("%s\n", str);
-	free(data);
-	exit(EXIT_FAILURE);
-}
-
 int	main()
 {
 	t_data	*data;
@@ -33,10 +26,13 @@ int	main()
 		str = readline("Minishell >");
 		if (!str)
 			break ;
-		try_ft_strtok(data, str);
+		if (ft_strlen(str) == 0)
+			continue ;
 		add_history(str);
+		try_ft_strtok(data, str);
+		ft_free_data(data, str);
+
 	}
-	free(str);
-	ft_error(data, "Error");
+	ft_error_prog(data, str,"Error");
 	return (0);
 }

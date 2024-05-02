@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   pars_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgodart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 14:41:52 by vgodart           #+#    #+#             */
-/*   Updated: 2024/04/30 14:41:53 by vgodart          ###   ########.fr       */
+/*   Created: 2024/05/02 17:29:23 by vgodart           #+#    #+#             */
+/*   Updated: 2024/05/02 17:29:26 by vgodart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/parsing/minishell.h"
 
-void	init_data(t_data *data)
+int pars_pipe(t_data *data)
 {
-	data->arg = NULL;
-	data->next = NULL;
-	data->prev = NULL;
-	data->count = 0;
+	t_data *new_arg;
+
+	while(*data->arg)
+	{
+		if (*data->arg == "|")
+		{
+			new_arg = malloc(sizeof(t_data));
+    		init_data(new_arg);
+    		
+		}
+	}
 }

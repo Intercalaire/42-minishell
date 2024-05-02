@@ -28,15 +28,12 @@ typedef struct s_data
 	int					count;
 }	t_data;
 
-typedef struct s_lst
-{
-	char				*content;
-	int				index;
-	struct s_lst	*next;
-	struct s_lst	*prev;
-}				t_lst;
 
 void try_ft_strtok(t_data *data, char *str);
 void	init_data(t_data *data);
+void ft_error_prog(t_data *data, char *str, char *msg);
+void ft_free_data(t_data *data, char *str);
+void ft_free_strtab(char **tab);
+void add_token(t_data *data, char *token);
 
 #endif

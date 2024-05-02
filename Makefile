@@ -6,14 +6,14 @@
 #    By: vgodart <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:38:34 by vgodart           #+#    #+#              #
-#    Updated: 2024/04/03 11:38:37 by vgodart          ###   ########.fr        #
+#    Updated: 2024/05/02 14:56:08 by vgodart          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Basic variables
 NAME = minishell
 CC = clang
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 CLEAR = clear
 
@@ -21,6 +21,7 @@ CLEAR = clear
 SRC	= ./src/parsing/init.c \
 		./src/parsing/parsing.c \
 		./src/parsing/utils.c \
+		./src/parsing/ft_free.c \
 
 OBJ	= $(SRC:.c=.o)
 
