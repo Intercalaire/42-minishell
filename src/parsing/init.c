@@ -19,4 +19,5 @@ void	init_data(t_data *data)
 	data->next = NULL;
 	data->prev = NULL;
 	data->count = 0;
+	data->size = 0;
 }

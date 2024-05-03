@@ -49,7 +49,7 @@ static int len_ft_strtok(char *str)
     char *token;
 
     count = 0;
-    token = ft_strtok(str, " \t\"<>'"); // " " is the delimiter
+    token = ft_strtok(str, " \t\"<>'");
     while (token != NULL)
     {
         count++;
@@ -104,16 +104,17 @@ void try_ft_strtok(t_data *data, char *str)
     i = 0;
     tmp = ft_strdup(str);
     data->count = len_ft_strtok(tmp);
+    data->size = data->count;
     free(tmp);
     data->arg = ft_calloc((data->count + 1) , sizeof(char **));
     if (!data->arg)
-        ft_error_prog(data, str, "Error");
+        ft_little_error_prog(data, str, "Error");
     token = ft_strtok(str, " \t\"<>'");
     data->count = 0;
     while (token != NULL)
     {
         add_token(data, token);
-        printf("arg : %s\n", data->arg[i]);
+        //printf("arg : %s\n", data->arg[i]);
         token = ft_strtok(NULL, " \t\"<>'");
         i++;
     }

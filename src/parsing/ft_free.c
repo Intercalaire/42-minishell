@@ -12,14 +12,21 @@
 
 #include "../../include/parsing/minishell.h"
 
-void ft_error_prog(t_data *data, char *str, char *msg)
+void ft_little_error_prog(t_data *data, char *str, char *msg)
 {
 	printf("%s\n", msg);
-	//ft_free_data(data, str);
 	free(str);
 	free(data);
 	exit(EXIT_FAILURE);
 }
+void ft_error_prog(t_data *data, char *str, char *msg)
+{
+	printf("%s\n", msg);
+	ft_free_data(data, str);
+	free(data);
+	exit(EXIT_FAILURE);
+}
+
 void ft_free_data(t_data *data, char *str)
 {
 	if (data->arg)
@@ -32,10 +39,8 @@ void ft_free_strtab(char **tab)
 	int i;
 
 	i = 0;
-	printf("free tab\n");
 	while (tab[i])
 	{
-		//printf("tab[%d] = %s\n", i, tab[i]);
 		if (tab[i])
 			free(tab[i]);
 		i++;
