@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ctrl.c                                             :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/01 15:05:46 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/04 12:27:09 by hsolet           ###   ########.fr       */
+/*   Created: 2024/05/04 11:44:47 by hsolet            #+#    #+#             */
+/*   Updated: 2024/05/04 12:49:15 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//ctrl C = SIGINT -> rl_on_new_line
-//ctrl \ = SIGQUIT
-#include <readline/readline.h>
-#include <signal.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <readline/history.h>
+#include <stdio.h>
 
-void handler(int signum)
+void cd(t_struct *s)
 {
-	rl_on_new_line();
-}
-
-int main(void)
-{
-	signal(SIGINT, handler);
-	pause();
+	char *srt;
+	str = ft_substr(s->pwd, "/");
+	str = ft_substr(s->pwd, arg);
+	if (chdir(str) == -1)
+		error("Error");
 }

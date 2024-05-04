@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ctrl.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/01 15:05:46 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/04 12:27:09 by hsolet           ###   ########.fr       */
+/*   Created: 2024/05/04 11:19:50 by hsolet            #+#    #+#             */
+/*   Updated: 2024/05/04 11:39:16 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//ctrl C = SIGINT -> rl_on_new_line
-//ctrl \ = SIGQUIT
-#include <readline/readline.h>
-#include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <readline/history.h>
 
-void handler(int signum)
+void pwd(void)
 {
-	rl_on_new_line();
-}
+	int i;
+	char *str;
 
-int main(void)
-{
-	signal(SIGINT, handler);
-	pause();
+	i = 1;
+	str = ft_calloc(i, sizeof(char));
+	while (getcwd(str, i) == NULL)
+	{
+		i++;
+		free(str);
+		str = ft_calloc(i, sizeof(char));
+	}
+	printf("%s", str);
 }
