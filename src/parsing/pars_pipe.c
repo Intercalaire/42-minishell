@@ -26,16 +26,20 @@ int look_pipe(t_data *data, char *str)
 		if (str[i] == '|')
 		{
 			if (str[i + 1] == '|')
+			{
 				ft_little_error_prog(data, str, "syntax error near unexpected token `|'");
+				return (1);
+			}
 		}
 		i++;
 	}
 	if (str[i - 1] == '|')
+	{
 		ft_little_error_prog(data, str, "syntax error near unexpected token `|'");
+		return (1);
+	}
 	return (0);
 }
-
-
 
 int	data_add_next(t_data *data, t_data *new_arg)
 {
@@ -78,7 +82,6 @@ int pars_pipe(t_data *data)
     while(*data->arg)
     {
         pipe_pos = ft_strchr(*data->arg, '|');
-		//printf("pipe_pos : %s\n", pipe_pos);
         if (pipe_pos != NULL && *(data->arg + 1) != NULL)
         {
             new_arg = malloc(sizeof(t_data));

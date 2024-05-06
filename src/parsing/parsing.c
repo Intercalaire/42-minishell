@@ -29,8 +29,8 @@ int	main()
 		if (ft_strlen(str) == 0)
 			continue ;
 		add_history(str);
-		quote_verif(data, str);
-		look_pipe(data, str);
+		if (quote_verif(data, str) == 1 || special_char(data, str) == 1 || look_pipe(data, str) == 1)
+			continue ;
 		try_ft_strtok(data, str);
 		ft_free_data(data, str);
 

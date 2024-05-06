@@ -17,7 +17,6 @@ void ft_little_error_prog(t_data *data, char *str, char *msg)
 	printf("%s\n", msg);
 	free(str);
 	free(data);
-	exit(EXIT_FAILURE);
 }
 void ft_error_prog(t_data *data, char *str, char *msg)
 {

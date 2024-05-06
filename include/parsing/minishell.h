@@ -40,5 +40,6 @@ void add_token(t_data *data, char *token);
 int pars_pipe(t_data *data);
 int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
+int special_char(t_data *data, char *str);
 
 #endif

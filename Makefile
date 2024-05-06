@@ -24,6 +24,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/ft_free.c \
 		./src/parsing/pars_pipe.c \
 		./src/parsing/quote.c \
+		./src/parsing/special_char.c \
 
 OBJ	= $(SRC:.c=.o)
 

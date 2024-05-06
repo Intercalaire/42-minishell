@@ -12,6 +12,8 @@
 
 #include "../../include/parsing/minishell.h"
 
+static int quote_judge(t_data *data, char *str, int in_quote_double, int in_quote_simple);
+
 int	quote_verif(t_data *data,char *str)
 {
 	int	i;
@@ -33,9 +35,22 @@ int	quote_verif(t_data *data,char *str)
 			in_quote_double = 0;
 		i++;
 	}
+	if (quote_judge(data, str, in_quote_double, in_quote_simple) == 1)
+		return (1);
+	return (0);
+}
+
+static int quote_judge(t_data *data, char *str, int in_quote_double, int in_quote_simple)
+{
 	if (in_quote_double == 1) 
+	{
 		ft_little_error_prog(data, str, "unexpected EOF while looking for matching `\"'");
+		return (1);
+	}
 	if (in_quote_simple == 1)
+	{
 		ft_little_error_prog(data, str, "unexpected EOF while looking for matching `\''");
+		return (1);
+	}
 	return (0);
 }
