@@ -95,7 +95,7 @@ void add_token(t_data *data, char *token)
     data->count++;
 }
 
-void try_ft_strtok(t_data *data, char *str)
+int try_ft_strtok(t_data *data, char *str)
 {
     char *token;
     int i;
@@ -108,7 +108,10 @@ void try_ft_strtok(t_data *data, char *str)
     free(tmp);
     data->arg = ft_calloc((data->count + 1) , sizeof(char **));
     if (!data->arg)
+    {
         ft_little_error_prog(data, str, "Error");
+        return(1);
+    }
     token = ft_strtok(str, " \t\"<>'");
     data->count = 0;
     while (token != NULL)
@@ -118,5 +121,6 @@ void try_ft_strtok(t_data *data, char *str)
         token = ft_strtok(NULL, " \t\"<>'");
         i++;
     }
+    return (0);
 }
 

@@ -1,39 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   environment_variable.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgodart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 14:34:47 by vgodart           #+#    #+#             */
-/*   Updated: 2024/04/30 14:34:48 by vgodart          ###   ########.fr       */
+/*   Created: 2024/05/07 14:28:19 by vgodart           #+#    #+#             */
+/*   Updated: 2024/05/07 14:28:21 by vgodart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
 
-int	main(void)
+int	environment_variable(t_data *data, char *str)
 {
-	t_data	*data;
-	char	*str;
-
-	while (1)
-	{
-		data = malloc(sizeof(t_data));
-		if (!data)
-			break ;
-		init_data(data);
-		str = readline("Minishell >");
-		if (!str)
-			break ;
-		add_history(str);
-		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
-			|| look_pipe(data, str) == 1)
-			continue ;
-		if (try_ft_strtok(data, str) == 1)
-			continue ;
-		ft_free_data(data, str);
-	}
-	ft_end_error_prog(data, str, "Error");
-	return (0);
+	
 }

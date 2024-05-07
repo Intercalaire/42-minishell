@@ -12,30 +12,45 @@
 
 #include "../../include/parsing/minishell.h"
 
-int look_pipe(t_data *data, char *str)
+static int	look_pipe_helper(t_data *data, char *str, int i);
+
+int	look_pipe(t_data *data, char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] == ' ')
 		i++;
 	if (str[i] == '|')
-		ft_little_error_prog(data, str, "syntax error near unexpected token `|'");
+	{
+		ft_little_error_prog(data, str,
+			"syntax error near unexpected token `|'");
+		return (1);
+	}
+	if (look_pipe_helper(data, str, i) == 1)
+		return (1);
+	return (0);
+}
+
+static int	look_pipe_helper(t_data *data, char *str, int i)
+{
 	while (str[i])
 	{
 		if (str[i] == '|')
 		{
 			if (str[i + 1] == '|')
 			{
-				ft_little_error_prog(data, str, "syntax error near unexpected token `|'");
+				ft_little_error_prog(data, str,
+					"syntax error near unexpected token `|'");
 				return (1);
 			}
 		}
 		i++;
 	}
-	if (str[i - 1] == '|')
+	if (i > 0 && str[i - 1] == '|')
 	{
-		ft_little_error_prog(data, str, "syntax error near unexpected token `|'");
+		ft_little_error_prog(data, str,
+			"syntax error near unexpected token `|'");
 		return (1);
 	}
 	return (0);
@@ -43,7 +58,7 @@ int look_pipe(t_data *data, char *str)
 
 int	data_add_next(t_data *data, t_data *new_arg)
 {
-	t_data *tmp;
+	t_data	*tmp;
 
 	tmp = data;
 	while (tmp->next)
@@ -55,8 +70,8 @@ int	data_add_next(t_data *data, t_data *new_arg)
 
 void	print_data(t_data *data)
 {
-	int		i;
-	t_data *tmp;
+	int			i;
+	t_data		*tmp;
 
 	tmp = data;
 	while (tmp)
@@ -71,25 +86,25 @@ void	print_data(t_data *data)
 	}
 }
 
-int pars_pipe(t_data *data)
+int	pars_pipe(t_data *data)
 {
-    t_data *new_arg;
-    char *pipe_pos;
-	t_data *tmp;
+	t_data	*new_arg;
+	char	*pipe_pos;
+	t_data	*tmp;
 
 	tmp = data;
 	print_data(data);
-    while(*data->arg)
-    {
-        pipe_pos = ft_strchr(*data->arg, '|');
-        if (pipe_pos != NULL && *(data->arg + 1) != NULL)
-        {
-            new_arg = malloc(sizeof(t_data));
+	while (*data->arg)
+	{
+		pipe_pos = ft_strchr(*data->arg, '|');
+		if (pipe_pos != NULL && *(data->arg + 1) != NULL)
+		{
+			new_arg = malloc(sizeof(t_data));
 			if (!new_arg)
 				ft_error_prog(data, *data->arg, "Error");
-            new_arg->arg = ft_calloc(data->size, sizeof(char **));
+			new_arg->arg = ft_calloc(data->size, sizeof(char **));
 			if (!data->arg)
-        		ft_error_prog(data, *data->arg, "Error");
+				ft_error_prog(data, *data->arg, "Error");
 			init_data(new_arg);
 			new_arg->arg = data->arg + 1;
 			data_add_next(data, new_arg);

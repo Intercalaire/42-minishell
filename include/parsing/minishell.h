@@ -30,7 +30,7 @@ typedef struct s_data
 }	t_data;
 
 
-void try_ft_strtok(t_data *data, char *str);
+int try_ft_strtok(t_data *data, char *str);
 void	init_data(t_data *data);
 void ft_little_error_prog(t_data *data, char *str, char *msg);
 void ft_error_prog(t_data *data, char *str, char *msg);
@@ -41,5 +41,7 @@ int pars_pipe(t_data *data);
 int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
+void ft_end_error_prog(t_data *data, char *str, char *msg);
+
 
 #endif

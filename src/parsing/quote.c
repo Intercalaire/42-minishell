@@ -12,9 +12,9 @@
 
 #include "../../include/parsing/minishell.h"
 
-static int quote_judge(t_data *data, char *str, int in_quote_double, int in_quote_simple);
+static int	quote(t_data *data, char *str, int in_qte_dble, int in_qte_sple);
 
-int	quote_verif(t_data *data,char *str)
+int	quote_verif(t_data *data, char *str)
 {
 	int	i;
 	int	in_quote_simple;
@@ -23,7 +23,7 @@ int	quote_verif(t_data *data,char *str)
 	i = 0;
 	in_quote_simple = 0;
 	in_quote_double = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (in_quote_simple == 0 && str[i] == '\'' && in_quote_double == 0)
 			in_quote_simple = 1;
@@ -40,16 +40,18 @@ int	quote_verif(t_data *data,char *str)
 	return (0);
 }
 
-static int quote_judge(t_data *data, char *str, int in_quote_double, int in_quote_simple)
+static int	quote(t_data *data, char *str, int in_qte_dble, int in_qte_sple)
 {
-	if (in_quote_double == 1) 
+	if (in_qte_dble == 1)
 	{
-		ft_little_error_prog(data, str, "unexpected EOF while looking for matching `\"'");
+		ft_little_error_prog(data, str,
+			"unexpected EOF while looking for matching `\"'");
 		return (1);
 	}
-	if (in_quote_simple == 1)
+	if (in_qte_sple == 1)
 	{
-		ft_little_error_prog(data, str, "unexpected EOF while looking for matching `\''");
+		ft_little_error_prog(data, str,
+			"unexpected EOF while looking for matching `\''");
 		return (1);
 	}
 	return (0);
