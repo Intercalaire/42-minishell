@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <string.h>
 
 typedef struct s_data
 {
@@ -43,5 +44,10 @@ int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
 void ft_end_error_prog(t_data *data, char *str, char *msg);
 
+
+# define PIPE "syntax error near unexpected token `|'"
+# define TOKEN "syntax error near unexpected token"
+# define QUOTE_SMP "syntax error near unexpected token `\"'"
+# define QUOTE_DBL "syntax error near unexpected token `''"
 
 #endif

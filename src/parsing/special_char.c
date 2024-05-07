@@ -28,8 +28,7 @@ int	special_char(t_data *data, char *str)
 		if ((str[i] == ';' || str[i] == '\\'
 				|| str[i] == '&' || str[i] == '*') && in_quote == 0)
 		{
-			ft_little_error_prog(data, str,
-				"syntax error near unexpected token");
+			ft_little_error_prog(data, str, TOKEN);
 			return (1);
 		}
 		i++;
