@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:18:09 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/04 11:13:23 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/05/10 12:12:20 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 //dans les cas ou c'est different de echo, cd, pwd, export, unset, env, exit
-void path(void)
+int path(void)
 {
 	char *path;
 	char **var;
@@ -35,7 +35,7 @@ void path(void)
 		error("No /bin/");
 	else
 		bin = i;
-	execve(cmd, arg, var[bin]);
+	return (execve(cmd, arg, var[bin]));
 	//argv = commande + arguments
 
 }
