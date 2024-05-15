@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:10:52 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/14 11:47:18 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/05/15 10:42:53 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,11 @@ int pipe()
 	/*
 	 - ecrire chaque resultat dans un fichier que je vide apres lecture et que je reecris en boucle et detruit a la fin
 	 - ecrire dans une chaine de charactere les resultats et envoyer dans le fd demander que au niveau du pere
-	 -
+	 - faire la premiere action et ajouter le resultat en argument de la prochaine action 
 	 
 	 */
 	///////////////////////////////////////////////////////////
-	open(/*input*/);
-	open(/*output*/);
-
-	close(/*output*/);
-	close(/*input*/);
+	
 	///////////////////////////////////////////////////////////
 	if (son_pid[i] == 0)
 		return(/*jsp encore mais c'est la fin*/);

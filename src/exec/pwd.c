@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:19:50 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/10 15:15:52 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/05/15 11:50:58 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -29,27 +29,32 @@ void pwd(void)
 	printf("%s", str);
 }
 
-int pwd(void)
+int pwd(t_data *data)
 {
 	int i;
 
-	while (env_cpy[i])
+	while (data->env[i])
 	{
 		if (ft_strncmp(env_cpy[i], "PWD=", 4) && !ft_strncmp(env_cpy[i], "OLDPWD=", 7))
-		{
-
-		}
-
+			ft_printf("%s", ft_substr(data->env[i]))
+		i++;
 	}
 }
 
-void env(void)
+void env(t_data *data, char **environnement)
 {
-	t_env *env;
+	int len_env;
+	int i;
 
-	env = ft_calloc(1, sizeof(t_env));
-	if (!env)
+	len_env = 0;
+	while (environnement[len_env])
+		len_env++;
+	data->env = ft_calloc(len_env, sizeof(*char));
+	if (!data->env)
 		exit("Alloc Error\n");
-	env->variable = ft_start(env[i]);
-	env->value = env[i] + ft_strlen(env->variable);
+	while (environnement[i])
+	{
+		env[i] = ft_strdup(environnement[len_env])
+		i++;
+	}
 }
