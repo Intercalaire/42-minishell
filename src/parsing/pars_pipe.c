@@ -9,49 +9,8 @@
 /*   Updated: 2024/05/02 17:29:26 by vgodart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+/*
 #include "../../include/parsing/minishell.h"
-
-static int	look_pipe_helper(t_data *data, char *str, int i);
-
-int	look_pipe(t_data *data, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] == ' ')
-		i++;
-	if (str[i] == '|')
-	{
-		ft_little_error_prog(data, str, PIPE);
-		return (1);
-	}
-	if (look_pipe_helper(data, str, i) == 1)
-		return (1);
-	return (0);
-}
-
-static int	look_pipe_helper(t_data *data, char *str, int i)
-{
-	while (str[i])
-	{
-		if (str[i] == '|')
-		{
-			if (str[i + 1] == '|')
-			{
-				ft_little_error_prog(data, str, PIPE);
-				return (1);
-			}
-		}
-		i++;
-	}
-	if (i > 0 && str[i - 1] == '|')
-	{
-		ft_little_error_prog(data, str, PIPE);
-		return (1);
-	}
-	return (0);
-}
 
 int	data_add_next(t_data *data, t_data *new_arg)
 {
@@ -83,7 +42,51 @@ void	print_data(t_data *data)
 	}
 }
 
-int	pars_pipe(t_data *data)
+static int check_if_pipe(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (data->arg[i])
+	{
+		if (ft_strchr(data->arg[i], '|'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+//I want to put everything after "|" in a new structure
+int pars_pipe(t_data *data)
+{
+	t_data	*new_arg;
+	char	*pipe_pos;
+	t_data	*tmp;
+
+	tmp = data;
+	while (tmp)
+	{
+		if (check_if_pipe(tmp) == 1)
+		{
+			pipe_pos = ft_strchr(*tmp->arg, '|');
+			if (pipe_pos != NULL && *(tmp->arg + 1) != NULL)
+			{
+				new_arg = malloc(sizeof(t_data));
+				if (!new_arg)
+					ft_error_prog(data, *tmp->arg, "Error");
+				new_arg->arg = ft_calloc(tmp->size, sizeof(char **));
+				if (!new_arg->arg)
+					ft_error_prog(data, *tmp->arg, "Error");
+				init_data(new_arg);
+				new_arg->arg = tmp->arg + 1;
+				data_add_next(tmp, new_arg);
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int	pars_pipe2(t_data *data)
 {
 	t_data	*new_arg;
 	char	*pipe_pos;
@@ -112,3 +115,4 @@ int	pars_pipe(t_data *data)
 	print_data(data);
 	return (0);
 }
+*/

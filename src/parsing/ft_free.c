@@ -16,7 +16,13 @@ void	ft_little_error_prog(t_data *data, char *str, char *msg)
 {
 	printf("%s\n", msg);
 	free(str);
-	free(data);
+	if (data)
+	{
+		free(data->command->next);
+		free(data->command->prev);
+		free(data->command);
+		free(data);
+	}
 }
 
 void	ft_end_error_prog(t_data *data, char *str, char *msg)
@@ -25,22 +31,29 @@ void	ft_end_error_prog(t_data *data, char *str, char *msg)
 	if (str)
 		free(str);
 	if (data)
+	{
+		free(data->command->next);
+		free(data->command->prev);
+		free(data->command);
 		free(data);
+	}
 }
 
 void	ft_error_prog(t_data *data, char *str, char *msg)
 {
 	printf("%s\n", msg);
 	ft_free_data(data, str);
-	free(data);
 	exit(EXIT_FAILURE);
 }
 
 void	ft_free_data(t_data *data, char *str)
 {
-	if (data->arg)
-		ft_free_strtab(data->arg);
+	if (data->command->arg)
+		ft_free_strtab(data->command->arg);
 	free(str);
+	free(data->command->next);
+	free(data->command->prev);
+	free(data->command);
 	free(data);
 }
 

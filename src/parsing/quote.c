@@ -35,7 +35,7 @@ int	quote_verif(t_data *data, char *str)
 			in_quote_double = 0;
 		i++;
 	}
-	if (quote_judge(data, str, in_quote_double, in_quote_simple) == 1)
+	if (quote(data, str, in_quote_double, in_quote_simple) == 1)
 		return (1);
 	return (0);
 }

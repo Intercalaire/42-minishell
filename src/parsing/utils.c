@@ -91,7 +91,7 @@ static int len_ft_strtok(char *str)
 
 void add_token(t_data *data, char *token)
 {
-    data->arg[data->count] = ft_strdup(token);
+    data->command->arg[data->count] = ft_strdup(token);
     data->count++;
 }
 
@@ -106,8 +106,8 @@ int try_ft_strtok(t_data *data, char *str)
     data->count = len_ft_strtok(tmp);
     data->size = data->count;
     free(tmp);
-    data->arg = ft_calloc((data->count + 1) , sizeof(char **));
-    if (!data->arg)
+    data->command->arg = ft_calloc((data->count + 1) , sizeof(char **));
+    if (!data->command->arg)
     {
         ft_little_error_prog(data, str, "Error");
         return(1);
@@ -117,10 +117,48 @@ int try_ft_strtok(t_data *data, char *str)
     while (token != NULL)
     {
         add_token(data, token);
-        //printf("arg : %s\n", data->arg[i]);
+        //printf("arg : %s\n", data->command->arg[i]);
         token = ft_strtok(NULL, " \t\"<>'");
         i++;
     }
+    after_ft_strtok(data, str);
     return (0);
+}
+
+void	print_data(t_data *data)
+{
+	int			i;
+	t_command		*tmp;
+
+	tmp = data->command;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->arg[i])
+		{
+			printf("arg[%d] : %s\n", i, tmp->arg[i]);
+			i++;
+		}
+		tmp = tmp->next;
+	}
+}
+
+
+void after_ft_strtok(t_data *data, char *str)
+{
+    int i;
+
+    i = 0;
+    if (data->command->arg)
+        data->command->cmd = data->command->arg[0];
+    while(data->command->arg[i])
+    {
+        if (*data->command->arg[i] == '|')
+                data->command->next->cmd = *data->command->arg;
+         i++;
+    }
+    (void)str;
+    printf("cmd : %s\n", data->command->cmd);
+    print_data(data);
 }
 

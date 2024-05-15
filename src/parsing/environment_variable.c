@@ -12,7 +12,36 @@
 
 #include "../../include/parsing/minishell.h"
 
+/*
+int	error_code(t_data *data, char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == '$')
+		{
+			if (str[i + 1] == '?')
+			{
+				printf("%d\n", data->exit_status);
+				i += 2;
+			}
+			else
+			{
+				i++;
+			}
+		}
+		else
+		{
+			i++;
+		}
+	}
+	return (0);
+}
+
 int	environment_variable(t_data *data, char *str)
 {
 	
 }
+*/

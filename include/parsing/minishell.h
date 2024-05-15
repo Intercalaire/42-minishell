@@ -21,13 +21,22 @@
 # include <readline/history.h>
 # include <string.h>
 
+typedef struct s_command
+{
+	char					**lign;
+	char					**arg;
+	char					*cmd;
+	struct s_command		*next;
+	struct s_command		*prev;
+}	t_command;
+
 typedef struct s_data
 {
-	char				**arg;
-	struct s_data		*next;
-	struct s_data		*prev;
 	int					count;
 	int					size;
+	int				    nbr_pipe;
+	int					exit_status;
+	t_command			*command;
 }	t_data;
 
 
@@ -43,6 +52,9 @@ int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
 void ft_end_error_prog(t_data *data, char *str, char *msg);
+int	environment_variable(t_data *data, char *str);
+int	error_code(t_data *data, char *str);
+void after_ft_strtok(t_data *data, char *str);
 
 
 # define PIPE "syntax error near unexpected token `|'"

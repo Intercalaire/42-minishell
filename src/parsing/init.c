@@ -15,9 +15,11 @@
 
 void	init_data(t_data *data)
 {
-	data->arg = NULL;
-	data->next = NULL;
-	data->prev = NULL;
+	data->command = malloc(sizeof(t_command));
+	data->command->next = malloc(sizeof(t_command));
+	data->command->prev = malloc(sizeof(t_command));
+	data->command->arg = NULL;
+	data->command->cmd = NULL;
 	data->count = 0;
 	data->size = 0;
 }
