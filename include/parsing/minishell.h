@@ -6,7 +6,7 @@
 /*   By: vgodart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:36:06 by vgodart           #+#    #+#             */
-/*   Updated: 2024/04/30 12:36:07 by vgodart          ###   ########.fr       */
+/*   Updated: 2024/05/15 11:54:37 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_data
 	int					size;
 	int				    nbr_pipe;
 	int					exit_status;
+	char				*env;
 	t_command			*command;
 }	t_data;
 
