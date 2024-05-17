@@ -44,7 +44,7 @@ static char	*adjust_pointers(char **src, char *next_token)
 	return (ret);
 }
 
-char	*ft_strtok(char *str, const char *delim)
+char	*ft_strtok(t_data *data, char *str, const char *delim)
 {
 	static char	*src = NULL;
 	char		*next_token;
@@ -59,5 +59,6 @@ char	*ft_strtok(char *str, const char *delim)
 		src++;
 	next_token = find_next_token(src, delim);
 	ret = adjust_pointers(&src, next_token);
-	return (ft_trim_quote(ret));
+	count_pipes_outside_quotes(data, ret);
+	return (ft_trim_quote(data, ret));
 }

@@ -13,6 +13,58 @@
 #include "../../include/parsing/minishell.h"
 // ' ' '\t' '"' '<' '|' '>' '\''
 
+void count_pipes_outside_quotes(t_data *data, const char *str)
+{
+    int inSingleQuotes = 0;
+    int inDoubleQuotes = 0;
+
+    while (*str != '\0') {
+        if (*str == '\'' && !inDoubleQuotes) {
+            inSingleQuotes = !inSingleQuotes;
+        } else if (*str == '\"' && !inSingleQuotes) {
+            inDoubleQuotes = !inDoubleQuotes;
+        } else if (*str == '|' && !inSingleQuotes && !inDoubleQuotes) {
+            data->nbr_pipe++;
+        }
+        str++;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // static t_lst	*lst_new(char *content)
 // {

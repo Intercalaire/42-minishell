@@ -40,25 +40,35 @@ typedef struct s_data
 	t_command			*command;
 }	t_data;
 
+//with ft_strtok
+int 	try_ft_strtok(t_data *data, char *str);
+void	add_token(t_data *data, char *token);
+void 	after_ft_strtok(t_data *data, char *str);
+char	*ft_trim_quote(t_data *data, char *str);
+char	*ft_strtok(t_data *data, char *str, const char *delim);
 
-int try_ft_strtok(t_data *data, char *str);
-void	init_data(t_data *data);
-void ft_little_error_prog(t_data *data, char *str, char *msg);
-void ft_error_prog(t_data *data, char *str, char *msg);
-void ft_free_data(t_data *data, char *str);
-void ft_free_strtab(char **tab);
-void add_token(t_data *data, char *token);
+//parsing
 int pars_pipe(t_data *data);
 int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
-void ft_end_error_prog(t_data *data, char *str, char *msg);
-int	environment_variable(t_data *data, char *str);
-int	error_code(t_data *data, char *str);
-void after_ft_strtok(t_data *data, char *str);
+
+//utils
+void count_pipes_outside_quotes(t_data *data, const char *str);
+
+//free
+void 	ft_little_error_prog(t_data *data, char *str, char *msg);
+void 	ft_error_prog(t_data *data, char *str, char *msg);
+void 	ft_free_data(t_data *data, char *str);
+void 	ft_free_strtab(char **tab);
+void 	ft_end_error_prog(t_data *data, char *str, char *msg);
+int		error_code(t_data *data, char *str);
 void	ft_free_strarg(char ***tab);
-char	*ft_trim_quote(char *str);
-char	*ft_strtok(char *str, const char *delim);
+
+//init
+void	init_data(t_data *data);
+int		environment_variable(t_data *data, char *str);
+
 
 
 # define PIPE "syntax error near unexpected token `|'"

@@ -15,23 +15,23 @@
 void	add_token(t_data *data, char *token)
 {
 	data->command->lign[data->count] = ft_strdup(token);
-	if (ft_strchr(token, '|'))
-		data->nbr_pipe++;
-	printf("pipe ; %d\n", data->nbr_pipe);
+	count_pipes_outside_quotes(data, token);
 	data->count++;
 }
-static int	len_ft_strtok(char *str)
+static int	len_ft_strtok(t_data *data, char *str)
 {
 	int		count;
 	char	*token;
 
 	count = 0;
-	token = ft_strtok(str, " \t<>");
+	token = ft_strtok(data, str, " \t<>");
 	while (token != NULL)
 	{
 		count++;
-		token = ft_strtok(NULL, " \t<>");
+		free(token);
+		token = ft_strtok(data, NULL, " \t<>");
 	}
+	free(token);
 	return (count);
 }
 int	try_ft_strtok(t_data *data, char *str)
@@ -42,7 +42,7 @@ int	try_ft_strtok(t_data *data, char *str)
 
 	i = 0;
 	tmp = ft_strdup(str);
-	data->count = len_ft_strtok(tmp);
+	data->count = len_ft_strtok(data, tmp);
 	data->size = data->count;
 	free(tmp);
 	data->command->lign = ft_calloc((data->count + 1), sizeof(char **));
@@ -51,16 +51,19 @@ int	try_ft_strtok(t_data *data, char *str)
 		ft_little_error_prog(data, str, "Error");
 		return (1);
 	}
-	token = ft_strtok(str, " \t<>");
+	token = ft_strtok(data, str, " \t<>");
 	data->count = 0;
 	while (token != NULL)
 	{
 		add_token(data, token);
+		free(token);
 		printf("lign : %s\n", data->command->lign[i]);
-		token = ft_strtok(NULL, " \t<>");
+		token = ft_strtok(data, NULL, " \t<>");
 		i++;
 	}
+	free(token);
 	printf("%d\n", data->size);
+	printf("pipe ; %d\n", data->nbr_pipe);
 	//after_ft_strtok(data, str);
 	return (0);
 }

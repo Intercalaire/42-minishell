@@ -56,7 +56,7 @@ static int	quote(t_data *data, char *str, int in_qte_dble, int in_qte_sple)
 	return (0);
 }
 
-char	*ft_trim_quote(char *str)
+char	*ft_trim_quote(t_data *data, char *str)
 {
     int	i;
     int	j;
@@ -68,9 +68,11 @@ char	*ft_trim_quote(char *str)
     j = 0;
     quote = 0;
     len = ft_strlen(str);
+	if (!str)
+		return (NULL);
     ret = malloc(sizeof(char) * (len + 1));
     if (!ret)
-        return (0);
+        ft_error_prog(data, str, "Error");
     while (str[i] && !quote)
     {
         if (str[i] == '"' || str[i] == '\'')
