@@ -13,50 +13,6 @@
 #include "../../include/parsing/minishell.h"
 // ' ' '\t' '"' '<' '|' '>' '\''
 
-static char *ft_strtok(char *str, const char *delim) {
-    static char *src = NULL;
-    char        *p;
-	char        *ret;
-
-    ret = 0;
-	p = 0;
-    if (str != NULL)
-        src = str;
-    if (src == NULL)
-        return NULL;
-    while (ft_strchr(delim, *src) && *src != '\0')
-        src++;
-    p = src;
-    while (*p != '\0' && !ft_strchr(delim, *p))
-        p++;
-    if (*p != '\0') 
-	{
-        *p = 0;
-        ret = src;
-        src = ++p;
-    }
-	else if (*src != '\0')
-	{
-        ret = src;
-        src = NULL;
-    }
-    return (ret);
-}
-
-static int len_ft_strtok(char *str)
-{
-    int count;
-    char *token;
-
-    count = 0;
-    token = ft_strtok(str, " \t\"<>'");
-    while (token != NULL)
-    {
-        count++;
-        token = ft_strtok(NULL , " \t\"<>'");
-    }
-    return (count);
-}
 
 // static t_lst	*lst_new(char *content)
 // {
@@ -89,76 +45,96 @@ static int len_ft_strtok(char *str)
 // 	news->prev = NULL;
 // }
 
-void add_token(t_data *data, char *token)
-{
-    data->command->arg[data->count] = ft_strdup(token);
-    data->count++;
-}
+// void	print_data(t_data *data)
+// {
+// 	int			i;
+// 	t_command		*tmp;
 
-int try_ft_strtok(t_data *data, char *str)
-{
-    char *token;
-    int i;
-    char    *tmp;
+// 	tmp = data->command;
+// 	while (tmp)
+// 	{
+// 		i = 0;
+// 		while (tmp->arg[i])
+// 		{
+// 			printf("arg[%d] : %s\n", i, tmp->arg[i]);
+// 			i++;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// }
+// //count pipe    ->    data->command->arg = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+// //              ->    data->command->arg[0 -> nbr_pipe + 1] = ft_calloc(data->nbr_arg_cmd + 1, sizeof(char *));
+// //              ->    data->command->arg[0 -> nbr_pipe + 1][0   ->   nbr_arg] = ft_calloc(ft_strlen(mot), sizeof(char));
 
-    i = 0;
-    tmp = ft_strdup(str);
-    data->count = len_ft_strtok(tmp);
-    data->size = data->count;
-    free(tmp);
-    data->command->arg = ft_calloc((data->count + 1) , sizeof(char **));
-    if (!data->command->arg)
-    {
-        ft_little_error_prog(data, str, "Error");
-        return(1);
-    }
-    token = ft_strtok(str, " \t\"<>'");
-    data->count = 0;
-    while (token != NULL)
-    {
-        add_token(data, token);
-        //printf("arg : %s\n", data->command->arg[i]);
-        token = ft_strtok(NULL, " \t\"<>'");
-        i++;
-    }
-    after_ft_strtok(data, str);
-    return (0);
-}
+// void    after_ft_strtok(t_data *data)
+// {
+//     int i;
+//     int j;
 
-void	print_data(t_data *data)
-{
-	int			i;
-	t_command		*tmp;
+//     i = 0;
+//     j = 0;
+//     data->command->arg = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+//     if (!data->command->arg)
+//         ft_error_prog(data, NULL, "Error");
+//     data->command->cmd = ft_calloc(data->nbr_pipe + 1, sizeof(char *));
+//     if (!data->command->cmd)
+//         ft_error_prog(data, NULL, "Error");
+//     while(i < data->nbr_pipe + 1)
+//     {
+//         data->command->arg[i] = ft_calloc(data->size, sizeof(char *));
+//         if (!data->command->arg[i])
+//             ft_error_prog(data, NULL, "Error");
+//         while(data->command->lign[j])
+//         {
+//             data->command->arg[i][j] = ft_strdup(data->command->lign[j]);
+//             data->command->cmd[i] = ft_strdup(data->command->lign[i]);
+//         }
+//         i++;
+//     }
 
-	tmp = data->command;
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->arg[i])
-		{
-			printf("arg[%d] : %s\n", i, tmp->arg[i]);
-			i++;
-		}
-		tmp = tmp->next;
-	}
-}
+// }
 
 
-void after_ft_strtok(t_data *data, char *str)
-{
-    int i;
 
-    i = 0;
-    if (data->command->arg)
-        data->command->cmd = data->command->arg[0];
-    while(data->command->arg[i])
-    {
-        if (*data->command->arg[i] == '|')
-                data->command->next->cmd = *data->command->arg;
-         i++;
-    }
-    (void)str;
-    printf("cmd : %s\n", data->command->cmd);
-    print_data(data);
-}
+
+
+
+
+
+
+// void after_ft_strtok_test(t_data *data, char *str)
+// {
+//     int i;
+//     int j;
+//     int k;
+
+//     i = 0;
+//     j = 0;
+//     k = 0;
+//     data->command->cmd = ft_calloc(data->size, sizeof(char *));
+//     data->command->arg = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+//     if (data->command->lign)
+//     {
+//         data->command->cmd[k] = data->command->lign[i];
+//         i++;
+//         k++;
+//     }
+//     while(data->command->lign[i])
+//     {
+//         if (*data->command->lign[i] == '|' && data->command->lign[i] != ""|"")
+//         {
+//                 data->command->cmd[k] = *data->command->lign[i];
+//                 k++;
+//         }
+//         else
+//         {
+//             data->command->arg[i][j][] = *data->command->lign[i];
+//             j++;
+//         }
+//         i++;
+//     }
+//     (void)str;
+//     //printf("cmd : %s\n", data->command->cmd);
+//     //print_data(data);
+// }
 

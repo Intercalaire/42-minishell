@@ -24,8 +24,8 @@
 typedef struct s_command
 {
 	char					**lign;
-	char					**arg;
-	char					*cmd;
+	char					***arg;
+	char					**cmd;
 	struct s_command		*next;
 	struct s_command		*prev;
 }	t_command;
@@ -56,11 +56,14 @@ void ft_end_error_prog(t_data *data, char *str, char *msg);
 int	environment_variable(t_data *data, char *str);
 int	error_code(t_data *data, char *str);
 void after_ft_strtok(t_data *data, char *str);
+void	ft_free_strarg(char ***tab);
+char	*ft_trim_quote(char *str);
+char	*ft_strtok(char *str, const char *delim);
 
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"
-# define QUOTE_SMP "syntax error near unexpected token `\"'"
-# define QUOTE_DBL "syntax error near unexpected token `''"
+# define QUOTE_SMP "syntax error near unexpected token `\''"
+# define QUOTE_DBL "syntax error near unexpected token `\"'"
 
 #endif

@@ -48,8 +48,12 @@ void	ft_error_prog(t_data *data, char *str, char *msg)
 
 void	ft_free_data(t_data *data, char *str)
 {
+	if (data->command->lign)
+		ft_free_strtab(data->command->lign);
 	if (data->command->arg)
-		ft_free_strtab(data->command->arg);
+		ft_free_strarg(data->command->arg);
+	if (data->command->cmd)
+		ft_free_strtab(data->command->cmd);
 	free(str);
 	free(data->command->next);
 	free(data->command->prev);
@@ -66,6 +70,27 @@ void	ft_free_strtab(char **tab)
 	{
 		if (tab[i])
 			free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+void	ft_free_strarg(char ***tab)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (tab[i])
+	{
+		j = 0;
+		while (tab[i][j])
+		{
+			if (tab[i][j])
+				free(tab[i][j]);
+			j++;
+		}
+		free(tab[i]);
 		i++;
 	}
 	free(tab);
