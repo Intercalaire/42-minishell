@@ -15,23 +15,22 @@
 
 void count_pipes_outside_quotes(t_data *data, const char *str)
 {
-    int inSingleQuotes = 0;
-    int inDoubleQuotes = 0;
+    int in_single_quotes = 0;
+    int in_double_quotes = 0;
+    int i = 0;
 
-    while (*str != '\0') {
-        if (*str == '\'' && !inDoubleQuotes) {
-            inSingleQuotes = !inSingleQuotes;
-        } else if (*str == '\"' && !inSingleQuotes) {
-            inDoubleQuotes = !inDoubleQuotes;
-        } else if (*str == '|' && !inSingleQuotes && !inDoubleQuotes) {
+    data->nbr_pipe = 0;
+    while (str[i] != '\0')
+    {
+        if (str[i] == '\"' && !in_single_quotes)
+            in_double_quotes = !in_double_quotes;
+        else if (str[i] == '\'' && !in_double_quotes)
+            in_single_quotes = !in_single_quotes;
+        else if (str[i] == '|' && !in_single_quotes && !in_double_quotes)
             data->nbr_pipe++;
-        }
-        str++;
+        i++;
     }
 }
-
-
-
 
 
 

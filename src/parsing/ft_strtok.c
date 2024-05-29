@@ -59,6 +59,5 @@ char	*ft_strtok(t_data *data, char *str, const char *delim)
 		src++;
 	next_token = find_next_token(src, delim);
 	ret = adjust_pointers(&src, next_token);
-	count_pipes_outside_quotes(data, ret);
 	return (ft_trim_quote(data, ret));
 }

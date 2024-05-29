@@ -15,7 +15,6 @@
 void	add_token(t_data *data, char *token)
 {
 	data->command->lign[data->count] = ft_strdup(token);
-	count_pipes_outside_quotes(data, token);
 	data->count++;
 }
 static int	len_ft_strtok(t_data *data, char *str)
@@ -51,6 +50,7 @@ int	try_ft_strtok(t_data *data, char *str)
 		ft_little_error_prog(data, str, "Error");
 		return (1);
 	}
+	count_pipes_outside_quotes(data, str);
 	token = ft_strtok(data, str, " \t<>");
 	data->count = 0;
 	while (token != NULL)
