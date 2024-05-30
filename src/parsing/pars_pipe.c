@@ -55,7 +55,6 @@ static int check_if_pipe(t_data *data)
 	}
 	return (0);
 }
-*/
 
 //il faut : mettre pour la premier fois quand ya pas de pipe, trouver des malloc pour chaque pipe
 int pars_pipe(t_data *data)
@@ -83,7 +82,8 @@ int pars_pipe(t_data *data)
 		}
 		i++;
 	}
-}
+}*/
+
 
 /*
 //I want to put everything after "|" in a new structure

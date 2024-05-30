@@ -6,12 +6,13 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:19:50 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/15 12:28:21 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/05/30 10:28:05 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <limit.h>
 /*
 void pwd(void)
 {
@@ -29,46 +30,35 @@ void pwd(void)
 	printf("%s", str);
 }
 */
-int pwd(char **env)
+int	pwd(void)
 {
-	int i;
+	char	pwd[PATH_MAX];
 
-	i = 0;
-	while (env[i])
+	if (getcwd(pwd, PATH_MAX))
 	{
-		if (strncmp(env[i], "PWD=", 4) && !strncmp(env[i], "OLDPWD=", 7))
-		{	
-			printf("%s", substr(env[i], 4, strlen(env[i])));
-			return(0);
-		}
-		i++;
+		printf(pwd)
+		return (0);
 	}
-	return(2);
+	else
+		return (-1);
 }
 
-char **env(char **environnement)
+void cpy_env(t_data *data, char **environnement)
 {
-	char **env;
 	int len_env;
 	int i;
 
 	len_env = 0;
 	while (environnement[len_env])
 		len_env++;
-	env = calloc(len_env, sizeof(*char));
-	if (!env)
-		exit("Alloc Error\n");
+	data->env = calloc(len_env, sizeof(*char));
+	if (!data->env)
+		exit_error("Alloc Error\n");
 	while (environnement[i])
 	{
-		env[i] = strdup(environnement[len_env])
+		data->env[i] = strdup(environnement[len_env])
+		if (!data->env[i])
+			exit_error("Alloc Error\n");
 		i++;
 	}
-	return(env);
-}
-int main(int argc, char **argv, char **env)
-{
-	void(argc);
-	void(argv);
-	pwd(env(env));
-
 }

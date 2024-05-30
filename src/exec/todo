@@ -1,6 +1,6 @@
 recup commande env | execve() getenv() /bin/???? ok
 gerer ctrl			
-pwd | readdir()					 ok
+pwd | getcwd()					 pasok
 cd | opendir(), closedir()			 faire les relative et absolute path en plus
 exit -> mettre arg dans $?
 echo 	|				   ba c just 1 printf
