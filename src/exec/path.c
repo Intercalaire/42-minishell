@@ -15,14 +15,15 @@
 #include <stdlib.h>
 #include <string.h>
 //dans les cas ou c'est different de echo, cd, pwd, export, unset, env, exit
-int path(void)
+int path(t_data *data)
 {
 	char *path;
 	char **var;
 	int bin;
+	int i;
 
-	path = ft-calloc(strlen(getenv("PATH")), sizeof(char *));
-	path = getenv("PATH");
+	i = 0;
+	path = search_env(data, "PATH");
 	printf("%s", path);
 	var = ft_split(path, ":");
 	while (var[i])
@@ -35,7 +36,7 @@ int path(void)
 		error("No /bin/");
 	else
 		bin = i;
-	return (execve(cmd, arg, var[bin]));
+	return (execve(data->command->cmd, data->command->arg, var));
 	//argv = commande + arguments
 
 }

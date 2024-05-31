@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <limit.h>
+#include <limits.h>
 /*
 void pwd(void)
 {
@@ -36,7 +36,7 @@ int	pwd(void)
 
 	if (getcwd(pwd, PATH_MAX))
 	{
-		printf(pwd)
+		printf("%s\n", pwd);
 		return (0);
 	}
 	else
@@ -48,15 +48,16 @@ void cpy_env(t_data *data, char **environnement)
 	int len_env;
 	int i;
 
+	i = 0;
 	len_env = 0;
 	while (environnement[len_env])
 		len_env++;
-	data->env = calloc(len_env, sizeof(*char));
+	data->env = ft_calloc(len_env, sizeof(char *));
 	if (!data->env)
 		exit_error("Alloc Error\n");
 	while (environnement[i])
 	{
-		data->env[i] = strdup(environnement[len_env])
+		data->env[i] = strdup(environnement[i])
 		if (!data->env[i])
 			exit_error("Alloc Error\n");
 		i++;
