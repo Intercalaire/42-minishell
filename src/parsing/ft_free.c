@@ -31,12 +31,7 @@ void	ft_end_error_prog(t_data *data, char *str, char *msg)
 	if (str)
 		free(str);
 	if (data)
-	{
-		free(data->command->next);
-		free(data->command->prev);
-		free(data->command);
-		free(data);
-	}
+		ft_free_data(data, str);
 }
 
 void	ft_error_prog(t_data *data, char *str, char *msg)
@@ -48,16 +43,19 @@ void	ft_error_prog(t_data *data, char *str, char *msg)
 
 void	ft_free_data(t_data *data, char *str)
 {
-	if (data->command->lign)
-		ft_free_strtab(data->command->lign);
-	if (data->command->arg)
-		ft_free_strarg(data->command->arg);
-	if (data->command->cmd)
-		ft_free_strtab(data->command->cmd);
+	if (data->command)
+	{
+		if (data->command->lign)
+			ft_free_strtab(data->command->lign);
+		if (data->command->arg)
+			ft_free_strarg(data->command->arg);
+		if (data->command->cmd)
+			ft_free_strtab(data->command->cmd);
+		free(data->command->next);
+		free(data->command->prev);
+		free(data->command);
+	}
 	free(str);
-	free(data->command->next);
-	free(data->command->prev);
-	free(data->command);
 	free(data);
 }
 
