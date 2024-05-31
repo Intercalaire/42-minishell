@@ -32,7 +32,7 @@ int	main(void)
 			continue ;
 		if (try_ft_strtok(data, str) == 1)
 			continue ;
-		//pars_pipe(data);
+		pars_pipe(data);
 		ft_free_data(data, str);
 	}
 	ft_end_error_prog(data, str, "exit");

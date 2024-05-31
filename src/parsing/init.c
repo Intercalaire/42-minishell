@@ -24,4 +24,5 @@ void	init_data(t_data *data)
 	data->count = 0;
 	data->size = 0;
 	data->nbr_pipe = 0;
+	data->nbr_arg = 0;
 }

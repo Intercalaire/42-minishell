@@ -35,6 +35,7 @@ typedef struct s_data
 	int					count;
 	int					size;
 	int				    nbr_pipe;
+	int 				nbr_arg;
 	int					exit_status;
 	char				*env;
 	t_command			*command;
@@ -48,7 +49,7 @@ char	*ft_trim_quote(t_data *data, char *str);
 char	*ft_strtok(t_data *data, char *str, const char *delim);
 
 //parsing
-int pars_pipe(t_data *data);
+void pars_pipe(t_data *data);
 int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
