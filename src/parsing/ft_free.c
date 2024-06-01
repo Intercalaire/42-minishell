@@ -25,6 +25,18 @@ void	ft_little_error_prog(t_data *data, char *str, char *msg)
 	}
 }
 
+void	ft_little_error_prog_no_msg(t_data *data, char *str)
+{
+	free(str);
+	if (data)
+	{
+		free(data->command->next);
+		free(data->command->prev);
+		free(data->command);
+		free(data);
+	}
+}
+
 void	ft_end_error_prog(t_data *data, char *str, char *msg)
 {
 	printf("%s\n", msg);

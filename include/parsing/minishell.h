@@ -65,6 +65,7 @@ void 	ft_free_strtab(char **tab);
 void 	ft_end_error_prog(t_data *data, char *str, char *msg);
 int		error_code(t_data *data, char *str);
 void	ft_free_strarg(char ***tab);
+void	ft_little_error_prog_no_msg(t_data *data, char *str);
 
 //init
 void	init_data(t_data *data);

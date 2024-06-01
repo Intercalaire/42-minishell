@@ -26,6 +26,11 @@ int	main(void)
 		str = readline("Minishell >");
 		if (!str)
 			break ;
+		if (ft_strlen(str) == 0)
+		{
+			ft_little_error_prog_no_msg(data, str);
+			continue ;
+		}
 		add_history(str);
 		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
 			|| look_pipe(data, str) == 1)
