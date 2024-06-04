@@ -10,39 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../../include/minishell.h"
+#include "../../include/exec_test/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
+
 //dans les cas ou c'est different de echo, cd, pwd, export, unset, env, exit
 int path(t_data *data)
 {
-	char *path;
+	int path;
 	char **var;
-	int bin;
 	int i;
+	char *full_path;
+	pid_t pid;
 
+	pid = fork();
 	i = 0;
 	path = search_env(data, "PATH");
-	printf("%s", path);
-	var = ft_split(path, ":");
+	var = ft_split(data->env[path] + 5, ':');
 	while (var[i])
 	{
-		if (ft_strncmp(var[i], "/bin", 5) == 0)
+		if (!ft_strncmp(var[i], "/bin", 5))
 			break ;
 		i++;
 	}
 	if (!var[i])
-		error("No /bin/");
+		return 0;
+		//error("No /bin/");
+	if (pid == 0)
+{
+	full_path = ft_strjoin(var[i], "/");
+	full_path = ft_strjoin(full_path, data->command->cmd[0]);
+	execve(full_path, data->command->arg[0], data->env);
+}
 	else
-		bin = i;
-	return (execve(data->command->cmd, data->command->arg, var));
+		waitpid(pid, NULL, 0);
+	return 0;
 	//argv = commande + arguments
 
-}
-
-int main(void)
-{
-	path();
-	return 0;
 }

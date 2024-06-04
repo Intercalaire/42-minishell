@@ -9,71 +9,59 @@
 /*   Updated: 2024/05/30 12:04:17 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "../../include/exec_test/minishell.h"
 
-
-int export(t_data *data)
-{
-    int i;
-    int len_var;
-
-    i = 0;
-    search_env(data->env, data->command->arg);
-    len_var = ft_strnstr(data->command->cmd, , 6);
-}
-static char add_env(char **env, char *key, char *value)
+static void add_env(t_data *data, char *key, char *value)
 {
     int		i;
     char	*new_env;
 
     i = 0;
-    while (env[i])
+    while (data->env[i])
         i++;
-    new_env = ft_calloc((ft_strlen(key) + ft_strlen(value) + 2), sizeof(char);
-    if (!new_env)
-        return (NULL);
-    ft_strcpy(new_env, key);
-    ft_strcat(new_env, "=");
-    ft_strcat(new_env, value);
-    env[i] = new_env;
-    env[i + 1] = NULL;
-    return (env);
+    new_env = ft_strdup(key);
+    new_env = ft_strjoin(new_env, "=");
+    new_env = ft_strjoin(new_env, value);
+    data->env[i] = new_env;
+    data->env[i + 1] = NULL;
+    printf("env[%d] = %s\n", i, data->env[i]);
+
 }
 
-static char change_env(char **env, char *key, char *value)
+static void change_env(t_data *data, char *key, char *value)
 {
     int		i;
     char	*new_env;
 
-    i = search_env(env, key);
-    new_env = ft_calloc((ft_strlen(key) + ft_strlen(value) + 2), sizeof(char);
-    if (!new_env)
-        return (NULL);
-    ft_strcpy(new_env, key);
-    ft_strcat(new_env, "=");
-    ft_strcat(new_env, value);
-    free(env[i]);
-    env[i] = new_env;
-    return (env);
+    i = search_env(data, key);
+    new_env = ft_strdup(key);
+    new_env = ft_strjoin(new_env, "=");
+    new_env = ft_strjoin(new_env, value);
+    free(data->env[i]);
+    data->env[i] = new_env;
+    printf("env[%d] = %s\n", i, data->env[i]);
 }
 
-int	export(t_data *data, char **args)
+int	ft_export(t_data *data)
 {
     int		i;
     char	*key;
     char	*value;
 
-    i = 1;
-    while (args[i])
+    i = 0;
+    printf("\n????????\n");
+
+    while (data->command->arg[0][i])
     {
-        key = ft_strtok(args[i], "=");
+        key = ft_strtok(data, data->command->arg[0][i], "=");
         if (key)
-            value = ft_strdup(args[i] + ft_strlen(key) + 1);
+            value = ft_strdup(data->command->arg[0][i] + ft_strlen(key) + 1);
         if (!key || !value)
             return (ft_putstr_fd("Usage: export NAME=VALUE\n", 1));
-        if (search_env(data->env, key) == -1)
-            data->env = add_env(data->env, key, value);
+        if (search_env(data, key) == -1)
+            add_env(data, key, value);
         else
-            data->env = change_env(data->env, key, value);
+            change_env(data, key, value);
         i++;
     }
     return (0);

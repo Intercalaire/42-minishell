@@ -18,14 +18,28 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <readline/history.h>
-
+#include "../../include/parsing/minishell.h"
 void handler(int signum)
 {
+	printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+void quit_handler(int signum)
+{
+	printf("\n");
 	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int main(void)
 {
 	signal(SIGINT, handler);
+	signal(SIGQUIT, quit_handler);
 	pause();
+	
 }
+

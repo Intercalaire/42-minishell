@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "../../include/exec_test/minishell.h"
 
 /*
 int absolute()

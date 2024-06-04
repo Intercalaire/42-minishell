@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include "../../include/exec_test/minishell.h"
 /*
 void pwd(void)
 {
@@ -52,14 +53,16 @@ void cpy_env(t_data *data, char **environnement)
 	len_env = 0;
 	while (environnement[len_env])
 		len_env++;
-	data->env = ft_calloc(len_env, sizeof(char *));
+	data->env = ft_calloc(len_env + 1, sizeof(char *));
 	if (!data->env)
-		exit_error("Alloc Error\n");
+		return ;
+		//exit_error("Alloc Error\n");
 	while (environnement[i])
 	{
-		data->env[i] = strdup(environnement[i])
+		data->env[i] = strdup(environnement[i]);
 		if (!data->env[i])
-			exit_error("Alloc Error\n");
+			//exit_error("Alloc Error\n");
+			return ;
 		i++;
 	}
 }

@@ -9,6 +9,7 @@
 /*   Updated: 2024/05/04 11:13:42 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "../../include/exec_test/minishell.h"
 
 int echo(t_data *data)
 {
@@ -16,14 +17,14 @@ int echo(t_data *data)
     int newline = 1;
 
     i = 0;
-    if (data->command->arg[i] && ft_strncmp(data->command->arg[i], "-n", 2) == 0)
+  //  if (data->command->arg[0][i] && ft_strncmp(data->command->arg[0][i], "-n", 2) == 0)
+  //  {
+  //      newline = 0;
+  //      i++;
+  //  }
+    while (data->command->arg[0][i])
     {
-        newline = 0;
-        i++;
-    }
-    while (data->command->arg[i])
-    {
-        printf("%s ", data->command->arg[i]);
+        printf("%s ", data->command->arg[0][i]);
         i++;
     }
     if (newline)

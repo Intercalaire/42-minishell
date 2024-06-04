@@ -1,25 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   search_env.c                                       :+:      :+:    :+:   */
+/*   environment_variable.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vgodart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/29 09:43:30 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/29 09:50:49 by hsolet           ###   ########.fr       */
+/*   Created: 2024/05/07 14:28:19 by vgodart           #+#    #+#             */
+/*   Updated: 2024/05/07 14:28:21 by vgodart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../include/exec_test/minishell.h"
-int search_env(t_data *data, char *str)
+
+/*
+int	error_code(t_data *data, char *str)
 {
 	int i;
 
 	i = 0;
-	while (data->env[i])
+	while(str[i])
 	{
-		if (ft_strncmp(str, data->env[i], ft_strlen(str)) == 0)
-				return (i);
-		i++;
+		if (str[i] == '$')
+		{
+			if (str[i + 1] == '?')
+			{
+				printf("%d\n", data->exit_status);
+				i += 2;
+			}
+			else
+			{
+				i++;
+			}
+		}
+		else
+		{
+			i++;
+		}
 	}
-	return (-1);
+	return (0);
 }
+
+int	environment_variable(t_data *data, char *str)
+{
+	
+}
+*/
