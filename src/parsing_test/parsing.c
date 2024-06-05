@@ -19,11 +19,13 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return 0;
+	cpy_env(data, env);
 	while (1)
 	{
-		data = malloc(sizeof(t_data));
-		if (!data)
-			break ;
+
 		init_data(data);
 		str = readline("Minishell >");
 		if (!str)
@@ -40,9 +42,9 @@ int	main(int argc, char **argv, char **env)
 		if (try_ft_strtok(data, str) == 1)
 			continue ;
 		pars_pipe(data);
-		cpy_env(data, env);
+		
 		exec(data);
-		ft_free_data(data, str);
+		//ft_free_data(data, str);
 	}
 	ft_end_error_prog(data, str, "exit");
 	return (0);

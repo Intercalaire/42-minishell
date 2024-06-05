@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../include/exec_test/minishell.h"
-int search_env(t_data *data, char *str)
+/*int search_env(t_data *data, char *str)
 {
 	int i;
 
@@ -22,4 +22,19 @@ int search_env(t_data *data, char *str)
 		i++;
 	}
 	return (-1);
+}*/
+int search_env(t_data *data, char *str)
+{
+    int i;
+    int len;
+
+    i = 0;
+    len = ft_strlen(str);
+    while (data->env[i])
+    {
+        if (ft_strncmp(str, data->env[i], len) == 0 && data->env[i][len] == '=')
+            return (i);
+        i++;
+    }
+    return (-1);
 }

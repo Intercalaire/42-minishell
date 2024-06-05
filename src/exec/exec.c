@@ -15,6 +15,8 @@ int exec(t_data *data)
         print_env(data);
     else if (!ft_strncmp(cmd, "export", 6))
         ft_export(data);
+    else if (!ft_strncmp(cmd, "unset", 5))
+        ft_unset(data);
     else
         path(data);
     return (0);

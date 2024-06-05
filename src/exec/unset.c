@@ -9,25 +9,47 @@
 /*   Updated: 2024/05/30 10:56:41 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "../../include/exec_test/minishell.h"
 
-int	unset(t_data *data, int i, int j)
+void ft_unset(t_data *data)
 {
-	int exit;
-	int k;
+    int i;
+	int env_index;
+	int j;
+	char *key;
+    char **new_env;
 
-	k = search_env(data->env, data->arg[i][j]);
-	free(data->env[k]);
-	while (data->env[k + 1])
+	i = 0;
+	j = 0;
+	while (data->command->arg[0][i])
 	{
-		data->env[k] = ft_strdup(data->env[k + 1]);
-		if (!data->env[k])
-			return (-1);
-		free(data->env[k + 1]);
-		k++;
+		key = ft_strdup(data->command->arg[0][i]);
+    	env_index = search_env(data, key);
+		if (env_index == -1)
+		{
+			i++;
+			continue ;
+		}
+    	while (data->env[j])
+    	    j++;
+    	new_env = ft_calloc((j), sizeof(char *));
+    	if (!new_env)
+    	    return ;
+    	j = 0;
+    	while (j < env_index) 
+		{
+		    new_env[j] = ft_strdup(data->env[j]);
+		    free(data->env[j]);
+		    j++;
+		}
+		while (data->env[j + 1])
+    	{
+    	    new_env[j] = ft_strdup(data->env[j + 1]);
+    	    free(data->env[j + 1]);
+    	    j++;
+    	}
+    	free(data->env);
+    	data->env = new_env;
+		i++;
 	}
-	if (data->arg[i][j + 1])
-	{
-		exit = unset(data, i, j + 1);
-	}
-	return (exit);
 }
