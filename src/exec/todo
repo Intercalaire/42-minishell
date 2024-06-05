@@ -1,11 +1,11 @@
-recup commande env | execve() getenv() /bin/???? ok
+env                     OK
 gerer ctrl			
-pwd | getcwd()					 pasok
+pwd | getcwd()			OK
 cd | opendir(), closedir()			 faire les relative et absolute path en plus
 exit -> mettre arg dans $?
-echo 	|				   ba c just 1 printf
-export					add +=
-unset | 				//????????????????????????
+echo 	|				check le -n
+export					OK
+unset | 				OK
 pipe
 
 

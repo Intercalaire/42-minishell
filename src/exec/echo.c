@@ -17,14 +17,14 @@ int echo(t_data *data)
     int newline = 1;
 
     i = 0;
-  //  if (data->command->arg[0][i] && ft_strncmp(data->command->arg[0][i], "-n", 2) == 0)
-  //  {
-  //      newline = 0;
-  //      i++;
-  //  }
+    if (data->command->arg[0][i] && ft_strncmp(data->command->arg[0][i], "-n", 2) == 0)
+    {
+        newline = 0;
+        i++;
+    }
     while (data->command->arg[0][i])
     {
-        printf("%s ", data->command->arg[0][i]);
+        printf("%s", data->command->arg[0][i]);
         i++;
     }
     if (newline)
