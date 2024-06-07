@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../include/exec_test/minishell.h"
+#include <limits.h>
 
 /*
 int absolute()
@@ -52,7 +53,7 @@ void cd(t_data *data, int i, int j)
 }
 */
 
-void cd(t_data *data, int i, int j)
+void cd(t_data *data)
 {
     int k;
     char *oldpwd;
@@ -60,13 +61,13 @@ void cd(t_data *data, int i, int j)
 
     k = search_env(data, "HOME");
     if (k == -1)
-        exit_error("no home found");
+        return;
     home = data->env[k] + 5; // Retirer le début du chemin
 
-    if (data->command->arg[i][j] == NULL || strcmp(data->command->arg[i][j], "~") == 0) {
+    if (data->command->arg[0][0] == NULL || ft_strncmp(data->command->arg[0][0], "~", 1) == 0) {
         // Si aucun argument ou si l'argument est "~", aller au répertoire HOME
         chdir(home);
-    } else if (strcmp(data->command->arg[i][j], "-") == 0) {
+    } else if (ft_strncmp(data->command->arg[0][0], "-", 1) == 0) {
         // Si l'argument est "-", aller au répertoire précédent
         k = search_env(data, "OLDPWD");
         if (k == -1) {
@@ -77,14 +78,13 @@ void cd(t_data *data, int i, int j)
         }
     } else {
         // Sinon, aller au répertoire spécifié
-        if (chdir(data->command->arg[i][j]) != 0) {
+        if (chdir(data->command->arg[0][0]) != 0) {
             perror("cd");
         }
     }
 
-    // Mettre à jour PWD et OLDPWD
-    oldpwd = getcwd(NULL, 0);
-    setenv("OLDPWD", oldpwd, 1);
-    setenv("PWD", oldpwd, 1);
-    free(oldpwd);
+oldpwd = getcwd(NULL, 0);
+strncpy(data->env[search_env(data, "OLDPWD")] + 7, oldpwd, PATH_MAX - 7);
+strncpy(data->env[search_env(data, "PWD")] + 4, oldpwd, PATH_MAX - 4);
+free(oldpwd);
 }

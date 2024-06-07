@@ -80,14 +80,76 @@ static void cat_env(t_data *data, char *key, char *value)
     free(tmp);
     free(new_env);
 }
+static char **bubble_sort(char **arr, int n)
+{
+    int i = 0;
+    int j = 0;
+    char *temp;
+
+    while (i < n - 1)
+    {
+        j = 0;
+        while (j < n - i - 1)
+        {
+            if (ft_strncmp(arr[j], arr[j + 1], ft_strlen(arr[j + 1])) > 0)
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+            j++;
+        }
+        i++;
+    }
+    return (arr);
+}
+
+static char **cpy_envir(char **env)
+{
+    int i = 0;
+    int env_len = 0;
+    char **new_env;
+
+    while (env[env_len])
+        env_len++;
+    new_env = ft_calloc((env_len + 1), sizeof(char *));
+    if (!new_env)
+        return NULL;
+
+    while (i < env_len)
+    {
+        new_env[i] = ft_strdup(env[i]);
+        i++;
+    }
+    new_env[i] = NULL;
+
+    return (new_env);
+}
+
 int	ft_export(t_data *data)
 {
     int		i;
     char	*key;
     char	*value;
+    int     env_len;
+    char **new_env;
 
     i = 0;
 
+    if (!data->command->arg[0])
+    {
+        env_len = 0;
+        while (data->env[env_len])
+            env_len++;
+        new_env = cpy_envir(data->env);
+        bubble_sort(new_env, env_len);
+        while (new_env[i])
+        {
+            printf("declare -x %s\n", new_env[i]);
+            i++;
+        }
+        return (0);
+    }
 
     while (data->command->arg[0][i])
     {

@@ -81,6 +81,7 @@ int	ft_export(t_data *data);
 int echo(t_data *data);
 int search_env(t_data *data, char *str);
 void ft_unset(t_data *data);
+void cd(t_data *data);
 
 
 # define PIPE "syntax error near unexpected token `|'"
