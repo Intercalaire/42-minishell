@@ -47,6 +47,7 @@ void	add_token(t_data *data, char *token);
 void 	after_ft_strtok(t_data *data, char *str);
 char	*ft_trim_quote(t_data *data, char *str);
 char	*ft_strtok(t_data *data, char *str, const char *delim);
+char	*ft_split_delim(t_data *data, char *str);
 
 //parsing
 void pars_pipe(t_data *data);

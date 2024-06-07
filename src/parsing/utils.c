@@ -32,6 +32,42 @@ void count_pipes_outside_quotes(t_data *data, const char *str)
     }
 }
 
+char *ft_split_delim(t_data *data, char *str)
+{
+    int in_quotes = 0;
+    char *new_str = malloc(strlen(str) * 3 + 1);
+    int j = 0;
+    int i = 0;
+
+    while (str[i] != '\0') {
+        if (str[i] == '"' || str[i] == '\'') {
+            in_quotes = !in_quotes;
+            if (i > 0 && str[i-1] != ' ' && new_str[j-1] != ' ') {
+                new_str[j++] = ' ';
+            }
+            new_str[j++] = str[i];
+            if (str[i+1] != '\0' && str[i+1] != ' ' && new_str[j-1] != ' ') {
+                new_str[j++] = ' ';
+            }
+        } else if ((str[i] == '|' || str[i] == '>') && !in_quotes) {
+            if (i > 0 && str[i-1] != ' ' && new_str[j-1] != ' ') {
+                new_str[j++] = ' ';
+            }
+            new_str[j++] = str[i];
+            if (str[i+1] != '\0' && str[i+1] != ' ' && new_str[j-1] != ' ') {
+                new_str[j++] = ' ';
+            }
+        } else {
+            new_str[j++] = str[i];
+        }
+        i++;
+    }
+
+    (void)data;
+    new_str[j] = '\0';
+    return new_str;
+}
+
 
 
 
