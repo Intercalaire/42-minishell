@@ -18,10 +18,16 @@ static char	*adjust_pointers(char **src, char *next_token);
 static char	*find_next_token(char *src, const char *delim)
 {
 	char	*p;
+	int     in_quotes = 0;
 
 	p = src;
-	while (*p != '\0' && !ft_strchr(delim, *p))
+	while (*p != '\0') {
+		if (*p == '"' || *p == '\'')
+			in_quotes = !in_quotes;
+		if (!in_quotes && ft_strchr(delim, *p))
+			break;
 		p++;
+	}
 	return (p);
 }
 
@@ -32,9 +38,22 @@ static char	*adjust_pointers(char **src, char *next_token)
 	ret = NULL;
 	if (*next_token != '\0')
 	{
-		*next_token = 0;
-		ret = *src;
-		*src = ++next_token;
+		if (*next_token == '"' || *next_token == '\'') // Si le token est un guillemet
+		{
+			*next_token = 0;
+			ret = *src;
+			*src = ++next_token;
+			while (**src != *next_token && **src != '\0') // Skip jusqu'au prochain guillemet correspondant ou la fin de la chaîne
+				(*src)++;
+			if (**src == *next_token) // Si nous avons trouvé un guillemet correspondant
+				(*src)++; // Skip le guillemet
+		}
+		else // Si le token n'est pas un guillemet
+		{
+			*next_token = 0;
+			ret = *src;
+			*src = ++next_token;
+		}
 	}
 	else if (**src != '\0')
 	{

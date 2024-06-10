@@ -24,7 +24,6 @@
 typedef struct s_command
 {
 	char					**lign;
-	char*					**new_lign;
 	char					***arg;
 	char					**cmd;
 	struct s_command		*next;
@@ -49,6 +48,7 @@ void 	after_ft_strtok(t_data *data, char *str);
 char	*ft_trim_quote(t_data *data, char *str);
 char	*ft_strtok(t_data *data, char *str, const char *delim);
 char	*ft_split_delim(t_data *data, char *str);
+int		remove_arg_strtab(t_data *data);
 
 //parsing
 void pars_pipe(t_data *data);

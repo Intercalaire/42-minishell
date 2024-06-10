@@ -34,14 +34,19 @@ void count_pipes_outside_quotes(t_data *data, const char *str)
 
 char *ft_split_delim(t_data *data, char *str)
 {
-    int in_quotes = 0;
-    char *new_str = malloc(strlen(str) * 3 + 1);
+    int in_single_quotes = 0;
+    int in_double_quotes = 0;
+    char *new_str = malloc(ft_strlen(str) * 3 + 1);
     int j = 0;
     int i = 0;
 
     while (str[i] != '\0') {
-        if (str[i] == '"' || str[i] == '\'') {
-            in_quotes = !in_quotes;
+        if (str[i] == '\"' && !in_single_quotes)
+            in_double_quotes = !in_double_quotes;
+        else if (str[i] == '\'' && !in_double_quotes)
+            in_single_quotes = !in_single_quotes;
+        if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && !in_single_quotes && !in_double_quotes)
+        {
             if (i > 0 && str[i-1] != ' ' && new_str[j-1] != ' ') {
                 new_str[j++] = ' ';
             }
@@ -49,24 +54,47 @@ char *ft_split_delim(t_data *data, char *str)
             if (str[i+1] != '\0' && str[i+1] != ' ' && new_str[j-1] != ' ') {
                 new_str[j++] = ' ';
             }
-        } else if ((str[i] == '|' || str[i] == '>') && !in_quotes) {
-            if (i > 0 && str[i-1] != ' ' && new_str[j-1] != ' ') {
-                new_str[j++] = ' ';
-            }
-            new_str[j++] = str[i];
-            if (str[i+1] != '\0' && str[i+1] != ' ' && new_str[j-1] != ' ') {
-                new_str[j++] = ' ';
-            }
-        } else {
+        } else if ((str[i] != ' ' || (j > 0 && new_str[j-1] != ' ')) || in_single_quotes || in_double_quotes) {
             new_str[j++] = str[i];
         }
         i++;
     }
-
     (void)data;
     new_str[j] = '\0';
-    return new_str;
+    return (new_str);
 }
+
+int remove_arg_strtab(t_data *data)
+{
+    int i;
+
+    i = 0;
+    if (data->size == 0 || data->size == 1)
+        return (1);
+    while (data->command->lign[i])
+    {
+        if (data->command->lign[i][0] == '\0')
+        {
+            free(data->command->lign[i]);
+            while (data->command->lign[i] && data->command->lign[i + 1])
+            {
+                data->command->lign[i] = data->command->lign[i + 1];
+                i++;
+            }
+            data->command->lign[i] = NULL;
+        }
+        i++;
+    }
+    i -= 2;
+    if (ft_strlen(data->command->lign[i]) == 0)
+    {
+        free(data->command->lign[i]);
+        data->command->lign[i] = NULL;
+    }
+    return (0);
+}
+
+
 
 
 
