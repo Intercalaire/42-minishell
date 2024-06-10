@@ -17,11 +17,11 @@ int	main(void)
 	t_data	*data;
 	char	*str;
 
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (EXIT_FAILURE);
 	while (1)
 	{
-		data = malloc(sizeof(t_data));
-		if (!data)
-			break ;
 		init_data(data);
 		str = readline("Minishell >");
 		if (!str)

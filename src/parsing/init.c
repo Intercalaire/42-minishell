@@ -21,6 +21,7 @@ void	init_data(t_data *data)
 	data->command->arg = NULL;
 	data->command->cmd = NULL;
 	data->command->lign = NULL;
+	data->command->new_lign = NULL;
 	data->count = 0;
 	data->size = 0;
 	data->nbr_pipe = 0;

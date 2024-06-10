@@ -24,6 +24,7 @@
 typedef struct s_command
 {
 	char					**lign;
+	char*					**new_lign;
 	char					***arg;
 	char					**cmd;
 	struct s_command		*next;

@@ -23,12 +23,12 @@ static int	len_ft_strtok(t_data *data, char *str)
 	char	*token;
 
 	count = 0;
-	token = ft_strtok(data, str, " \t<>");
+	token = ft_strtok(data, str, " \t");
 	while (token != NULL)
 	{
 		count++;
 		free(token);
-		token = ft_strtok(data, NULL, " \t<>");
+		token = ft_strtok(data, NULL, " \t");
 	}
 	free(token);
 	return (count);
@@ -40,6 +40,7 @@ int	try_ft_strtok(t_data *data, char *str)
 	char	*tmp;
 
 	i = 0;
+	str = ft_split_delim(data, str);
 	tmp = ft_strdup(str);
 	data->count = len_ft_strtok(data, tmp);
 	data->size = data->count;
@@ -51,14 +52,14 @@ int	try_ft_strtok(t_data *data, char *str)
 		return (1);
 	}
 	count_pipes_outside_quotes(data, str);
-	token = ft_strtok(data, str, " \t<>");
+	token = ft_strtok(data, str, " \t");
 	data->count = 0;
 	while (token != NULL)
 	{
 		add_token(data, token);
 		free(token);
 		printf("lign : %s\n", data->command->lign[i]);
-		token = ft_strtok(data, NULL, " \t<>");
+		token = ft_strtok(data, NULL, " \t");
 		i++;
 	}
 	free(token);

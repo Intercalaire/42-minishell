@@ -18,17 +18,17 @@ RM = rm -f
 CLEAR = clear
 
 # Files
-SRC	= ./src/parsing_test/init.c \
-		./src/parsing_test/parsing.c \
-		./src/parsing_test/utils.c \
-		./src/parsing_test/ft_free.c \
-		./src/parsing_test/pars_pipe.c \
-		./src/parsing_test/quote.c \
-		./src/parsing_test/special_char.c \
-		./src/parsing_test/environment_variable.c \
-		./src/parsing_test/check_pipe.c \
-		./src/parsing_test/ft_strtok.c \
-		./src/parsing_test/check_word.c \
+SRC	= ./src/parsing/init.c \
+		./src/parsing/parsing.c \
+		./src/parsing/utils.c \
+		./src/parsing/ft_free.c \
+		./src/parsing/pars_pipe.c \
+		./src/parsing/quote.c \
+		./src/parsing/special_char.c \
+		./src/parsing/environment_variable.c \
+		./src/parsing/check_pipe.c \
+		./src/parsing/ft_strtok.c \
+		./src/parsing/check_word.c \
 		./src/exec/env.c \
 		./src/exec/search_env.c \
 		./src/exec/echo.c \

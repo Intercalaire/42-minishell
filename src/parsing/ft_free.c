@@ -21,7 +21,6 @@ void	ft_little_error_prog(t_data *data, char *str, char *msg)
 		free(data->command->next);
 		free(data->command->prev);
 		free(data->command);
-		free(data);
 	}
 }
 
@@ -33,7 +32,6 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str)
 		free(data->command->next);
 		free(data->command->prev);
 		free(data->command);
-		free(data);
 	}
 }
 
@@ -43,7 +41,10 @@ void	ft_end_error_prog(t_data *data, char *str, char *msg)
 	if (str)
 		free(str);
 	if (data)
+	{
 		ft_free_data(data, str);
+		free(data);
+	}
 }
 
 void	ft_error_prog(t_data *data, char *str, char *msg)
@@ -68,7 +69,6 @@ void	ft_free_data(t_data *data, char *str)
 		free(data->command);
 	}
 	free(str);
-	free(data);
 }
 
 void	ft_free_strtab(char **tab)
