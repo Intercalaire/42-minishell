@@ -26,6 +26,7 @@ int	main(void)
 		str = readline("Minishell >");
 		if (!str)
 			break ;
+		remove_end_space(str);
 		if (ft_strlen(str) == 0)
 		{
 			ft_little_error_prog_no_msg(data, str);

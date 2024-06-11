@@ -94,6 +94,18 @@ char *ft_split_delim(t_data *data, char *str)
 //     return (0);
 // }
 
+int remove_end_space(char *str)
+{
+    int i;
+
+    i = ft_strlen(str) - 1;
+    while (str[i] == ' ')
+    {
+        str[i] = '\0';
+        i--;
+    }
+    return (0);
+}
 
 
 

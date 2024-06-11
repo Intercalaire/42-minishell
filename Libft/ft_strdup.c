@@ -36,7 +36,7 @@ char	*ft_strdup(const char *s)
 		i--;
 		j++;
 	}
-	return (str);
+	return (ft_trim_quote(str));
 }
 
 char	*ft_strdup_2(const char *s)

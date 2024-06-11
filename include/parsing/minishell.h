@@ -54,6 +54,7 @@ void pars_pipe(t_data *data);
 int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
+int remove_end_space(char *str);
 
 //utils
 void count_pipes_outside_quotes(t_data *data, const char *str);
