@@ -64,35 +64,35 @@ char *ft_split_delim(t_data *data, char *str)
     return (new_str);
 }
 
-int remove_arg_strtab(t_data *data)
-{
-    int i;
+// int remove_arg_strtab(t_data *data)
+// {
+//     int i;
 
-    i = 0;
-    if (data->size == 0 || data->size == 1)
-        return (1);
-    while (data->command->lign[i])
-    {
-        if (data->command->lign[i][0] == '\0')
-        {
-            free(data->command->lign[i]);
-            while (data->command->lign[i] && data->command->lign[i + 1])
-            {
-                data->command->lign[i] = data->command->lign[i + 1];
-                i++;
-            }
-            data->command->lign[i] = NULL;
-        }
-        i++;
-    }
-    i -= 2;
-    if (ft_strlen(data->command->lign[i]) == 0)
-    {
-        free(data->command->lign[i]);
-        data->command->lign[i] = NULL;
-    }
-    return (0);
-}
+//     i = 0;
+//     if (data->size == 0 || data->size == 1)
+//         return (1);
+//     while (data->command->lign[i])
+//     {
+//         if (data->command->lign[i][0] == '\0')
+//         {
+//             free(data->command->lign[i]);
+//             while (data->command->lign[i] && data->command->lign[i + 1])
+//             {
+//                 data->command->lign[i] = data->command->lign[i + 1];
+//                 i++;
+//             }
+//             data->command->lign[i] = NULL;
+//         }
+//         i++;
+//     }
+//     i -= 2;
+//     if (ft_strlen(data->command->lign[i]) == 0)
+//     {
+//         free(data->command->lign[i]);
+//         data->command->lign[i] = NULL;
+//     }
+//     return (0);
+// }
 
 
 

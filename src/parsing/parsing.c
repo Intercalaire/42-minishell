@@ -35,7 +35,7 @@ int	main(void)
 		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
 			|| look_pipe(data, str) == 1)
 			continue ;
-		if (try_ft_strtok(data, str) == 1 || remove_arg_strtab(data) == 1)
+		if (try_ft_strtok(data, str) == 1)
 			continue ;
 		pars_pipe(data);
 		ft_free_data(data, str);

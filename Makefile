@@ -29,15 +29,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/check_pipe.c \
 		./src/parsing/ft_strtok.c \
 		./src/parsing/check_word.c \
-		./src/exec/env.c \
-		./src/exec/search_env.c \
-		./src/exec/echo.c \
-		./src/exec/exec.c \
-		./src/exec/pwd.c \
-		./src/exec/path.c \
-		./src/exec/export.c \
-		./src/exec/unset.c \
-		./src/exec/cd.c \
+
 
 OBJ	= $(SRC:.c=.o)
 

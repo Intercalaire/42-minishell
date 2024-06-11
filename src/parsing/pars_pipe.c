@@ -130,7 +130,7 @@ void pars_pipe(t_data *data)
 			if (!data->command->arg[y])
 				ft_error_prog(data, "Allocation error", "Error");
 			while(z < data->nbr_arg)
-				data->command->arg[y][z++] = ft_strdup(data->command->lign[i++]);
+				data->command->arg[y][z++] = ft_strdup_2(data->command->lign[i++]);
 		}
 		i++;
 		y++;

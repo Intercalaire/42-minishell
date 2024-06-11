@@ -14,6 +14,7 @@
 
 int echo(t_data *data, char **arg)
 {
+    
     int i;
     int newline = 1;
     int j;
