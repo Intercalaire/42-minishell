@@ -13,7 +13,6 @@
 #include "libft.h"
 
 static char	*ft_trim_quote(char *str);
-static char *ft_utils_trim_quote(char *str, int j, char *ret, char quote);
 
 char	*ft_strdup(const char *s)
 {
@@ -36,7 +35,7 @@ char	*ft_strdup(const char *s)
 		i--;
 		j++;
 	}
-	return (ft_trim_quote(str));
+	return (str);
 }
 
 char	*ft_strdup_2(const char *s)
@@ -65,42 +64,25 @@ char	*ft_strdup_2(const char *s)
 
 static char	*ft_trim_quote(char *str)
 {
-    int	i;
-    int	j;
-    int	len;
-    char	*ret;
-    char	quote;
+    int i = 0;
+    int j = 0;
+    char quote = 0;
+    int len = ft_strlen(str);
+    char *result = malloc(sizeof(char) * (len + 1));
 
-    i = 0;
-    j = 0;
-    quote = 0;
-    len = ft_strlen(str);
-	if (!str)
-		return (NULL);
-    ret = malloc(sizeof(char) * (len + 1));
-    while (str[i] && !quote)
-    {
-        if (str[i] == '"' || str[i] == '\'')
+    while (str[i]) {
+        if ((str[i] == '"' || str[i] == '\'') && quote == 0) {
             quote = str[i];
+        } else if (str[i] == quote) {
+            quote = 0;
+        } else if (quote == '"' && (str[i] == '$' || str[i] == '`' || str[i] == '\\' || str[i] == '!')) {
+            result[j++] = '\\';
+            result[j++] = str[i];
+        } else {
+            result[j++] = str[i];
+        }
         i++;
     }
-	return (ft_utils_trim_quote(str, j, ret, quote));
-}
-
-static char *ft_utils_trim_quote(char *str, int j, char *ret, char quote)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != quote)
-		{
-			ret[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	ret[j] = '\0';
-	return (ret);
+    result[j] = '\0';
+    return result;
 }

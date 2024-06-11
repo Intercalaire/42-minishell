@@ -63,8 +63,8 @@ int	try_ft_strtok(t_data *data, char *str)
 		i++;
 	}
 	free(token);
+	free(str);
 	printf("%d\n", data->size);
 	printf("pipe ; %d\n", data->nbr_pipe);
-	//after_ft_strtok(data, str);
 	return (0);
 }

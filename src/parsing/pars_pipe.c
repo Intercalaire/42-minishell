@@ -112,7 +112,7 @@ void pars_pipe(t_data *data)
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = 0;
-		data->command->cmd[y] = ft_strdup(data->command->lign[i++]);
+		data->command->cmd[y] = ft_strdup_2(data->command->lign[i++]);
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{
 			data->command->arg[y] = ft_calloc(1, sizeof(char *));

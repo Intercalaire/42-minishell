@@ -36,10 +36,13 @@ char *ft_split_delim(t_data *data, char *str)
 {
     int in_single_quotes = 0;
     int in_double_quotes = 0;
-    char *new_str = malloc(ft_strlen(str) * 3 + 1);
+    char *new_str;
     int j = 0;
     int i = 0;
 
+    new_str = ft_calloc(ft_strlen(str) * 3 + 1, sizeof(char));
+    if (!new_str)
+        ft_error_prog(data, NULL, "Error");
     while (str[i] != '\0') {
         if (str[i] == '\"' && !in_single_quotes)
             in_double_quotes = !in_double_quotes;
@@ -99,6 +102,8 @@ int remove_end_space(char *str)
     int i;
 
     i = ft_strlen(str) - 1;
+    if (i <= 0)
+        return (1);
     while (str[i] == ' ')
     {
         str[i] = '\0';

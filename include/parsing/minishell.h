@@ -44,7 +44,6 @@ typedef struct s_data
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
 void	add_token(t_data *data, char *token);
-void 	after_ft_strtok(t_data *data, char *str);
 char	*ft_strtok(t_data *data, char *str, const char *delim);
 char	*ft_split_delim(t_data *data, char *str);
 int		remove_arg_strtab(t_data *data);
