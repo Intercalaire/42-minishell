@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/parsing/minishell.h"
 
 void	init_data(t_data *data)

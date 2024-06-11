@@ -67,25 +67,43 @@ char	*ft_strdup_2(const char *s)
 
 static char	*ft_trim_quote(char *str)
 {
-    int i = 0;
-    int j = 0;
-    char quote = 0;
-    int len = ft_strlen(str);
-    char *result = malloc(sizeof(char) * (len + 1));
+	int		i;
+	int		j;
+	char	quote;
+	char	*result;
 
-    while (str[i]) {
-        if ((str[i] == '"' || str[i] == '\'') && quote == 0) {
-            quote = str[i];
-        } else if (str[i] == quote) {
-            quote = 0;
-        } else if (quote == '"' && (str[i] == '$' || str[i] == '`' || str[i] == '\\' || str[i] == '!')) {
-            result[j++] = '\\';
-            result[j++] = str[i];
-        } else {
-            result[j++] = str[i];
-        }
-        i++;
-    }
-    result[j] = '\0';
-    return result;
+	i = 0;
+	j = 0;
+	quote = 0;
+	result = ft_calloc((ft_strlen(str) + 1), sizeof(char));
+	if (!result)
+		return (NULL);
+	while (str[i])
+	{
+		if ((str[i] == '"' || str[i] == '\'') && quote == 0)
+		{
+			quote = str[i];
+		}
+		else if (str[i] == quote)
+		{
+			quote = 0;
+		}
+		else if (quote == '"' && (str[i] == '$'
+				|| str[i] == '`' || str[i] == '\\' || str[i] == '!'))
+		{
+			result[j++] = '\\';
+			result[j++] = str[i];
+		}
+		else
+		{
+			result[j++] = str[i];
+		}
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
 }
+// static char	*ft_utils_trim_quote(char *str)
+// {
+// 	//second part of ft_trim_quote
+// }

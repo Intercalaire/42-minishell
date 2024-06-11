@@ -38,7 +38,6 @@ void	*ft_memset(void *str, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t count);
 void	*ft_memmove(void *dest, const void *src, size_t n);
-char	*ft_strcpy_2(char *dest, char *src);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 int		ft_toupper(int character);
@@ -81,5 +80,5 @@ size_t	ft_strlen2(char const *str);
 char	*ft_strjoin2(char const *s1, char const *s2);
 size_t	ft_strlcpy2(char *dst, const char *src, size_t size);
 void	*ft_realloc(void *ptr, size_t newsize);
-int	ft_strcmp(const char *s1, const char *s2);
+int		ft_strcmp(const char *s1, const char *s2);
 #endif

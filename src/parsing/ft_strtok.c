@@ -13,54 +13,53 @@
 #include "../../include/parsing/minishell.h"
 
 static char	*find_next_token(char *src, const char *delim);
-static char	*adjust_pointers(char **src, char *next_token);
+static char	*adjust_pointers(char **src, char *next_token, char *s);
 
 static char	*find_next_token(char *src, const char *delim)
 {
 	char	*p;
-	int     in_quotes = 0;
+	int		in_quotes;
 
+	in_quotes = 0;
 	p = src;
-	while (*p != '\0') {
+	while (*p != '\0')
+	{
 		if (*p == '"' || *p == '\'')
 			in_quotes = !in_quotes;
 		if (!in_quotes && ft_strchr(delim, *p))
-			break;
+			break ;
 		p++;
 	}
 	return (p);
 }
 
-static char	*adjust_pointers(char **src, char *next_token)
+static char	*adjust_pointers(char **src, char *next_token, char *s)
 {
-	char	*ret;
-
-	ret = NULL;
 	if (*next_token != '\0')
 	{
-		if (*next_token == '"' || *next_token == '\'') // Si le token est un guillemet
+		if (*next_token == '"' || *next_token == '\'')
 		{
 			*next_token = 0;
-			ret = *src;
+			s = *src;
 			*src = ++next_token;
-			while (**src != *next_token && **src != '\0') // Skip jusqu'au prochain guillemet correspondant ou la fin de la chaîne
+			while (**src != *next_token && **src != '\0')
 				(*src)++;
-			if (**src == *next_token) // Si nous avons trouvé un guillemet correspondant
-				(*src)++; // Skip le guillemet
+			if (**src == *next_token)
+				(*src)++;
 		}
-		else // Si le token n'est pas un guillemet
+		else
 		{
 			*next_token = 0;
-			ret = *src;
+			s = *src;
 			*src = ++next_token;
 		}
 	}
 	else if (**src != '\0')
 	{
-		ret = *src;
+		s = *src;
 		*src = NULL;
 	}
-	return (ret);
+	return (s);
 }
 
 char	*ft_strtok(t_data *data, char *str, const char *delim)
@@ -68,8 +67,10 @@ char	*ft_strtok(t_data *data, char *str, const char *delim)
 	static char	*src = NULL;
 	char		*next_token;
 	char		*ret;
+	char		*s;
 
 	ret = 0;
+	s = NULL;
 	if (str != NULL)
 		src = str;
 	if (src == NULL)
@@ -77,7 +78,7 @@ char	*ft_strtok(t_data *data, char *str, const char *delim)
 	while (ft_strchr(delim, *src) && *src != '\0')
 		src++;
 	next_token = find_next_token(src, delim);
-	ret = adjust_pointers(&src, next_token);
+	ret = adjust_pointers(&src, next_token, s);
 	ret = ft_split_delim(data, ret);
 	return (ret);
 }
