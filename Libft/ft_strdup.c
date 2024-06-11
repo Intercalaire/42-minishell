@@ -43,6 +43,7 @@ char	*ft_strdup_2(const char *s)
 	int		i;
 	int		j;
 	char	*str;
+	char	*result;
 
 	i = 0;
 	j = 0;
@@ -59,7 +60,9 @@ char	*ft_strdup_2(const char *s)
 		i--;
 		j++;
 	}
-	return (ft_trim_quote(str));
+	result = ft_trim_quote(str);
+	free(str);
+	return (result);
 }
 
 static char	*ft_trim_quote(char *str)
