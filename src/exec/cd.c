@@ -53,7 +53,7 @@ void cd(t_data *data, int i, int j)
 }
 */
 
-void cd(t_data *data)
+void cd(t_data *data, char **arg)
 {
     int k;
     char *oldpwd;

@@ -12,7 +12,7 @@
 #include "../../include/exec_test/minishell.h"
 
 
-int echo(t_data *data)
+int echo(t_data *data, char **arg)
 {
     int i;
     int newline = 1;
@@ -20,19 +20,19 @@ int echo(t_data *data)
 
     j = 0;
     i = 0;
-    while (data->command->arg[0][i] && ft_strncmp(data->command->arg[0][i], "-n", 2) == 0)
+    while (arg[i] && ft_strncmp(arg[i], "-n", 2) == 0)
     {
         j = 2;
-        while (data->command->arg[0][i][j] == 'n')
+        while (arg[i][j] == 'n')
             j++;
-        if (data->command->arg[0][i][j] != '\0')
+        if (arg[i][j] != '\0')
             break;
         newline = 0;
         i++;
     }
-    while (data->command->arg[0][i])
+    while (arg[i])
     {
-        printf("%s", data->command->arg[0][i]);
+        printf("%s", arg[i]);
         i++;
     }
     if (newline)

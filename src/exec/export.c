@@ -126,7 +126,7 @@ static char **cpy_envir(char **env)
     return (new_env);
 }
 
-int	ft_export(t_data *data)
+int	ft_export(t_data *data, char *cmd, char **arg)
 {
     int		i;
     char	*key;
@@ -136,7 +136,7 @@ int	ft_export(t_data *data)
 
     i = 0;
 
-    if (!data->command->arg[0])
+    if (!arg)
     {
         env_len = 0;
         while (data->env[env_len])
@@ -151,27 +151,27 @@ int	ft_export(t_data *data)
         return (0);
     }
 
-    while (data->command->arg[0][i])
+    while (arg[i])
     {
-        if (!ft_strchr(data->command->arg[0][i], '='))
+        if (!ft_strchr(arg[i], '='))
             {
                 i++;
                 continue ;
             }
-        if (ft_strnstr(data->command->arg[0][i], "+=", ft_strlen(data->command->arg[0][i])) != NULL)
+        if (ft_strnstr(arg[i], "+=", ft_strlen(arg[i])) != NULL)
         {
-            key = ft_strtok(data, data->command->arg[0][i], "+=");
+            key = ft_strtok(data, arg[i], "+=");
             if (key)
-                value = ft_strdup(data->command->arg[0][i] + ft_strlen(key) + 2);
+                value = ft_strdup(arg[i] + ft_strlen(key) + 2);
             cat_env(data, key, value);
             i++;
             continue ;
         }
         else
         {    
-            key = ft_strtok(data, data->command->arg[0][i], "=");
+            key = ft_strtok(data, arg[i], "=");
             if (key)
-                value = ft_strdup(data->command->arg[0][i] + ft_strlen(key) + 1);
+                value = ft_strdup(arg[i] + ft_strlen(key) + 1);
             if (!key || !value)
                 return (ft_putstr_fd("Usage: export NAME=VALUE\n", 1));
             if (search_env(data, key) == -1)
