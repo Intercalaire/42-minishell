@@ -12,6 +12,10 @@
 
 #include "../../include/parsing/minishell.h"
 
+static void	process_tokens(t_data *data, char *str);
+static int	initialize_data(t_data *data, char *str);
+static int	len_ft_strtok(t_data *data, char *str);
+
 void	add_token(t_data *data, char *token)
 {
 	data->command->lign[data->count] = ft_strdup(token);
@@ -35,14 +39,10 @@ static int	len_ft_strtok(t_data *data, char *str)
 	return (count);
 }
 
-int	try_ft_strtok(t_data *data, char *str)
+static int	initialize_data(t_data *data, char *str)
 {
-	char	*token;
-	int		i;
 	char	*tmp;
 
-	i = 0;
-	str = ft_split_delim(data, str);
 	tmp = ft_strdup(str);
 	data->count = len_ft_strtok(data, tmp);
 	data->size = data->count;
@@ -53,6 +53,15 @@ int	try_ft_strtok(t_data *data, char *str)
 		ft_little_error_prog(data, str, "Error");
 		return (1);
 	}
+	return (0);
+}
+
+static void	process_tokens(t_data *data, char *str)
+{
+	char	*token;
+	int		i;
+
+	i = 0;
 	count_pipes_outside_quotes(data, str);
 	token = ft_strtok(data, str, " \t");
 	data->count = 0;
@@ -65,7 +74,14 @@ int	try_ft_strtok(t_data *data, char *str)
 		i++;
 	}
 	free(token);
-	free(str);
+}
+
+int	try_ft_strtok(t_data *data, char *str)
+{
+	str = ft_split_delim(data, str);
+	if (initialize_data(data, str) != 0)
+		return (1);
+	process_tokens(data, str);
 	printf("%d\n", data->size);
 	printf("pipe ; %d\n", data->nbr_pipe);
 	return (0);

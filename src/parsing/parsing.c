@@ -36,6 +36,7 @@ int	main(void)
 		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
 			|| look_pipe(data, str) == 1)
 			continue ;
+		str = ft_trim_quote(str);
 		if (try_ft_strtok(data, str) == 1)
 			continue ;
 		pars_pipe(data);

@@ -12,6 +12,11 @@
 
 #include "../../include/parsing/minishell.h"
 
+static void	count_args(t_data *data, int i);
+static void	utils_pars_pipe(t_data *data);
+static void	handle_pipe(t_data *data, int *i, int *y);
+static void	handle_args(t_data *data, int *i, int *y, int *z);
+
 static void	count_args(t_data *data, int i)
 {
 	data->nbr_arg = 0;
@@ -68,6 +73,31 @@ static void	print_arg(t_data *data)
 	}
 }
 
+static void	handle_pipe(t_data *data, int *i, int *y)
+{
+	data->command->arg[*y] = ft_calloc(1, sizeof(char *));
+	if (!data->command->arg[*y])
+		ft_error_prog(data, "Allocation error", "Error");
+	data->command->arg[*y][0] = NULL;
+	(*i)++;
+	(*y)++;
+}
+
+static void	handle_args(t_data *data, int *i, int *y, int *z)
+{
+	count_args(data, *i);
+	data->command->arg[*y] = ft_calloc(data->nbr_arg + 1, sizeof(char *));
+	if (!data->command->arg[*y])
+		ft_error_prog(data, "Allocation error", "Error");
+	while (*z < data->nbr_arg)
+	{
+		data->command->arg[*y][*z] = ft_strdup_2(data->command->lign[(*i)++]);
+		if (!data->command->arg[*y][*z])
+			ft_end_error_prog(data, "Allocation error", "Error");
+		(*z)++;
+	}
+}
+
 void	pars_pipe(t_data *data)
 {
 	int	i;
@@ -85,26 +115,12 @@ void	pars_pipe(t_data *data)
 			ft_end_error_prog(data, "Allocation error", "Error");
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{
-			data->command->arg[y] = ft_calloc(1, sizeof(char *));
-			if (!data->command->arg[y])
-				ft_error_prog(data, "Allocation error", "Error");
-			data->command->arg[y][0] = NULL;
-			i++;
-			y++;
+			handle_pipe(data, &i, &y);
 			continue ;
 		}
 		while (data->command->lign[i] && *data->command->lign[i] != '|')
 		{
-			count_args(data, i);
-			data->command->arg[y] = ft_calloc(data->nbr_arg + 1, sizeof(char *));
-			if (!data->command->arg[y])
-				ft_error_prog(data, "Allocation error", "Error");
-			while (z < data->nbr_arg)
-			{
-				data->command->arg[y][z++] = ft_strdup_2(data->command->lign[i++]);
-				if (!data->command->arg[y][z - 1])
-					ft_end_error_prog(data, "Allocation error", "Error");
-			}
+			handle_args(data, &i, &y, &z);
 		}
 		i++;
 		y++;
@@ -112,59 +128,3 @@ void	pars_pipe(t_data *data)
 	print_cmd(data);
 	print_arg(data);
 }
-// void process_commands(t_data *data, int *i, int *y)
-// {
-//     utils_pars_pipe(data);
-//     while (data->nbr_pipe-- >= 0)
-//     {
-//         data->command->cmd[*y] = ft_strdup_2(data->command->lign[(*i)++]);
-//         if (!data->command->cmd[*y])
-//             ft_end_error_prog(data, "Allocation error", "Error");
-//         if (data->command->lign[*i] && *data->command->lign[*i] == '|')
-//         {
-//             data->command->arg[*y] = ft_calloc(1, sizeof(char *));
-//             if (!data->command->arg[*y])
-//                 ft_error_prog(data, "Allocation error", "Error");
-//             data->command->arg[*y][0] = NULL;
-//             (*i)++;
-//             (*y)++;
-//         }
-//     }
-// }
-
-// void process_arguments(t_data *data, int *i, int *y)
-// {
-// 	int z = 0;
-// 	while (data->command->lign[*i] && *data->command->lign[*i] != '|')
-// 	{
-// 		count_args(data, *i);
-// 		data->command->arg[*y] = ft_calloc(data->nbr_arg + 1, sizeof(char *));
-// 		if (!data->command->arg[*y])
-// 			ft_error_prog(data, "Allocation error", "Error");
-// 		while(z < data->nbr_arg)
-// 		{
-// 			data->command->arg[*y][z] = ft_strdup_2(data->command->lign[(*i)++]);
-// 			if (!data->command->arg[*y][z])
-// 				ft_end_error_prog(data, "Allocation error", "Error");
-// 			z++;
-// 			if (z >= data->nbr_arg) {
-// 				printf("Trying to access beyond allocated memory\n");
-// 				exit(1);
-// 			}
-// 		}
-// 		(*i)++;
-// 		(*y)++;
-// 	}
-// }
-
-// void pars_pipe(t_data *data)
-// {
-//     int i = 0;
-//     int y = 0;
-
-//     process_commands(data, &i, &y);
-//     process_arguments(data, &i, &y);
-
-//     print_cmd(data);
-//     print_arg(data);
-// }
