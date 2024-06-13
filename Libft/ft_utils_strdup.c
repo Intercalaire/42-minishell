@@ -60,12 +60,10 @@ char *ft_trim_quote(char *str)
     int i = 0;
     int j = 0;
     char quote = 0;
-    char *result = malloc(ft_strlen(str) + 1);  // Allocate memory for the result
+    char *result = malloc(ft_strlen(str) + 1);
 
     if (result == NULL)
-    {
-        return NULL;  // Return NULL if memory allocation failed
-    }
+        return (NULL);
 
     while (str[i])
     {
@@ -73,7 +71,7 @@ char *ft_trim_quote(char *str)
         i++;
     }
 
-    result[j] = '\0';  // Null-terminate the result
+    result[j] = '\0';
 
-    return result;
+    return (result);
 }

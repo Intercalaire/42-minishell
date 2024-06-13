@@ -43,45 +43,5 @@ int	error_code(t_data *data, char *str)
 
 int	environment_variable(t_data *data, char *str)
 {
-	int		i;
-	int		j;
-	char	*var;
-	char	*value;
-	char	*tmp;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			i++;
-			if (str[i] == '?')
-			{
-				tmp = ft_itoa(data->exit_status);
-				value = ft_strdup(tmp);
-				free(tmp);
-				i++;
-			}
-			else
-			{
-				while (str[i] && str[i] != ' ' && str[i] != '$')
-				{
-					i++;
-					j++;
-				}
-				var = ft_substr(str, i - j, j);
-				value = get_env_value(data, var);
-				free(var);
-			}
-			tmp = ft_strjoin(str, value);
-			free(str);
-			str = tmp;
-			free(value);
-		}
-		else
-			i++;
-	}
-	return (0);
-}
-*/
+	ft_strncmp(str, "$", 1);
+}*/

@@ -41,7 +41,7 @@ char	*ft_strdup_2(const char *s)
 	int		i;
 	int		j;
 	char	*str;
-	// char	*result;
+	char	*result;
 
 	i = 0;
 	j = 0;
@@ -58,7 +58,7 @@ char	*ft_strdup_2(const char *s)
 		j++;
 	}
 	str[j] = '\0';
-	// result = ft_trim_quote(str);
-	// free(str);
-	return (str);
+	result = ft_trim_quote(str);
+	free(str);
+	return (result);
 }

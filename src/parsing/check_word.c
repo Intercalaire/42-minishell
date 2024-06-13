@@ -15,8 +15,9 @@
 static void	process_tokens(t_data *data, char *str);
 static int	initialize_data(t_data *data, char *str);
 static int	len_ft_strtok(t_data *data, char *str);
+static void	add_token(t_data *data, char *token);
 
-void	add_token(t_data *data, char *token)
+static void	add_token(t_data *data, char *token)
 {
 	data->command->lign[data->count] = ft_strdup(token);
 	data->count++;
@@ -28,12 +29,12 @@ static int	len_ft_strtok(t_data *data, char *str)
 	char	*token;
 
 	count = 0;
-	token = ft_strtok(data, str, " \t");
+	token = ft_strtok(data, str, " \t\n\v\r\f");
 	while (token != NULL)
 	{
 		count++;
 		free(token);
-		token = ft_strtok(data, NULL, " \t");
+		token = ft_strtok(data, NULL, " \t\n\v\r\f");
 	}
 	free(token);
 	return (count);
@@ -63,14 +64,14 @@ static void	process_tokens(t_data *data, char *str)
 
 	i = 0;
 	count_pipes_outside_quotes(data, str);
-	token = ft_strtok(data, str, " \t");
+	token = ft_strtok(data, str, " \t\n\v\r\f");
 	data->count = 0;
 	while (token != NULL)
 	{
 		add_token(data, token);
 		free(token);
 		printf("lign : %s\n", data->command->lign[i]);
-		token = ft_strtok(data, NULL, " \t");
+		token = ft_strtok(data, NULL, " \t\n\v\r\f");
 		i++;
 	}
 	free(token);

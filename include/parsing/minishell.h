@@ -43,17 +43,17 @@ typedef struct s_data
 
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
-void	add_token(t_data *data, char *token);
 char	*ft_strtok(t_data *data, char *str, const char *delim);
 char	*ft_split_delim(t_data *data, char *str);
 int		remove_arg_strtab(t_data *data);
 
 //parsing
-void pars_pipe(t_data *data);
+int pars_pipe(t_data *data);
 int	quote_verif(t_data *data,char *str);
 int look_pipe(t_data *data, char *str);
 int special_char(t_data *data, char *str);
 void remove_end_space(char *str);
+char *align_and_clean_quotes(t_data *data);
 
 //utils
 void count_pipes_outside_quotes(t_data *data, const char *str);

@@ -98,7 +98,7 @@ static void	handle_args(t_data *data, int *i, int *y, int *z)
 	}
 }
 
-void	pars_pipe(t_data *data)
+int	pars_pipe(t_data *data)
 {
 	int	i;
 	int	y;
@@ -112,7 +112,10 @@ void	pars_pipe(t_data *data)
 		z = 0;
 		data->command->cmd[y] = ft_strdup_2(data->command->lign[i++]);
 		if (!data->command->cmd[y])
-			ft_end_error_prog(data, "Allocation error", "Error");
+		{
+			ft_free_data(data, "Allocation error");
+			return (2);
+		}
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{
 			handle_pipe(data, &i, &y);
@@ -125,6 +128,8 @@ void	pars_pipe(t_data *data)
 		i++;
 		y++;
 	}
+	i = 0;
 	print_cmd(data);
 	print_arg(data);
+	return (0);
 }
