@@ -44,4 +44,5 @@ int	error_code(t_data *data, char *str)
 int	environment_variable(t_data *data, char *str)
 {
 	ft_strncmp(str, "$", 1);
-}*/
+}
+*/

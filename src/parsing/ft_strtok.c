@@ -15,22 +15,24 @@
 static char	*find_next_token(char *src, const char *delim);
 static char	*adjust_pointers(char **src, char *next_token, char *s);
 
-static char	*find_next_token(char *src, const char *delim)
+char *find_next_token(char *src, const char *delim)
 {
-	char	*p;
-	int		in_quotes;
+	char *next_token;
+	int in_quotes = 0;
+	int in_single_quotes = 0;
 
-	in_quotes = 0;
-	p = src;
-	while (*p != '\0')
+	for (next_token = src; *next_token != '\0'; next_token++)
 	{
-		if (*p == '"' || *p == '\'')
+		if (*next_token == '"' && !in_single_quotes)
 			in_quotes = !in_quotes;
-		if (!in_quotes && ft_strchr(delim, *p))
-			break ;
-		p++;
+		else if (*next_token == '\'' && !in_quotes)
+			in_single_quotes = !in_single_quotes;
+
+		if (!in_quotes && !in_single_quotes && ft_strchr(delim, *next_token))
+			break;
 	}
-	return (p);
+
+	return next_token;
 }
 
 static char	*adjust_pointers(char **src, char *next_token, char *s)
