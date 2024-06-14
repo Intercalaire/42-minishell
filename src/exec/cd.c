@@ -15,43 +15,6 @@
 #include "../../include/exec_test/minishell.h"
 #include <limits.h>
 
-/*
-int absolute()
-{
-	chdir(data->command->arg[i][j]);
-
-}
-
-int relative()
-{
-
-}
-
-void cd(t_data *data, int i, int j)
-{
-	int k;
-
-	k = search_env(data, "HOME");
-	if (k = -1)
-		exit_error("no home found");
-	if (ft_strncmp(data->command->arg[i][j], data->env[k], ft_strlen(data->env[k] == 0)
-		absolute();
-	else
-		relative();
-
-
-
-
-
-
-
-	char *str;
-	str = ft_substr(s->pwd, "/");
-	str = ft_substr(s->pwd, arg);
-	if (chdir(str) == -1)
-		error("Error");
-}
-*/
 
 void cd(t_data *data, char **arg)
 {
@@ -62,29 +25,35 @@ void cd(t_data *data, char **arg)
     k = search_env(data, "HOME");
     if (k == -1)
         return;
-    home = data->env[k] + 5; // Retirer le début du chemin
+    home = data->env[k] + 5;
 
-    if (data->command->arg[0][0] == NULL || ft_strncmp(data->command->arg[0][0], "~", 1) == 0) {
-        // Si aucun argument ou si l'argument est "~", aller au répertoire HOME
+    if (data->command->arg[0][0] == NULL || ft_strncmp(data->command->arg[0][0], "~", 1) == 0)
         chdir(home);
-    } else if (ft_strncmp(data->command->arg[0][0], "-", 1) == 0) {
-        // Si l'argument est "-", aller au répertoire précédent
+    else if (ft_strncmp(data->command->arg[0][0], "-", 1) == 0) 
+    {
         k = search_env(data, "OLDPWD");
-        if (k == -1) {
+        if (k == -1)
             fprintf(stderr, "cd: OLDPWD not set\n");
-        } else {
-            oldpwd = data->env[k] + 7; // Retirer le début du chemin
+        else 
+        {
+            oldpwd = data->env[k] + 7; 
             chdir(oldpwd);
         }
-    } else {
-        // Sinon, aller au répertoire spécifié
-        if (chdir(data->command->arg[0][0]) != 0) {
+    } 
+    else
+    {
+        if (chdir(data->command->arg[0][0]) != 0) 
             perror("cd");
-        }
     }
 
 oldpwd = getcwd(NULL, 0);
-strncpy(data->env[search_env(data, "OLDPWD")] + 7, oldpwd, PATH_MAX - 7);
-strncpy(data->env[search_env(data, "PWD")] + 4, oldpwd, PATH_MAX - 4);
+if (search_env(data, "OLDPWD") == -1)
+    add_env(data, "OLDPWD", oldpwd);
+else
+    change_env(data, "OLDPWD", oldpwd);
+if (search_env(data, "PWD") == -1)
+    add_env(data, "PWD", oldpwd);
+else
+    change_env(data, "PWD", oldpwd);
 free(oldpwd);
 }

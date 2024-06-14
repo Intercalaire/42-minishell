@@ -52,7 +52,7 @@ static void add_env(t_data *data, char *key, char *value)
 
 }
 
-static void change_env(t_data *data, char *key, char *value)
+void change_env(t_data *data, char *key, char *value)
 {
     int		i;
     char	*new_env;

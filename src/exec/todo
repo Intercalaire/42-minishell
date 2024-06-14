@@ -6,7 +6,7 @@ exit -> mettre arg dans $?
 echo 	|				check le -n
 export					OK
 unset | 				OK
-pipe
+pipe                    NORMALEMENT OK
 
 
 CHANGER TOUT LES BUILTIN EN INT ET RETURN LE $? DES COMMANDES

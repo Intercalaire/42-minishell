@@ -31,9 +31,9 @@ void pwd(void)
 	printf("%s", str);
 }
 */
-int	pwd(void)
+int pwd(void)
 {
-	char	pwd[PATH_MAX];
+	char pwd[PATH_MAX];
 
 	if (getcwd(pwd, PATH_MAX))
 	{
@@ -55,14 +55,14 @@ void cpy_env(t_data *data, char **environnement)
 		len_env++;
 	data->env = ft_calloc(len_env + 1, sizeof(char *));
 	if (!data->env)
-		return ;
-		//exit_error("Alloc Error\n");
+		return;
+	// exit_error("Alloc Error\n");
 	while (environnement[i])
 	{
 		data->env[i] = strdup(environnement[i]);
 		if (!data->env[i])
-			//exit_error("Alloc Error\n");
-			return ;
+			// exit_error("Alloc Error\n");
+			return;
 		i++;
 	}
 }

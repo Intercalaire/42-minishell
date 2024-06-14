@@ -21,7 +21,6 @@ char *filename;
 i = 0;
 if (data->nbr_pipe == 0) 
 {
-    // If there is no pipe, just execute the command
     exec(data, data->command->cmd[0], data->command->arg[0]);
     return 0;
 }

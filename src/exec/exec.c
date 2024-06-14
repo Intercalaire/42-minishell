@@ -3,21 +3,23 @@
 int exec(t_data *data, char *cmd, char **arg)
 {
     int i;
+    int exit_status;
 
     i = 0;
     if (!ft_strncmp(cmd, "echo", 4))
-        echo(data, arg);
+        exit_status = echo(data, arg);
     else if (!ft_strncmp(cmd, "pwd", 3))
-        pwd();
+        exit_status = pwd();
     else if (!ft_strncmp(cmd, "env", 3))
-        print_env(data);
+        exit_status = print_env(data);
     else if (!ft_strncmp(cmd, "export", 6))
-        ft_export(data, arg);
+        exit_status = ft_export(data, arg);
     else if (!ft_strncmp(cmd, "unset", 5))
-        ft_unset(data, arg);
+        exit_status = ft_unset(data, arg);
     else if (!ft_strncmp(cmd, "cd", 2))
-        cd(data, arg);
+        exit_status = cd(data, arg);
     else
-        path(data, cmd, arg);
+        exit_status = path(data, cmd, arg);
+    change_env(data, "?", ft_itoa(exit_status));
     return (0);
 }
