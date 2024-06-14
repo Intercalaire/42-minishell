@@ -62,7 +62,7 @@ void change_env(t_data *data, char *key, char *value)
     new_env = ft_strjoin(new_env, "=");
     new_env = ft_strjoin(new_env, value);
     free(data->env[i]);
-    data->env[i] = new_env;
+    data->env[i] = ft_strdup(new_env);
 
 }
 
@@ -150,7 +150,12 @@ int	ft_export(t_data *data, char **arg)
         }
         return (0);
     }
-
+    int s = 0;
+    while (arg[s])
+    {
+        printf("\narg[%d] : %s\n", s, arg[s]);
+     s++;
+    }
     while (arg[i])
     {
         if (!ft_strchr(arg[i], '='))

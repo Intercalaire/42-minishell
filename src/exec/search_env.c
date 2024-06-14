@@ -38,3 +38,4 @@ int search_env(t_data *data, char *str)
     }
     return (-1);
 }
+

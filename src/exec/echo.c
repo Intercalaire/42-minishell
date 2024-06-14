@@ -27,16 +27,19 @@ int echo(t_data *data, char **arg)
         while (arg[i][j] == 'n')
             j++;
         if (arg[i][j] != '\0')
-            break;
+            break ;
         newline = 0;
         i++;
     }
     while (arg[i])
     {
         printf("%s", arg[i]);
+        //printf("\n%d\n", newline);
+        if (arg[i + 1])
+            printf(" ");
         i++;
     }
-    if (newline)
+    if (newline == 1)
         printf("\n");
     return (0);
 }

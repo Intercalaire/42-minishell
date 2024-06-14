@@ -38,11 +38,33 @@ int path(t_data *data, char *cmd, char **arg)
 	if (!var[i])
 		return 0;
 		//error("No /bin/");
-	if (pid == 0)
+if (pid == 0)
 {
-	full_path = ft_strjoin(var[i], "/");
-	full_path = ft_strjoin(full_path, cmd);
-	execve(full_path, arg, data->env);
+    full_path = ft_strjoin(var[i], "/");
+    full_path = ft_strjoin(full_path, cmd);
+    char **args;
+    if (arg == NULL) 
+    {
+        args = malloc(2 * sizeof(char *));
+        args[0] = cmd;
+        args[1] = NULL;
+    } 
+    else 
+    {
+        int arg_count = 0;
+        while (arg[arg_count]) arg_count++; // count the number of arguments
+        args = malloc((arg_count + 2) * sizeof(char *));
+        args[0] = cmd;
+        int j = 0;
+        while (arg[j]) 
+        {
+            args[j + 1] = arg[j];
+            j++;
+        }
+        args[j + 1] = NULL;
+    }
+    execve(full_path, args, data->env);
+    free(args);
 }
 	else
 		waitpid(pid, NULL, 0);

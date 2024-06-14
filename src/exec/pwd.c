@@ -59,7 +59,7 @@ void cpy_env(t_data *data, char **environnement)
 	// exit_error("Alloc Error\n");
 	while (environnement[i])
 	{
-		data->env[i] = strdup(environnement[i]);
+		data->env[i] = ft_strdup(environnement[i]);
 		if (!data->env[i])
 			// exit_error("Alloc Error\n");
 			return;

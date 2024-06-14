@@ -21,14 +21,12 @@
 int my_pipe(t_data *data)
 {
 
-int i;
+int i = 0;
 int *son_pid;
-int *fd;
 int nbr_pipe;
 
 nbr_pipe = 0;
-i = 0;
-while (data->command->cmd[nbr_pipe])
+while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
 son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
 if (son_pid == NULL)
@@ -38,7 +36,11 @@ if (nbr_pipe == 0)
     exec(data, data->command->cmd[0], data->command->arg[0]);
     return 0;
 }
-fd = ft_calloc(2, sizeof(int));
+int fd[2];
+
+
+int fd_in = 0;  /* Backup of the input for the next command */
+
 while (i <= nbr_pipe)
 {
     pipe(fd); 
@@ -47,25 +49,30 @@ while (i <= nbr_pipe)
         return(1);
     else if (son_pid[i] == 0) 
     {
-        if (i != nbr_pipe - 1)
+        dup2(fd_in, STDIN_FILENO);  /* Change the input according to the old one */
+        if (i != nbr_pipe)
             dup2(fd[1], STDOUT_FILENO);
-        if (i != 0) {
-            dup2(fd[0], STDIN_FILENO);
-        }
-        close(fd[0]);
-        close(fd[1]);
-        exec(data, data->command->cmd[i], data->command->arg[i]);
+        close(fd[0]);  /* Close the reading end of the pipe, we don't need it */
+        execvp(data->command->cmd[i], data->command->arg[i]);
         exit(EXIT_SUCCESS);
     } 
     else 
     {
-        wait(NULL);
-        close(fd[0]);
-        if (i != nbr_pipe - 1)
-            close(fd[1]);
-        i++;
+        close(fd[1]);  /* Close the writing end of the pipe, we don't need it */
+        fd_in = fd[0];  /* Save the input for the next command */
     }
+    i++;
 }
-    free(fd);
-    return (0);
+
+int status = 0;
+i = 0;
+while (i <= nbr_pipe)
+{
+    waitpid(son_pid[i], &status, 0);
+    i++;
+}
+
+free(son_pid);
+return 0;
+
 }

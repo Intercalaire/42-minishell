@@ -20,6 +20,5 @@ int exec(t_data *data, char *cmd, char **arg)
         exit_status = cd(data, arg);
     else
         exit_status = path(data, cmd, arg);
-    change_env(data, "?", ft_itoa(exit_status));
     return (0);
 }
