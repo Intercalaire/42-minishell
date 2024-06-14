@@ -26,8 +26,6 @@ typedef struct s_command
 	char					**lign;
 	char					***arg;
 	char					**cmd;
-	struct s_command		*next;
-	struct s_command		*prev;
 }	t_command;
 
 typedef struct s_data
@@ -48,12 +46,13 @@ char	*ft_split_delim(t_data *data, char *str);
 int		remove_arg_strtab(t_data *data);
 
 //parsing
-int pars_pipe(t_data *data);
-int	quote_verif(t_data *data,char *str);
-int look_pipe(t_data *data, char *str);
-int special_char(t_data *data, char *str);
-void remove_end_space(char *str);
-char *align_and_clean_quotes(t_data *data);
+int 	pars_pipe(t_data *data);
+int		quote_verif(t_data *data,char *str);
+int 	look_pipe(t_data *data, char *str);
+int 	special_char(t_data *data, char *str);
+void	remove_end_space(char *str);
+char 	*align_and_clean_quotes(t_data *data);
+char	*ft_strdup_2(t_data *data, const char *s);
 
 //utils
 void count_pipes_outside_quotes(t_data *data, const char *str);
@@ -70,7 +69,6 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str);
 
 //init
 void	init_data(t_data *data);
-int		environment_variable(t_data *data, char *str);
 
 //exec
 int	ft_export(t_data *data, char **arg);

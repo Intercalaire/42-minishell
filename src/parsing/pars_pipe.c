@@ -91,7 +91,7 @@ static void	handle_args(t_data *data, int *i, int *y, int *z)
 		ft_error_prog(data, "Allocation error", "Error");
 	while (*z < data->nbr_arg)
 	{
-		data->command->arg[*y][*z] = ft_strdup_2(data->command->lign[(*i)++]);
+		data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
 		if (!data->command->arg[*y][*z])
 			ft_end_error_prog(data, "Allocation error", "Error");
 		(*z)++;
@@ -110,7 +110,7 @@ int	pars_pipe(t_data *data)
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = 0;
-		data->command->cmd[y] = ft_strdup_2(data->command->lign[i++]);
+		data->command->cmd[y] = ft_strdup_2(data, data->command->lign[i++]);
 		if (!data->command->cmd[y])
 		{
 			ft_free_data(data, "Allocation error");

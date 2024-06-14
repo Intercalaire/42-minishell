@@ -35,30 +35,3 @@ char	*ft_strdup(const char *s)
 	}
 	return (str);
 }
-
-char	*ft_strdup_2(const char *s)
-{
-	int		i;
-	int		j;
-	char	*str;
-	char	*result;
-
-	i = 0;
-	j = 0;
-	if (!s)
-		return (NULL);
-	while (s[i])
-		i++;
-	str = ft_calloc((i + 1), sizeof(char));
-	if (str == NULL)
-		return (NULL);
-	while (j < i)
-	{
-		str[j] = s[j];
-		j++;
-	}
-	str[j] = '\0';
-	result = ft_trim_quote(str);
-	free(str);
-	return (result);
-}

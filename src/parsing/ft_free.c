@@ -29,8 +29,6 @@ void	ft_free_data(t_data *data, char *str)
 			ft_free_strarg(data->command->arg);
 		if (data->command->cmd)
 			ft_free_strtab(data->command->cmd);
-		free(data->command->next);
-		free(data->command->prev);
 		free(data->command);
 	}
 	free(str);

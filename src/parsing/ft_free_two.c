@@ -18,8 +18,6 @@ void	ft_little_error_prog(t_data *data, char *str, char *msg)
 	free(str);
 	if (data)
 	{
-		free(data->command->next);
-		free(data->command->prev);
 		free(data->command);
 	}
 }
@@ -29,8 +27,6 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str)
 	free(str);
 	if (data)
 	{
-		free(data->command->next);
-		free(data->command->prev);
 		free(data->command);
 	}
 }
