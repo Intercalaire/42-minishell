@@ -9,50 +9,63 @@
 /*   Updated: 2024/05/15 10:42:53 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int my_pipe(t_data *data)
 {
+
 int i;
 int *son_pid;
-int tmp_fd;
-char *filename;
+int *fd;
+int nbr_pipe;
 
+nbr_pipe = 0;
 i = 0;
-if (data->nbr_pipe == 0) 
+while (data->command->cmd[nbr_pipe])
+    nbr_pipe++;
+son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
+if (son_pid == NULL)
+    return (1);
+if (nbr_pipe == 0) 
 {
     exec(data, data->command->cmd[0], data->command->arg[0]);
     return 0;
 }
-while (i < data->nbr_pipe)
+fd = ft_calloc(2, sizeof(int));
+while (i <= nbr_pipe)
 {
+    pipe(fd); 
     son_pid[i] = fork();
     if (son_pid[i] == -1)
-        erreur();
-    else if (son_pid[i] == 0) {
-        filename = ft_strdup("tmp.txt");
-		if (filename == NULL)
-			erreur();
-        if (i > 0) {
-            tmp_fd = open(filename, O_RDONLY);
-            if (tmp_fd == -1)
-                erreur();
-            dup2(tmp_fd, STDIN_FILENO);
-            close(tmp_fd);
+        return(1);
+    else if (son_pid[i] == 0) 
+    {
+        if (i != nbr_pipe - 1)
+            dup2(fd[1], STDOUT_FILENO);
+        if (i != 0) {
+            dup2(fd[0], STDIN_FILENO);
         }
-        tmp_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-        if (tmp_fd == -1)
-            erreur();
-        dup2(tmp_fd, STDOUT_FILENO);
-        free(filename);
-        exec(data, data->command->cmd[i], data->command->arg[i]); // Use your custom function here
-        close(tmp_fd);
+        close(fd[0]);
+        close(fd[1]);
+        exec(data, data->command->cmd[i], data->command->arg[i]);
         exit(EXIT_SUCCESS);
-    } else {
-        wait(NULL); // Wait for child process to finish
+    } 
+    else 
+    {
+        wait(NULL);
+        close(fd[0]);
+        if (i != nbr_pipe - 1)
+            close(fd[1]);
+        i++;
     }
-    i++;
 }
-unlink(filename); // Delete the file
-return (0);
+    free(fd);
+    return (0);
 }

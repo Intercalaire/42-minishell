@@ -9,7 +9,7 @@
 /*   Updated: 2024/05/30 12:04:17 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 static void copy_env(t_data *data)
 {
     int i = 0;
@@ -31,7 +31,7 @@ static void copy_env(t_data *data)
     data->env = new_env;
 }
 
-static void add_env(t_data *data, char *key, char *value)
+void add_env(t_data *data, char *key, char *value)
 {
     int		i;
     char	*new_env;
@@ -48,7 +48,7 @@ static void add_env(t_data *data, char *key, char *value)
     free(tmp);
     data->env[i] = new_env;
     data->env[i + 1] = NULL;
-    printf("env[%d] = %s\n", i, data->env[i]);
+
 
 }
 
@@ -63,7 +63,7 @@ void change_env(t_data *data, char *key, char *value)
     new_env = ft_strjoin(new_env, value);
     free(data->env[i]);
     data->env[i] = new_env;
-    printf("env[%d] = %s\n", i, data->env[i]);
+
 }
 
 static void cat_env(t_data *data, char *key, char *value)
@@ -126,7 +126,7 @@ static char **cpy_envir(char **env)
     return (new_env);
 }
 
-int	ft_export(t_data *data, char *cmd, char **arg)
+int	ft_export(t_data *data, char **arg)
 {
     int		i;
     char	*key;

@@ -9,9 +9,9 @@
 /*   Updated: 2024/05/30 10:56:41 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 
-void ft_unset(t_data *data)
+int ft_unset(t_data *data, char **arg)
 {
     int i;
 	int env_index;
@@ -21,9 +21,9 @@ void ft_unset(t_data *data)
 
 	i = 0;
 	j = 0;
-	while (data->command->arg[0][i])
+	while (arg[i])
 	{
-		key = ft_strdup(data->command->arg[0][i]);
+		key = ft_strdup(arg[i]);
     	env_index = search_env(data, key);
 		if (env_index == -1)
 		{
@@ -34,7 +34,7 @@ void ft_unset(t_data *data)
     	    j++;
     	new_env = ft_calloc((j), sizeof(char *));
     	if (!new_env)
-    	    return ;
+    	    return (1);
     	j = 0;
     	while (j < env_index) 
 		{
@@ -52,4 +52,5 @@ void ft_unset(t_data *data)
     	data->env = new_env;
 		i++;
 	}
+	return (0);
 }

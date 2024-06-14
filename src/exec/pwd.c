@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 /*
 void pwd(void)
 {

@@ -32,6 +32,16 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/ft_free_two.c \
 		./src/parsing/ft_split_delim.c \
 		./src/parsing/clean_quote.c \
+		./src/exec/cd.c \
+		./src/exec/echo.c \
+		./src/exec/env.c \
+		./src/exec/exec.c \
+		./src/exec/export.c \
+		./src/exec/path.c \
+		./src/exec/pipe.c \
+		./src/exec/pwd.c \
+		./src/exec/search_env.c \
+		./src/exec/unset.c \
 
 
 OBJ	= $(SRC:.c=.o)

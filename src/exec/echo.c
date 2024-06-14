@@ -9,12 +9,12 @@
 /*   Updated: 2024/05/04 11:13:42 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 
 
 int echo(t_data *data, char **arg)
 {
-    
+    (void)data;
     int i;
     int newline = 1;
     int j;

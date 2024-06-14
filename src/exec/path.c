@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 
 //dans les cas ou c'est different de echo, cd, pwd, export, unset, env, exit
-int path(t_data *data)
+int path(t_data *data, char *cmd, char **arg)
 {
 	int path;
 	char **var;
@@ -41,8 +41,8 @@ int path(t_data *data)
 	if (pid == 0)
 {
 	full_path = ft_strjoin(var[i], "/");
-	full_path = ft_strjoin(full_path, data->command->cmd[0]);
-	execve(full_path, data->command->arg[0], data->env);
+	full_path = ft_strjoin(full_path, cmd);
+	execve(full_path, arg, data->env);
 }
 	else
 		waitpid(pid, NULL, 0);

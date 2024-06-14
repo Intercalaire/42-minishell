@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../../include/exec_test/minishell.h"
-void print_env(t_data *data) 
+#include "../../include/parsing/minishell.h"
+int print_env(t_data *data) 
 {
     int i = 0;
     while (data->env[i]) 
@@ -8,4 +8,5 @@ void print_env(t_data *data)
         printf("%s\n", data->env[i]);
         i++;
     }
+    return (0);
 }

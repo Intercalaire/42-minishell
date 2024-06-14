@@ -9,7 +9,7 @@
 /*   Updated: 2024/05/29 09:50:49 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 /*int search_env(t_data *data, char *str)
 {
 	int i;

@@ -1,4 +1,4 @@
-#include "../../include/exec_test/minishell.h"
+#include "../../include/parsing/minishell.h"
 
 int exec(t_data *data, char *cmd, char **arg)
 {
