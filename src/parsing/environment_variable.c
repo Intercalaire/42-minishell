@@ -13,6 +13,7 @@
 #include "../../include/parsing/minishell.h"
 
 static char	*environment_variable(t_data *data, char *str);
+static int	when_quote(char *str);
 
 /*
 int	error_code(t_data *data, char *str)
@@ -66,7 +67,9 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	}
 	str[j] = '\0';
 	if (str[0] == '$')
+	{
 		str = ft_strdup(environment_variable(data, str));
+	}
 	result = ft_trim_quote(str);
 	free(str);
 	return (result);
@@ -79,9 +82,19 @@ static char	*environment_variable(t_data *data, char *str)
 
 	i = search_env(data, str + 1);
 	if (i == -1)
-		return (str);
+		return (&str[when_quote(str) + 1]);
 	value = ft_strdup(data->env[i] + ft_strlen(str));
 	if (value == NULL)
-		return (str);
+		return (NULL);
 	return (value);
+}
+
+static int	when_quote(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i] && (str[i] != '\"' || str[i] != '\''))
+		i++;
+	return (i);
 }

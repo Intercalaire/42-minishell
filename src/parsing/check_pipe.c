@@ -52,32 +52,3 @@ static int	look_pipe_helper(t_data *data, char *str, int i)
 	}
 	return (0);
 }
-
-/*
-int	ft_strpipe(t_data *data, char *str)
-{
-	t_data	*new_arg;
-	char	*pipe_pos;
-	int		i;
-
-	i = 0;
-	while (data->arg[i])
-	{
-		if (ft_strchr(data->arg[i], '|'))
-		{
-			pipe_pos = ft_strchr(data->arg[i], '|');
-			new_arg = malloc(sizeof(t_data));
-			if (!new_arg)
-				return (1);
-			init_data(new_arg);
-			new_arg->arg = ft_split(pipe_pos + 1, ' ');
-			if (!new_arg->arg)
-				return (1);
-			data_add_next(data, new_arg);
-			*pipe_pos = '\0';
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-} */

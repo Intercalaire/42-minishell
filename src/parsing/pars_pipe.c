@@ -15,7 +15,7 @@
 static void	count_args(t_data *data, int i);
 static void	utils_pars_pipe(t_data *data);
 static void	handle_pipe(t_data *data, int *i, int *y);
-static void	handle_args(t_data *data, int *i, int *y, int *z);
+static int	handle_args(t_data *data, int *i, int *y, int *z);
 
 static void	count_args(t_data *data, int i)
 {
@@ -83,7 +83,7 @@ static void	handle_pipe(t_data *data, int *i, int *y)
 	(*y)++;
 }
 
-static void	handle_args(t_data *data, int *i, int *y, int *z)
+static int	handle_args(t_data *data, int *i, int *y, int *z)
 {
 	count_args(data, *i);
 	data->command->arg[*y] = ft_calloc(data->nbr_arg + 1, sizeof(char *));
@@ -93,9 +93,13 @@ static void	handle_args(t_data *data, int *i, int *y, int *z)
 	{
 		data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
 		if (!data->command->arg[*y][*z])
-			ft_end_error_prog(data, "Allocation error", "Error");
+		{
+			ft_free_data(data, "Allocation error");
+			return (2);
+		}
 		(*z)++;
 	}
+	return (0);
 }
 
 int	pars_pipe(t_data *data)
@@ -122,7 +126,10 @@ int	pars_pipe(t_data *data)
 			continue ;
 		}
 		while (data->command->lign[i] && *data->command->lign[i] != '|')
-			handle_args(data, &i, &y, &z);
+		{
+			if (handle_args(data, &i, &y, &z) == 2)
+				return (2);
+		}
 		i++;
 		y++;
 	}
