@@ -74,8 +74,8 @@ char	*ft_strdup_2(t_data *data, const char *s)
 
 static char	*environment_variable(t_data *data, char *str)
 {
-	char *value;
-	int i;
+	char	*value;
+	int		i;
 
 	i = search_env(data, str + 1);
 	if (i == -1)

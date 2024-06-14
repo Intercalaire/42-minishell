@@ -13,50 +13,62 @@
 #include "../../include/parsing/minishell.h"
 
 static char	*find_next_token(char *src, const char *delim);
+static char	*adjust_pointers_with_quotes(char **src, char *next_token, char *s);
+static char	*adjust_pointers_without_qts(char **src, char *next_token, char *s);
 static char	*adjust_pointers(char **src, char *next_token, char *s);
 
-char *find_next_token(char *src, const char *delim)
+char	*find_next_token(char *src, const char *delim)
 {
-	char *next_token;
-	int in_quotes = 0;
-	int in_single_quotes = 0;
+	char	*next_token;
+	int		in_quotes;
+	int		in_single_quotes;
 
-	for (next_token = src; *next_token != '\0'; next_token++)
+	next_token = src;
+	in_quotes = 0;
+	in_single_quotes = 0;
+	while (*next_token != '\0')
 	{
 		if (*next_token == '"' && !in_single_quotes)
 			in_quotes = !in_quotes;
 		else if (*next_token == '\'' && !in_quotes)
 			in_single_quotes = !in_single_quotes;
-
 		if (!in_quotes && !in_single_quotes && ft_strchr(delim, *next_token))
-			break;
+			break ;
+		next_token++;
 	}
+	return (next_token);
+}
 
-	return next_token;
+static char	*adjust_pointers_with_quotes(char **src, char *next_token, char *s)
+{
+	char	quote;
+
+	quote = *next_token;
+	s = ++(*src);
+	while (**src != quote && **src != '\0')
+		(*src)++;
+	*next_token = '\0';
+	if (**src != '\0')
+		(*src)++;
+	return (s);
+}
+
+static char	*adjust_pointers_without_qts(char **src, char *next_token, char *s)
+{
+	*next_token = '\0';
+	s = *src;
+	*src = ++next_token;
+	return (s);
 }
 
 static char	*adjust_pointers(char **src, char *next_token, char *s)
 {
-	char quote = 0;  // variable to hold the quote character
-
 	if (*next_token != '\0')
 	{
 		if (*next_token == '"' || *next_token == '\'')
-		{
-			quote = *next_token;  // save the quote character
-			s = ++(*src);  // start the token after the quote
-			while (**src != quote && **src != '\0')  // find the matching quote
-				(*src)++;
-			*next_token = '\0';  // end the token before the matching quote
-			if (**src != '\0')
-				(*src)++;  // skip the matching quote
-		}
+			s = adjust_pointers_with_quotes(src, next_token, s);
 		else
-		{
-			*next_token = '\0';
-			s = *src;
-			*src = ++next_token;
-		}
+			s = adjust_pointers_without_qts(src, next_token, s);
 	}
 	else if (**src != '\0')
 	{
@@ -83,6 +95,6 @@ char	*ft_strtok(t_data *data, char *str, const char *delim)
 		src++;
 	next_token = find_next_token(src, delim);
 	ret = adjust_pointers(&src, next_token, s);
-	ret = ft_split_delim(data, ret); 
+	ret = ft_split_delim(data, ret);
 	return (ret);
 }

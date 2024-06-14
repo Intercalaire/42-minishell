@@ -122,13 +122,10 @@ int	pars_pipe(t_data *data)
 			continue ;
 		}
 		while (data->command->lign[i] && *data->command->lign[i] != '|')
-		{
 			handle_args(data, &i, &y, &z);
-		}
 		i++;
 		y++;
 	}
-	i = 0;
 	print_cmd(data);
 	print_arg(data);
 	return (0);

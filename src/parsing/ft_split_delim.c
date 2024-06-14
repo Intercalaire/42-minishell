@@ -35,7 +35,7 @@ static int	handle_special_chars(char *str, char *new_str, int i, int j)
 	return (j);
 }
 
-static char	*init_new_str(t_data *data, char *new_str, char  *str)
+static char	*init_new_str(t_data *data, char *new_str, char *str)
 {
 	new_str = ft_calloc(ft_strlen(str) * 3 + 1, sizeof(char));
 	if (!new_str)
@@ -51,7 +51,7 @@ char	*ft_split_delim(t_data *data, char *str)
 	int		i;
 
 	new_str = NULL;
-	new_str = init_new_str(data ,new_str, str);
+	new_str = init_new_str(data, new_str, str);
 	in_quotes = 0;
 	i = 0;
 	j = 0;

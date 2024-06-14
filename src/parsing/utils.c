@@ -35,7 +35,21 @@ void	count_pipes_outside_quotes(t_data *data, const char *str)
 	}
 }
 
+void	remove_end_space(char *str)
+{
+	int	len;
 
+	if (str == NULL)
+	{
+		return ;
+	}
+	len = ft_strlen(str);
+	while (len > 0 && str[len - 1] == ' ')
+	{
+		str[len - 1] = '\0';
+		len--;
+	}
+}
 
 // int remove_arg_strtab(t_data *data)
 // {
@@ -66,22 +80,6 @@ void	count_pipes_outside_quotes(t_data *data, const char *str)
 //     }
 //     return (0);
 // }
-
-void	remove_end_space(char *str)
-{
-	int	len;
-
-	if (str == NULL)
-	{
-		return ;
-	}
-	len = ft_strlen(str);
-	while (len > 0 && str[len - 1] == ' ')
-	{
-		str[len - 1] = '\0';
-		len--;
-	}
-}
 
 // static t_lst	*lst_new(char *content)
 // {
@@ -196,4 +194,3 @@ void	remove_end_space(char *str)
 //     //printf("cmd : %s\n", data->command->cmd);
 //     //print_data(data);
 // }
-
