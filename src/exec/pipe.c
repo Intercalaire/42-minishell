@@ -53,7 +53,7 @@ while (i <= nbr_pipe)
         if (i != nbr_pipe)
             dup2(fd[1], STDOUT_FILENO);
         close(fd[0]);  /* Close the reading end of the pipe, we don't need it */
-        execvp(data->command->cmd[i], data->command->arg[i]);
+        exec(data, data->command->cmd[i], data->command->arg[i]);
         exit(EXIT_SUCCESS);
     } 
     else 
