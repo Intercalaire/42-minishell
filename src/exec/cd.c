@@ -21,39 +21,35 @@ int cd(t_data *data, char **arg)
 {
     int k;
     char *oldpwd;
+    char *newpwd;
     char *home;
 
+    oldpwd = ft_calloc(PATH_MAX, sizeof(char));
+    getcwd(oldpwd, PATH_MAX);
     k = search_env(data, "HOME");
     if (k == -1)
         return (1);
     home = ft_strdup(data->env[k] + 5);
     printf("\n\nhome = |%s|\n\n", home);
-    if (arg[0] == NULL || ft_strncmp(arg[0], "~", 1) == 0)
+    if (!arg || ft_strncmp(arg[0], "~", 1) == 0)
         chdir(home);
-    else if (ft_strncmp(arg[0], "-", 1) == 0) 
-    {
-        k = search_env(data, "OLDPWD");
-        if (k == -1)
-        {
-            return (1);
-        }
-        else 
-        {
-            oldpwd = ft_strdup(data->env[k] + 7);
-            printf("\n\nold pwd = |%s|\n\n", oldpwd);
-            chdir(oldpwd);
-        }
-    } 
     else
     {
         if (chdir(arg[0]) != 0) 
             perror("cd");
     }
- 
-
-oldpwd = getcwd(NULL, 0);
-strncpy(data->env[search_env(data, "OLDPWD")] + 7, oldpwd, PATH_MAX - 7);
-strncpy(data->env[search_env(data, "PWD")] + 4, oldpwd, PATH_MAX - 4);
+newpwd = ft_calloc(PATH_MAX, sizeof(char));
+getcwd(newpwd, PATH_MAX);
+if (search_env(data, "OLDPWD") == -1)
+    add_env(data, "OLDPWD", oldpwd);
+else
+    change_env(data, "OLDPWD", oldpwd);
+if (search_env(data, "PWD") == -1)
+    add_env(data, "PWD", newpwd);
+else
+    change_env(data, "PWD", newpwd);
 free(oldpwd);
+free(newpwd);
+free(home);
 return (0);
 }

@@ -21,12 +21,10 @@ int echo(t_data *data, char **arg)
 
     j = 0;
     i = 0;
-    printf("arg contents:\n");
-    int k = 0;
-    while (arg[k])
+    if (!arg[i])
     {
-        printf("arg[%d] = %s\n", k, arg[k]);
-        k++;
+        printf("\n");
+        return (0);
     }
     while (arg[i] && ft_strncmp(arg[i], "-n", 2) == 0)
     {
@@ -41,7 +39,6 @@ int echo(t_data *data, char **arg)
     while (arg[i])
     {
         printf("%s", arg[i]);
-        //printf("\n%d\n", newline);
         if (arg[i + 1])
             printf(" ");
         i++;

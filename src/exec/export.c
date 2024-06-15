@@ -56,14 +56,19 @@ void change_env(t_data *data, char *key, char *value)
 {
     int		i;
     char	*new_env;
+    char    *tmp;
 
     i = search_env(data, key);
     new_env = ft_strdup(key);
-    new_env = ft_strjoin(new_env, "=");
-    new_env = ft_strjoin(new_env, value);
+    tmp = ft_strjoin(new_env, "=");
+    free(new_env);
+    new_env = tmp;
+    tmp = ft_strjoin(new_env, value);
+    free(new_env);
+    new_env = tmp;
     free(data->env[i]);
     data->env[i] = ft_strdup(new_env);
-
+    free(new_env);
 }
 
 static void cat_env(t_data *data, char *key, char *value)

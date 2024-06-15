@@ -28,7 +28,7 @@ int nbr_pipe;
 nbr_pipe = 0;
 while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
-son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
+son_pid = ft_calloc(nbr_pipe + 2, sizeof(int));
 if (son_pid == NULL)
     return (1);
 if (nbr_pipe == 0) 
