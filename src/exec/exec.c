@@ -1,6 +1,6 @@
 #include "../../include/parsing/minishell.h"
 
-int exec(t_data *data, char *cmd, char **arg)
+int exec(t_data *data, char *cmd, char **arg, char *str)
 {
     int i;
     int exit_status;
@@ -18,6 +18,8 @@ int exec(t_data *data, char *cmd, char **arg)
         exit_status = ft_unset(data, arg);
     else if (!ft_strncmp(cmd, "cd", 2))
         exit_status = cd(data, arg);
+    else if (!ft_strncmp(cmd, "exit", 4))
+        exit_shell(data, str);
     else
         exit_status = path(data, cmd, arg);
     return (0);

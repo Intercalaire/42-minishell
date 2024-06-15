@@ -41,6 +41,7 @@ SRC	= ./src/parsing/init.c \
 		./src/exec/pwd.c \
 		./src/exec/search_env.c \
 		./src/exec/unset.c \
+		./src/exec/exit.c \
 
 
 OBJ	= $(SRC:.c=.o)

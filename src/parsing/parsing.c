@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		if (pars_pipe(data) == 2)
 			continue ;
-		my_pipe(data);
+		my_pipe(data, str);
 		ft_free_data(data, str);
 	}
 	ft_end_error_prog(data, str, "exit");

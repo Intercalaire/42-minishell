@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 //dans les cas ou c'est different de echo, cd, pwd, export, unset, env, exit
 int path(t_data *data, char *cmd, char **arg)
@@ -37,7 +38,6 @@ int path(t_data *data, char *cmd, char **arg)
 	}
 	if (!var[i])
 		return 0;
-		//error("No /bin/");
 if (pid == 0)
 {
     full_path = ft_strjoin(var[i], "/");
@@ -63,7 +63,25 @@ if (pid == 0)
         }
         args[j + 1] = NULL;
     }
-    execve(full_path, args, data->env);
+        if (execve(full_path, args, data->env) == -1)
+    {
+        if (errno == ENOENT)
+        {
+            write(2, cmd, ft_strlen(cmd));
+            write(2, ": command not found\n", 20);
+        }
+        else if (errno == EACCES)
+        {
+            write(2, cmd, ft_strlen(cmd));
+            write(2, ": permission denied\n", 20);
+        }
+        else
+        {
+            write(2, cmd, ft_strlen(cmd));
+            write(2, ": execution error\n", 18);
+        }
+        exit(EXIT_FAILURE);
+    }
     free(args);
 }
 	else

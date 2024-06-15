@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-int my_pipe(t_data *data)
+int my_pipe(t_data *data, char *str)
 {
 
 int i = 0;
@@ -33,7 +33,7 @@ if (son_pid == NULL)
     return (1);
 if (nbr_pipe == 0) 
 {
-    exec(data, data->command->cmd[0], data->command->arg[0]);
+    exec(data, data->command->cmd[0], data->command->arg[0], str);
     return 0;
 }
 int fd[2];
@@ -53,7 +53,7 @@ while (i <= nbr_pipe)
         if (i != nbr_pipe)
             dup2(fd[1], STDOUT_FILENO);
         close(fd[0]);  /* Close the reading end of the pipe, we don't need it */
-        exec(data, data->command->cmd[i], data->command->arg[i]);
+        exec(data, data->command->cmd[i], data->command->arg[i], str);
         exit(EXIT_SUCCESS);
     } 
     else 

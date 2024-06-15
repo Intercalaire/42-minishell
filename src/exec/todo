@@ -1,5 +1,11 @@
 env                     OK
 gerer ctrl			
+		ctrl D -> exit_shell
+				-> ajouter tout les free necessaires
+
+
+
+
 pwd | getcwd()			OK
 cd | opendir(), closedir()			 faire les relative et absolute path en plus
 exit -> mettre arg dans $?
@@ -10,3 +16,17 @@ pipe                    NORMALEMENT OK
 
 
 CHANGER TOUT LES BUILTIN EN INT ET RETURN LE $? DES COMMANDES
+---------------------------------------------------------------------------------------------
+
+Gerer les signaux -> regarder comment l'implementer dans le code ainsi que la maniere de gerer les signaux pour ctrl D, ctrl / et ctrl C
+
+Gerer les heredocs -> se renseigner sur le fonctionnement
+
+Gerer les outfiles -> faire un dup2 vers le fd selectionner present dans data pour toujours y envoyer la commande (ecrira dans 1 par default (terminal))
+
+Gerer les infiles -> regarder exactement ce que font les infiles
+
+Envoyer les retours d'erreurs dans une variable a l'interieur de data
+	-> (pour parsing) envoyer directement le itoa de la variable dans le cas de "echo $?"
+	
+Ajouter les bon retour d'erreur, que ce soit la valeur ou le message d'erreur (via perror)

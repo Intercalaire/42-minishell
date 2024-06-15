@@ -71,18 +71,19 @@ void	init_data(t_data *data);
 
 //exec
 int	ft_export(t_data *data, char **arg);
-int exec(t_data *data, char *cmd, char **arg);
+int exec(t_data *data, char *cmd, char **arg, char *str);
 int path(t_data *data, char *cmd, char **arg);
 int print_env(t_data *data);
 int echo(t_data *data, char **arg);
 int cd(t_data *data, char **arg);
 int search_env(t_data *data, char *str);
-int my_pipe(t_data *data);
+int my_pipe(t_data *data, char *str);
 int ft_unset(t_data *data, char **arg);
 int pwd(void);
 void cpy_env(t_data *data, char **environnement);
 void change_env(t_data *data, char *key, char *value);
 void add_env(t_data *data, char *key, char *value);
+void exit_shell(t_data *data, char *str);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"
