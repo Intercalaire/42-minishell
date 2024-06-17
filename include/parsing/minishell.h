@@ -84,6 +84,7 @@ void cpy_env(t_data *data, char **environnement);
 void change_env(t_data *data, char *key, char *value);
 void add_env(t_data *data, char *key, char *value);
 void exit_shell(t_data *data, char *str);
+void ft_sig(void);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"

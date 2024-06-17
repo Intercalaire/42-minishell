@@ -26,9 +26,11 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		init_data(data);
+		ft_sig();
 		str = readline("Minishell >");
 		if (!str)
-			break ;
+			exit_shell(data, str);
+		ft_sig();
 		remove_end_space(str);
 		if (ft_strlen(str) == 0)
 		{

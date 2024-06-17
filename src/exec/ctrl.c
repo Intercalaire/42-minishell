@@ -19,27 +19,26 @@
 #include <stdlib.h>
 #include <readline/history.h>
 #include "../../include/parsing/minishell.h"
-void handler(int signum)
+static void handler(int signum)
 {
+	(void)signum;
 	printf("\n");
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
 }
 
-void quit_handler(int signum)
+static void quit_handler(int signum)
 {
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+    (void)signum;
+    rl_replace_line("", 0);
+    rl_redisplay();
+    write(1, "Minishell >", 11);
 }
 
-int main(void)
+void ft_sig(void)
 {
 	signal(SIGINT, handler);
 	signal(SIGQUIT, quit_handler);
-	pause();
-	
 }
 
