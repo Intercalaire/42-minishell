@@ -23,6 +23,7 @@ int cd(t_data *data, char **arg)
     char *oldpwd;
     char *newpwd;
     char *home;
+    char *error_msg;
 
     oldpwd = ft_calloc(PATH_MAX, sizeof(char));
     getcwd(oldpwd, PATH_MAX);
@@ -35,8 +36,14 @@ int cd(t_data *data, char **arg)
         chdir(home);
     else
     {
-        if (chdir(arg[0]) != 0) 
-            perror("cd");
+        if (chdir(arg[0]) != 0)
+        {
+        error_msg = ft_calloc(strlen("cd: ") + strlen(arg[0]) + 1, sizeof(char));
+            ft_strlcpy(error_msg, "cd: ", strlen("cd: ") + 1);
+            ft_strlcat(error_msg, arg[0], strlen("cd: ") + strlen(arg[0]) + 1);
+            perror(error_msg);
+            free(error_msg);
+        }
     }
 newpwd = ft_calloc(PATH_MAX, sizeof(char));
 getcwd(newpwd, PATH_MAX);

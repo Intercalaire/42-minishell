@@ -67,22 +67,21 @@ if (pid == 0)
     {
         if (errno == ENOENT)
         {
-            write(2, cmd, ft_strlen(cmd));
-            write(2, ": command not found\n", 20);
+            perror(cmd);
+            exit(127);
         }
         else if (errno == EACCES)
         {
-            write(2, cmd, ft_strlen(cmd));
-            write(2, ": permission denied\n", 20);
+            perror(cmd);
+            exit (1);
         }
         else
         {
-            write(2, cmd, ft_strlen(cmd));
-            write(2, ": execution error\n", 18);
+            perror(cmd);
+            exit(127);
         }
-        exit(EXIT_FAILURE);
-    }
     free(args);
+    }
 }
 	else
 		waitpid(pid, NULL, 0);
@@ -90,3 +89,4 @@ if (pid == 0)
 	//argv = commande + arguments
 
 }
+

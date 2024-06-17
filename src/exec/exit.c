@@ -13,6 +13,7 @@
 void exit_shell(t_data *data, char *str)
 {
     ft_free_data(data, str);
+    //ft_end_error_prog(data, str, "exit");
     printf("exit\n");
     exit(0);
 }

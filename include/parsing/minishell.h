@@ -36,6 +36,8 @@ typedef struct s_data
 	int 				nbr_arg;
 	int					exit_status;
 	char				**env;
+//	char				**outfile;
+//	char				**infile;
 	t_command			*command;
 }	t_data;
 
