@@ -58,6 +58,8 @@ char	*ft_strdup_2(t_data *data, const char *s);
 
 //utils
 void count_pipes_outside_quotes(t_data *data, const char *str);
+char *ft_strcat(char *dest, char *src);
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
 //free
 void 	ft_little_error_prog(t_data *data, char *str, char *msg);

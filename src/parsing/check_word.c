@@ -61,7 +61,6 @@ static void	process_tokens(t_data *data, char *str)
 {
 	char	*token;
 	int		i;
-
 	i = 0;
 	count_pipes_outside_quotes(data, str);
 	token = ft_strtok(data, str, " \t\n\v\r\f");
