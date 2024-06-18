@@ -21,7 +21,7 @@ int echo(t_data *data, char **arg)
 
     j = 0;
     i = 0;
-    if (!arg[i])
+    if (!arg || !arg[i])
     {
         printf("\n");
         return (0);
