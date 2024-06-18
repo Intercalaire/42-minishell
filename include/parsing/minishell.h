@@ -38,6 +38,7 @@ typedef struct s_data
 	char				**env;
 //	char				**outfile;
 //	char				**infile;
+//	char				**EOF;
 	t_command			*command;
 }	t_data;
 

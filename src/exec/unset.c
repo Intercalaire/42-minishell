@@ -34,7 +34,10 @@ int ft_unset(t_data *data, char **arg)
     	    j++;
     	new_env = ft_calloc((j), sizeof(char *));
     	if (!new_env)
-    	    return (1);
+		{
+			free(key);
+		    return (1);
+		}
     	j = 0;
     	while (j < env_index) 
 		{
@@ -52,5 +55,7 @@ int ft_unset(t_data *data, char **arg)
     	data->env = new_env;
 		i++;
 	}
+	free(key);
+	free(new_env);
 	return (0);
 }

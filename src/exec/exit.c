@@ -13,7 +13,11 @@
 void exit_shell(t_data *data, char *str)
 {
     ft_free_data(data, str);
-    //ft_end_error_prog(data, str, "exit");
+    if (data->env)
+        ft_free_strtab(data->env);
+    if (data)
+        free(data);
+    rl_free_line_state();  // Free memory allocated by readline
     printf("exit\n");
     exit(0);
 }

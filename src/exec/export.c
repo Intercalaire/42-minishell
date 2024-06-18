@@ -28,7 +28,8 @@ static void copy_env(t_data *data)
         i++;
     }
     free(data->env);
-    data->env = new_env;
+    cpy_env(data, new_env);
+    ft_free_strtab(new_env);
 }
 
 void add_env(t_data *data, char *key, char *value)
@@ -46,10 +47,8 @@ void add_env(t_data *data, char *key, char *value)
     free(new_env);
     new_env = ft_strjoin(tmp, value);
     free(tmp);
-    data->env[i] = new_env;
-    data->env[i + 1] = NULL;
-
-
+    data->env[i] = ft_strdup(new_env);
+    free(new_env);
 }
 
 void change_env(t_data *data, char *key, char *value)
@@ -106,6 +105,7 @@ static char **bubble_sort(char **arr, int n)
         }
         i++;
     }
+    free(temp);
     return (arr);
 }
 
@@ -127,7 +127,6 @@ static char **cpy_envir(char **env)
         i++;
     }
     new_env[i] = NULL;
-
     return (new_env);
 }
 
@@ -153,6 +152,7 @@ int	ft_export(t_data *data, char **arg)
             printf("declare -x %s\n", new_env[i]);
             i++;
         }
+        ft_free_strtab(new_env);
         return (0);
     }
     int s = 0;

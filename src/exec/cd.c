@@ -25,11 +25,11 @@ int cd(t_data *data, char **arg)
     char *home;
     char *error_msg;
 
-    oldpwd = ft_calloc(PATH_MAX, sizeof(char));
-    getcwd(oldpwd, PATH_MAX);
     k = search_env(data, "HOME");
     if (k == -1)
         return (1);
+    oldpwd = ft_calloc(PATH_MAX, sizeof(char));
+    getcwd(oldpwd, PATH_MAX);
     home = ft_strdup(data->env[k] + 5);
     printf("\n\nhome = |%s|\n\n", home);
     if (!arg || ft_strncmp(arg[0], "~", 1) == 0)

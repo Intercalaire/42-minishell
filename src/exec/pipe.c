@@ -28,13 +28,14 @@ int nbr_pipe;
 nbr_pipe = 0;
 while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
-son_pid = ft_calloc(nbr_pipe + 2, sizeof(int));
+son_pid = ft_calloc(nbr_pipe, sizeof(int));
 if (son_pid == NULL)
     return (1);
 if (nbr_pipe == 0) 
 {
     exec(data, data->command->cmd[0], data->command->arg[0], str);
-    return 0;
+    free(son_pid);
+    return (0);
 }
 int fd[2];
 

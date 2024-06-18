@@ -67,7 +67,7 @@ if (pid == 0)
     {
         if (errno == ENOENT)
         {
-            perror(cmd);
+            printf("%s: command not found\n", cmd);
             exit(127);
         }
         else if (errno == EACCES)
