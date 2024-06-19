@@ -91,6 +91,8 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 		ft_error_prog(data, "Allocation error", "Error");
 	while (*z < data->nbr_arg)
 	{
+		if (data->command->lign[i] == '>')
+			verif_output(data, data->command->lign[(*i)++]);
 		data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
 		if (!data->command->arg[*y][*z])
 		{

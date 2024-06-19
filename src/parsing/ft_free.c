@@ -34,11 +34,13 @@ void	ft_free_data(t_data *data, char *str)
 	if (data->output)
 	{
 		if (data->output->h_doc)
-			ft_free_strtab(data->output->h_doc);
+			ft_free_strarg(data->output->h_doc);
 		if (data->output->infile)
-			ft_free_strtab(data->output->infile);
+			ft_free_strarg(data->output->infile);
 		if (data->output->outfile)
-			ft_free_strtab(data->output->outfile);
+			ft_free_strarg(data->output->outfile);
+		if (data->output->outfile_append)
+			ft_free_strarg(data->output->outfile_append);
 		free(data->output);
 	}
 	free(str);

@@ -15,10 +15,11 @@
 void	init_data(t_data *data)
 {
 	data->command = malloc(sizeof(t_command));
+	data->meter = malloc(sizeof(t_meter));
+	data->output = malloc(sizeof(t_output));
 	data->command->arg = NULL;
 	data->command->cmd = NULL;
 	data->command->lign = NULL;
-	data->output = malloc(sizeof(t_output));
 	data->output->h_doc = NULL;
 	data->output->infile = NULL;
 	data->output->outfile = NULL;
@@ -27,4 +28,9 @@ void	init_data(t_data *data)
 	data->size = 0;
 	data->nbr_pipe = 0;
 	data->nbr_arg = 0;
+	data->meter->count_outfile = 0;
+	data->meter->count_outfile_append = 0;
+	data->meter->count_infile = 0;
+	data->meter->count_h_doc = 0;
+
 }
