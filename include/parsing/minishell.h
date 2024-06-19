@@ -23,30 +23,39 @@
 
 typedef struct s_command
 {
-	char					**lign;
-	char					***arg;
-	char					**cmd;
-}	t_command;
+char**lign;
+char***arg;
+char**cmd;
+}t_command;
+
+typedef struct s_meter
+{
+intcount_outfile;
+intcount_outfile_append;
+intcount_infile;
+intcount_h_doc;
+}t_meter;
 
 typedef struct s_output
 {
-	char				***outfile;
-	char				***outfile_append;
-	char				***infile;
-	char				***h_doc;
-}	t_output;
+char***outfile;
+char***outfile_append;
+char***infile;
+char***h_doc;
+}t_output;
 
 typedef struct s_data
 {
-	int					count;
-	int					size;
-	int				    nbr_pipe;
-	int 				nbr_arg;
-	int					exit_status;
-	char				**env;
-	t_output			*output;
-	t_command			*command;
-}	t_data;
+intcount;
+intsize;
+int    nbr_pipe;
+int nbr_arg;
+intexit_status;
+char**env;
+t_output*output;
+t_meter*meter;
+t_command*command;
+}t_data;
 
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
@@ -95,7 +104,7 @@ int		pwd(void);
 void	cpy_env(t_data *data, char **environnement);
 void	change_env(t_data *data, char *key, char *value);
 void	add_env(t_data *data, char *key, char *value);
-void	exit_shell(t_data *data, char *str, char *arg);
+void	exit_shell(t_data *data, char *str, char **arg);
 void	ft_sig(void);
 
 //output

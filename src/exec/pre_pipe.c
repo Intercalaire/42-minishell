@@ -94,7 +94,7 @@ while (i <= nbr_pipe)
 typedef struct command_data {
     int infile;
     int outfile;
-    int fd[2];
+    int *fd;
     int i;
     int nbr_pipe;
     char *str;
@@ -103,9 +103,9 @@ typedef struct command_data {
 void pre_pipe(data_t *data, int nbr_pipe, char *str)
 {
     command_data_t cmd_data;
-    int fd[2];
-    int fd_in = 0;
-    int i = 0;
+    cmd_data->fd =ft_calloc(2, sizeof(int));
+    cmd_data->fd_in = 0;
+    cmd_data->i = 0;
 
     while (i <= nbr_pipe)
     {
