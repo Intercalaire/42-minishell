@@ -28,7 +28,8 @@ static int	handle_special_chars(char *str, char *new_str, int i, int j)
 		new_str[j++] = ' ';
 	}
 	new_str[j++] = str[i];
-	if (str[i + 1] != '\0' && str[i + 1] != ' ' && new_str[j - 1] != ' ')
+	if (str[i + 1] != '\0' && str[i + 1] != ' ' && new_str[j - 1] != ' '
+		&& !(str[i] == '>' && str[i + 1] == '>') && !(str[i] == '<' && str[i + 1] == '<'))
 	{
 		new_str[j++] = ' ';
 	}
@@ -62,7 +63,7 @@ char	*ft_split_delim(t_data *data, char *str)
 			in_quotes = !in_quotes;
 			j = handle_quotes(str, new_str, i, j);
 		}
-		else if ((str[i] == '|' || str[i] == '>') && !in_quotes)
+		else if ((str[i] == '|' || (str[i] == '>' && str[i+1] != '>') || (str[i] == '<' && str[i+1] != '<')) && !in_quotes)
 			j = handle_special_chars(str, new_str, i, j);
 		else
 			new_str[j++] = str[i];

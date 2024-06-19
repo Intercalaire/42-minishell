@@ -31,6 +31,16 @@ void	ft_free_data(t_data *data, char *str)
 			ft_free_strtab(data->command->cmd);
 		free(data->command);
 	}
+	if (data->output)
+	{
+		if (data->output->h_doc)
+			ft_free_strtab(data->output->h_doc);
+		if (data->output->infile)
+			ft_free_strtab(data->output->infile);
+		if (data->output->outfile)
+			ft_free_strtab(data->output->outfile);
+		free(data->output);
+	}
 	free(str);
 }
 

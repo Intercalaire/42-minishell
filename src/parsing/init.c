@@ -18,6 +18,11 @@ void	init_data(t_data *data)
 	data->command->arg = NULL;
 	data->command->cmd = NULL;
 	data->command->lign = NULL;
+	data->output = malloc(sizeof(t_output));
+	data->output->h_doc = NULL;
+	data->output->infile = NULL;
+	data->output->outfile = NULL;
+	data->output->outfile_append = NULL;
 	data->count = 0;
 	data->size = 0;
 	data->nbr_pipe = 0;

@@ -28,6 +28,14 @@ typedef struct s_command
 	char					**cmd;
 }	t_command;
 
+typedef struct s_output
+{
+	char				**outfile;
+	char				**outfile_append;
+	char				**infile;
+	char				**h_doc;
+}	t_output;
+
 typedef struct s_data
 {
 	int					count;
@@ -36,9 +44,7 @@ typedef struct s_data
 	int 				nbr_arg;
 	int					exit_status;
 	char				**env;
-//	char				**outfile;
-//	char				**infile;
-//	char				**EOF;
+	t_output			*output;
 	t_command			*command;
 }	t_data;
 
@@ -57,8 +63,8 @@ void	remove_end_space(char *str);
 char	*ft_strdup_2(t_data *data, const char *s);
 
 //utils
-void count_pipes_outside_quotes(t_data *data, const char *str);
-char *ft_strcat(char *dest, char *src);
+void	count_pipes_outside_quotes(t_data *data, const char *str);
+char	*ft_strcat(char *dest, char *src);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
 //free
@@ -70,26 +76,31 @@ void 	ft_end_error_prog(t_data *data, char *str, char *msg);
 int		error_code(t_data *data, char *str);
 void	ft_free_strarg(char ***tab);
 void	ft_little_error_prog_no_msg(t_data *data, char *str);
+void	ft_free_data_no_str(t_data *data);
 
 //init
 void	init_data(t_data *data);
 
 //exec
-int	ft_export(t_data *data, char **arg);
-int exec(t_data *data, char *cmd, char **arg, char *str);
-int path(t_data *data, char *cmd, char **arg);
-int print_env(t_data *data);
-int echo(t_data *data, char **arg);
-int cd(t_data *data, char **arg);
-int search_env(t_data *data, char *str);
-int my_pipe(t_data *data, char *str);
-int ft_unset(t_data *data, char **arg);
-int pwd(void);
-void cpy_env(t_data *data, char **environnement);
-void change_env(t_data *data, char *key, char *value);
-void add_env(t_data *data, char *key, char *value);
-void exit_shell(t_data *data, char *str);
-void ft_sig(void);
+int		ft_export(t_data *data, char **arg);
+int		exec(t_data *data, char *cmd, char **arg, char *str);
+int		path(t_data *data, char *cmd, char **arg);
+int		print_env(t_data *data);
+int		echo(t_data *data, char **arg);
+int		cd(t_data *data, char **arg);
+int		search_env(t_data *data, char *str);
+int		my_pipe(t_data *data, char *str);
+int		ft_unset(t_data *data, char **arg);
+int		pwd(void);
+void	cpy_env(t_data *data, char **environnement);
+void	change_env(t_data *data, char *key, char *value);
+void	add_env(t_data *data, char *key, char *value);
+void	exit_shell(t_data *data, char *str);
+void	ft_sig(void);
+
+//output
+void	outfile(t_data *data, char *str);
+void	verif_output(t_data *data, char *str);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"
