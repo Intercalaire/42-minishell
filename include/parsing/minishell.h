@@ -30,10 +30,10 @@ typedef struct s_command
 
 typedef struct s_output
 {
-	char				**outfile;
-	char				**outfile_append;
-	char				**infile;
-	char				**h_doc;
+	char				***outfile;
+	char				***outfile_append;
+	char				***infile;
+	char				***h_doc;
 }	t_output;
 
 typedef struct s_data
@@ -95,7 +95,7 @@ int		pwd(void);
 void	cpy_env(t_data *data, char **environnement);
 void	change_env(t_data *data, char *key, char *value);
 void	add_env(t_data *data, char *key, char *value);
-void	exit_shell(t_data *data, char *str);
+void	exit_shell(t_data *data, char *str, char *arg);
 void	ft_sig(void);
 
 //output

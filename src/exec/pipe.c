@@ -28,7 +28,7 @@ int nbr_pipe;
 nbr_pipe = 0;
 while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
-son_pid = ft_calloc(nbr_pipe, sizeof(int));
+son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
 if (son_pid == NULL)
     return (1);
 if (nbr_pipe == 0) 
@@ -47,7 +47,11 @@ while (i <= nbr_pipe)
     pipe(fd); 
     son_pid[i] = fork();
     if (son_pid[i] == -1)
-        return(1);
+        {
+            close(fd[0]);
+            close(fd[1]);
+            return (1);
+        }
     else if (son_pid[i] == 0) 
     {
         dup2(fd_in, STDIN_FILENO);  /* Change the input according to the old one */

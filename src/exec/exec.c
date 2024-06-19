@@ -19,7 +19,7 @@ int exec(t_data *data, char *cmd, char **arg, char *str)
     else if (!ft_strncmp(cmd, "cd", 3))
         data->exit_status = cd(data, arg);
     else if (!ft_strncmp(cmd, "exit", 5))
-        exit_shell(data, str);
+        exit_shell(data, str, arg);
     else
         data->exit_status = path(data, cmd, arg);
     //printf("exit_status = %d\n", data->exit_status);

@@ -38,6 +38,7 @@ void add_env(t_data *data, char *key, char *value)
     char	*new_env;
     char    *tmp;
 
+
     i = 0;
     copy_env(data);
     while (data->env[i])
@@ -137,6 +138,7 @@ int	ft_export(t_data *data, char **arg)
     char	*value;
     int     env_len;
     char **new_env;
+    char *arg_copy;
 
     i = 0;
 
@@ -179,13 +181,21 @@ int	ft_export(t_data *data, char **arg)
         }
         else
         {    
+            arg_copy = ft_strdup(arg[i]);
             key = ft_strtok(data, arg[i], "=");
             if (key)
                 value = ft_strdup(arg[i] + ft_strlen(key) + 1);
             if (!key || !value)
                 return (ft_putstr_fd("Usage: export NAME=VALUE\n", 1));
             if (search_env(data, key) == -1)
+            {
+                if (!ft_isalpha(key[0]) && key[0] != '_')
+                {
+                    printf("minishell: export: `%s': not a valid identifier\n", arg_copy);
+                    return 1;
+                }
                 add_env(data, key, value);
+            }
             else
                 change_env(data, key, value);
             i++;

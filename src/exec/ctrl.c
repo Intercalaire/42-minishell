@@ -26,19 +26,15 @@ static void handler(int signum)
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
+ //   g_data = signum;
+    
 }
 
-static void quit_handler(int signum)
-{
-    (void)signum;
-    rl_replace_line("", 0);
-    rl_redisplay();
-    write(1, "Minishell >", 11);
-}
+
 
 void ft_sig(void)
 {
 	signal(SIGINT, handler);
-	signal(SIGQUIT, quit_handler);
+    signal(SIGQUIT, SIG_IGN);
 }
 
