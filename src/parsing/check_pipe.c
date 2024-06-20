@@ -33,9 +33,20 @@ int	look_pipe(t_data *data, char *str)
 
 static int	look_pipe_helper(t_data *data, char *str, int i)
 {
+	int in_double_quote = 0;
+	int in_single_quote = 0;
+
 	while (str[i])
 	{
-		if (str[i] == '|')
+		if (str[i] == '\"')
+		{
+			in_double_quote = !in_double_quote;
+		}
+		else if (str[i] == '\'')
+		{
+			in_single_quote = !in_single_quote;
+		}
+		else if (!in_double_quote && !in_single_quote && str[i] == '|')
 		{
 			if (str[i + 1] == '|')
 			{
@@ -45,7 +56,7 @@ static int	look_pipe_helper(t_data *data, char *str, int i)
 		}
 		i++;
 	}
-	if (i > 0 && str[i - 1] == '|')
+	if ((!in_double_quote && !in_single_quote) && i > 0 && str[i - 1] == '|')
 	{
 		ft_little_error_prog(data, str, PIPE);
 		return (1);

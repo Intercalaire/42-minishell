@@ -26,7 +26,7 @@ typedef struct s_command
 char	**lign;
 char	***arg;
 char	**cmd;
-}t_command;
+}	t_command;
 
 typedef struct s_meter
 {
@@ -34,7 +34,7 @@ int	count_outfile;
 int	count_outfile_append;
 int	count_infile;
 int	count_h_doc;
-}t_meter;
+}	t_meter;
 
 typedef struct s_output
 {
@@ -42,7 +42,7 @@ char	***outfile;
 char	***outfile_append;
 char	***infile;
 char	***h_doc;
-}t_output;
+}	t_output;
 
 typedef struct s_data
 {
@@ -55,7 +55,7 @@ char		**env;
 t_output	*output;
 t_meter		*meter;
 t_command	*command;
-}t_data;
+}	t_data;
 
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
@@ -108,8 +108,8 @@ void	exit_shell(t_data *data, char *str, char **arg);
 void	ft_sig(void);
 
 //output
-void	outfile(t_data *data, char *str);
-void	verif_output(t_data *data, char *str);
+int verif_output(t_data *data, int *y,char *str);
+int verif_lign(char *str);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"

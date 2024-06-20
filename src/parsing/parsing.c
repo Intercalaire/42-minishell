@@ -42,7 +42,6 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		if (try_ft_strtok(data, str) == 1)
 			continue ;
-		verif_output(data, str);
 		if (pars_pipe(data) == 2)
 			continue ;
 		my_pipe(data, str);

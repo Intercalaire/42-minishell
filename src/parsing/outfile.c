@@ -108,114 +108,106 @@ void infile_print(t_data *data)
 	}
 }
 
-void	outfile(t_data *data, char *str)
+static int	outfile(t_data *data, int *y, char *str)
 {
-	int i;
-	int j;
-	int k;
-	char *outfile;
+    int z;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	while (str[i] && !(str[i] == '>'))
-		i++;
-	if (str[i] == '>')
-	{
-		i++;
-		while (str[i] && str[i] == ' ')
-			i++;
-		while (str[i + j] && str[i + j] != ' ')
-			j++;
-		outfile = ft_calloc(j + 1, sizeof(char));
-		while (k < j)
-		{
-			outfile[k] = str[i + k];
-			k++;
-		}
-		outfile[k] = '\0';
-		data->output->outfile[0] = ft_strdup(outfile);
-		outfile_print(data);
-	}
+    z = 0;
+    while (z < data->nbr_arg)
+    {
+        data->output->outfile[*y][z] = ft_strdup_2(data, str);
+        if (!data->output->outfile[*y][z])
+        {
+            ft_free_data_no_str(data);
+            return (2);
+        }
+        z++;
+    }
+	outfile_print(data);
+    return (0);
 }
 
-void outfile_append(t_data *data, char *str)
+static int outfile_append(t_data *data, int *y, char *str)
 {
-	int i;
-	int j;
-	int k;
-	char *outfile;
+    int z;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	while (str[i] && !(str[i] == '>' && str[i+1] == '>'))
-		i++;
-	if (str[i] == '>')
-	{
-		i += 2;
-		while (str[i] && str[i] == ' ')
-			i++;
-		while (str[i + j] && str[i + j] != ' ')
-			j++;
-		outfile = ft_calloc(j + 1, sizeof(char));
-		while (k < j)
-		{
-			outfile[k] = str[i + k];
-			k++;
-		}
-		outfile[k] = '\0';
-		data->output->outfile_append[0] = ft_strdup(outfile);
-		outfile_append_print(data);
-	}
+    z = data->meter->count_outfile_append;
+    while (z < data->nbr_arg)
+    {
+        data->output->outfile_append[*y][z] = ft_strdup_2(data, str);
+        if (!data->output->outfile_append[*y][z])
+        {
+            ft_free_data_no_str(data);
+            return (2);
+        }
+        z++;
+    }
+	outfile_append_print(data);
+    return (0);
 }
 
-void	infile(t_data *data, char *str)
+static int	infile(t_data *data, int *y, char *str)
 {
-	int i;
-	int j;
-	int k;
-	char *infile;
+    int z;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	while (str[i] && !(str[i] == '<'))
-		i++;
-	if (str[i] == '<')
-	{
-		i++;
-		while (str[i] && str[i] == ' ')
-			i++;
-		while (str[i + j] && str[i + j] != ' ')
-			j++;
-		infile = ft_calloc(j + 1, sizeof(char));
-		while (k < j)
-		{
-			infile[k] = str[i + k];
-			k++;
-		}
-		infile[k] = '\0';
-		data->output->infile[0] = ft_strdup(infile);
-		infile_print(data);
-	}
+    z = data->meter->count_infile;
+    while (z < data->nbr_arg)
+    {
+        data->output->infile[*y][z] = ft_strdup_2(data, str);
+        if (!data->output->infile[*y][z])
+        {
+            ft_free_data_no_str(data);
+            return (2);
+        }
+        z++;
+    }
+	infile_print(data);
+    return (0);
 }
 
-void	h_doc(t_data *data, char *str)
+static int	h_doc(t_data *data, int *y, char *str)
 {
-	int i;
-	int j;
+    int z;
 
-	i = 0;
-	j = 0;
-	while(j < data->meter->count_h_doc)
-	{
-		data->output->h_doc[i][j] = ft_strdup(str);
-		if (!data->output->h_doc[i][j])
-			ft_error_prog(data, "Allocation error", "Error");
-		j++;
-	}
+    z = data->meter->count_h_doc;
+    while (z < data->nbr_arg)
+    {
+        data->output->h_doc[*y][z] = ft_strdup_2(data, str);
+        if (!data->output->h_doc[*y][z])
+        {
+            ft_free_data_no_str(data);
+            return (2);
+        }
+        z++;
+    }
+	h_doc_print(data);
+    return (0);
+}
 
+void	init_global(t_data *data)
+{
+	data->output->h_doc = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+	data->output->infile = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+	data->output->outfile = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+	data->output->outfile_append = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
+	if (!data->output->h_doc || !data->output->infile || !data->output->outfile || !data->output->outfile_append)
+		ft_error_prog(data, "Allocation error", "Error");
+}
+
+void	init_output(t_data *data, int *y)
+{
+	data->output->outfile[*y] = ft_calloc(data->meter->count_outfile + 1, sizeof(char *));
+	if (!data->output->outfile)
+		ft_error_prog(data, "Allocation error", "Error");
+	data->output->outfile_append[*y] = ft_calloc(data->meter->count_outfile_append + 1, sizeof(char *));
+	if (!data->output->outfile_append)
+		ft_error_prog(data, "Allocation error", "Error");
+	data->output->infile[*y] = ft_calloc(data->meter->count_infile + 1, sizeof(char *));
+	if (!data->output->infile)
+		ft_error_prog(data, "Allocation error", "Error");
+	data->output->h_doc[*y] = ft_calloc(data->meter->count_h_doc + 1, sizeof(char *));
+	if (!data->output->h_doc)
+		ft_error_prog(data, "Allocation error", "Error");
 }
 
 void count_output(t_data *data, char *str)
@@ -225,8 +217,8 @@ void count_output(t_data *data, char *str)
     i = 0;
     while (str[i])
     {
-        if (str[i] == '>' && str[i + 1] != '>')
-            data->meter->count_outfile++;
+		if (str[i] == '>' && str[i + 1] != '>')
+			data->meter->count_outfile++;
         if (str[i] == '>' && str[i + 1] == '>')
         {
             data->meter->count_outfile_append++;
@@ -242,52 +234,44 @@ void count_output(t_data *data, char *str)
         i++;
     }
 }
-
-void verif_output(t_data *data, char *str)
+int verif_lign(char *str)
 {
-	int i;
-
-	i = 0;
-	count_output(data, str);
-	init_output(data);
-	while (str[i])
-	{
-		if (str[i] == '>' && str[i + 1] != '>')
-			outfile(data, str);
-		if (str[i] == '>' && str[i + 1] == '>')
-		{
-			outfile_append(data, str);
-			i++;
-		}
-		if (str[i] == '<' && str[i + 1] != '<')
-			infile(data, str);
-		if (str[i] == '<' && str[i + 1] == '<')
-		{
-				h_doc(data, str);
-				i++;
-		}
-		i++;
-	}
+	if (!str)
+		return (2);
+	printf("str : %s\n", str);
+	if (str[0] == '>' || str[0] == '<')
+		return (0);
+	return (2);
 }
 
-void	init_output(t_data *data)
+int verif_output(t_data *data, int *y, char *str)
 {
-	data->output->h_doc = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
-	data->output->infile = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
-	data->output->outfile = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
-	data->output->outfile_append = ft_calloc(data->nbr_pipe + 1, sizeof(char **));
-	if (!data->output->h_doc || !data->output->infile || !data->output->outfile || !data->output->outfile_append)
-		ft_error_prog(data, "Allocation error", "Error");
-	data->output->outfile = ft_calloc(data->meter->count_outfile + 1, sizeof(char *));
-	if (!data->output->outfile)
-		ft_error_prog(data, "Allocation error", "Error");
-	data->output->outfile_append = ft_calloc(data->meter->count_outfile_append + 1, sizeof(char *));
-	if (!data->output->outfile_append)
-		ft_error_prog(data, "Allocation error", "Error");
-	data->output->infile = ft_calloc(data->meter->count_infile + 1, sizeof(char *));
-	if (!data->output->infile)
-		ft_error_prog(data, "Allocation error", "Error");
-	data->output->h_doc = ft_calloc(data->meter->count_h_doc + 1, sizeof(char *));
-	if (!data->output->h_doc)
-		ft_error_prog(data, "Allocation error", "Error");
+    int i;
+
+    i = 0;
+	if (!str)
+		return (2);
+	printf("strtg : %s\n", str);
+	init_global(data);
+    count_output(data, str);
+    init_output(data, y);
+    while (str[i])
+    {
+        if (str[i] == '>' && str[i + 1] != '>')
+            outfile(data, y, str);
+        if (str[i] == '>' && str[i + 1] == '>')
+        {
+            outfile_append(data, y, str);
+            i++;
+        }
+        if (str[i] == '<' && str[i + 1] != '<')
+            infile(data, y, str);
+        if (str[i] == '<' && str[i + 1] == '<')
+        {
+                h_doc(data, y, str);
+                i++;
+        }
+        i++;
+    }
+	return (0);
 }

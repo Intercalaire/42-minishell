@@ -37,41 +37,41 @@ static void	utils_pars_pipe(t_data *data)
 		ft_error_prog(data, "Allocation error", "Error");
 }
 
-// static void	print_cmd(t_data *data)
-// {
-// 	int	i;
+static void	print_cmd(t_data *data)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (data->command->cmd[i])
-// 	{
-// 		printf("cmd[%d] : %s\n", i, data->command->cmd[i]);
-// 		i++;
-// 	}
-// }
+	i = 0;
+	while (data->command->cmd[i])
+	{
+		printf("cmd[%d] : %s\n", i, data->command->cmd[i]);
+		i++;
+	}
+}
 
-// static void	print_arg(t_data *data)
-// {
-// 	int	i;
-// 	int	y;
+static void	print_arg(t_data *data)
+{
+	int	i;
+	int	y;
 
-// 	i = 0;
-// 	if (data->command->arg != NULL)
-// 	{
-// 		while (data->command->arg[i])
-// 		{
-// 			y = 0;
-// 			if (data->command->arg[i] != NULL)
-// 			{
-// 				while (data->command->arg[i][y])
-// 				{
-// 					printf("arg[%d][%d] : %s\n", i, y, data->command->arg[i][y]);
-// 					y++;
-// 				}
-// 			}
-// 			i++;
-// 		}
-// 	}
-// }
+	i = 0;
+	if (data->command->arg != NULL)
+	{
+		while (data->command->arg[i])
+		{
+			y = 0;
+			if (data->command->arg[i] != NULL)
+			{
+				while (data->command->arg[i][y])
+				{
+					printf("arg[%d][%d] : %s\n", i, y, data->command->arg[i][y]);
+					y++;
+				}
+			}
+			i++;
+		}
+	}
+}
 
 static void	handle_pipe(t_data *data, int *i, int *y)
 {
@@ -91,8 +91,8 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 		ft_error_prog(data, "Allocation error", "Error");
 	while (*z < data->nbr_arg)
 	{
-		if (data->command->lign[i] == '>')
-			verif_output(data, data->command->lign[(*i)++]);
+		if (verif_lign(data->command->lign[(*i)]) == 0)
+			verif_output(data, y, data->command->lign[++(*i)]);
 		data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
 		if (!data->command->arg[*y][*z])
 		{
@@ -135,7 +135,7 @@ int	pars_pipe(t_data *data)
 		i++;
 		y++;
 	}
-	// print_cmd(data);
-	// print_arg(data);
+	print_cmd(data);
+	print_arg(data);
 	return (0);
 }

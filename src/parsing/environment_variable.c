@@ -41,8 +41,7 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	}
 	str[j] = '\0';
 	str = ft_strdup(environment_variable(data, str));
-	//result = ft_trim_quote(str);
-	result = ft_strdup(str);
+	result = ft_trim_quote(str);
 	free(str);
 	(void)data;
 	return (result);

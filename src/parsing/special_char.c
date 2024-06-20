@@ -12,6 +12,8 @@
 
 #include "../../include/parsing/minishell.h"
 
+static int double_output(t_data *data, char *str);
+
 int	special_char(t_data *data, char *str)
 {
 	int	i;
@@ -27,6 +29,32 @@ int	special_char(t_data *data, char *str)
 			in_quote = 1;
 		if ((str[i] == ';' || str[i] == '\\'
 				|| str[i] == '&' || str[i] == '*') && in_quote == 0)
+		{
+			ft_little_error_prog(data, str, TOKEN);
+			return (1);
+		}
+		i++;
+	}
+	if (double_output(data, str) == 1)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+static int double_output(t_data *data, char *str)
+{
+	int		i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
+		{
+			ft_little_error_prog(data, str, TOKEN);
+			return (1);
+		}
+		if (str[i] == '<' && str[i + 1] == ' ' && str[i + 2] == '<')
 		{
 			ft_little_error_prog(data, str, TOKEN);
 			return (1);
