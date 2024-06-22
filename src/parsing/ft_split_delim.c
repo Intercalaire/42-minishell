@@ -23,9 +23,12 @@ static int	handle_quotes(char *str, char *new_str, int i, int j)
 
 static int	handle_special_chars(char *str, char *new_str, int i, int j)
 {
+	if (i > 0 && str[i - 1] != ' ' && new_str[j - 1] != ' ' && !(str[i] == '<' && str[i - 1] == '<' && str[i + 1] != '<'))
+	{
+		new_str[j++] = ' ';
+	}
 	new_str[j++] = str[i];
-	if (str[i + 1] != '\0' && str[i + 1] != ' ' && new_str[j - 1] != ' '
-		&& !(str[i] == '>' && str[i + 1] == '>') && !(str[i] == '<' && str[i + 1] == '<'))
+	if (str[i + 1] != '\0' && str[i + 1] != ' ' && new_str[j - 1] != ' ' && !(str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<'))
 	{
 		new_str[j++] = ' ';
 	}
