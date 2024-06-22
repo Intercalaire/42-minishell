@@ -12,3 +12,14 @@ ft_trim_quote
 ->faire une copie du tableau en passant les char
 ->renvoyer la copie
 
+
+int		nbr_arg;
+
+
+//output
+int verif_output(t_data *data, int *y, int *z, char *str);
+int verif_lign(t_data *data, char *str);
+
+	data->output->append = 0;
+	data->output->sign = 0;
+	data->output->here_d = 0;

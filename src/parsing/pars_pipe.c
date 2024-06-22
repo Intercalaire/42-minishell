@@ -91,8 +91,8 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 		ft_error_prog(data, "Allocation error", "Error");
 	while (*z < data->nbr_arg)
 	{
-		if (verif_lign(data->command->lign[(*i)]) == 0)
-			verif_output(data, y, data->command->lign[++(*i)]);
+		if (verif_lign(data, data->command->lign[(*i)]) == 0)
+			verif_output(data, y, z, data->command->lign[(*i) + 1]);
 		data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
 		if (!data->command->arg[*y][*z])
 		{
@@ -112,6 +112,7 @@ int	pars_pipe(t_data *data)
 
 	i = 0;
 	y = 0;
+	data->meter->nbr_pipe = data->nbr_pipe;
 	utils_pars_pipe(data);
 	while (data->nbr_pipe-- >= 0)
 	{

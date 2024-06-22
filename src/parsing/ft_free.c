@@ -51,6 +51,8 @@ void	ft_free_strtab(char **tab)
 	int	i;
 
 	i = 0;
+	if (!tab)
+		return ;
 	while (tab[i])
 	{
 		if (tab[i])
@@ -66,17 +68,22 @@ void	ft_free_strarg(char ***tab)
 	int	j;
 
 	i = 0;
-	while (tab[i])
+	if (tab && *tab)
 	{
-		j = 0;
-		while (tab[i][j])
+		while (tab[i])
 		{
-			if (tab[i][j])
-				free(tab[i][j]);
-			j++;
+			j = 0;
+			if (!tab[i])
+				return ;
+			while (tab[i][j])
+			{
+				if (tab[i][j])
+					free(tab[i][j]);
+				j++;
+			}
+			free(tab[i]);
+			i++;
 		}
-		free(tab[i]);
-		i++;
+		free(tab);
 	}
-	free(tab);
 }

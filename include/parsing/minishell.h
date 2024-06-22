@@ -30,14 +30,15 @@ char	**cmd;
 
 typedef struct s_meter
 {
-int	count_outfile;
-int	count_outfile_append;
-int	count_infile;
-int	count_h_doc;
+int		nbr_arg;
+int		nbr_pipe;
 }	t_meter;
 
 typedef struct s_output
 {
+int		append;
+int		sign;
+int		here_d;
 char	***outfile;
 char	***outfile_append;
 char	***infile;
@@ -110,8 +111,8 @@ void	ft_sig(t_data *data);
 char    **cpy_envir(char **env);
 
 //output
-int verif_output(t_data *data, int *y,char *str);
-int verif_lign(char *str);
+int verif_output(t_data *data, int *y, int *z, char *str);
+int verif_lign(t_data *data, char *str);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"
