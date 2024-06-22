@@ -35,6 +35,7 @@ static void	utils_pars_pipe(t_data *data)
 	data->command->arg = ft_calloc(data->nbr_pipe + 2, sizeof(char **));
 	if (!data->command->arg)
 		ft_error_prog(data, "Allocation error", "Error");
+	init_global(data);
 }
 
 static void	print_cmd(t_data *data)
@@ -86,23 +87,23 @@ static void	handle_pipe(t_data *data, int *i, int *y)
 static int	handle_args(t_data *data, int *i, int *y, int *z)
 {
 	count_args(data, *i);
-	data->command->arg[*y] = ft_calloc(data->nbr_arg + 1, sizeof(char *));
-	if (!data->command->arg[*y])
-		ft_error_prog(data, "Allocation error", "Error");
+	count_all(data, y);
+
 	while (*z < data->nbr_arg)
 	{
-		if (verif_lign(data, data->command->lign[(*i)]) == 0)
-			verif_output(data, y, z, data->command->lign[(*i) + 1]);
+		if (data->command->lign[(*i) + 1] && verif_lign(data, data->command->lign[(*i)]) == 0)
+			verif_output(data, y, data->command->lign[(*i) + 1]);
 		else
 		{
-			data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
+			data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
 			if (!data->command->arg[*y][*z])
 			{
 				ft_free_data_no_str(data);
 				return (2);
 			}
-			(*z)++;
+		(*z)++;
 		}
+		(*i)++;
 	}
 	return (0);
 }
@@ -120,6 +121,10 @@ int	pars_pipe(t_data *data)
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = 0;
+		data->meter->count_outfile = 0;
+		data->meter->count_h_doc = 0;
+		data->meter->count_infile = 0;
+		data->meter->count_outfile_append = 0;
 		data->command->cmd[y] = ft_strdup_2(data, data->command->lign[i++]);
 		if (!data->command->cmd[y])
 		{

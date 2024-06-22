@@ -1,25 +1,3 @@
-dans strtok je:
+bug quand plusieurs outfile ex (toto > tg > hsolet)
 
-compte le nombre de pipe
-check si pipe dans guillemets
-faire strtrim qui supprime tous les "" ou '' selon celui en exterieur ex : si "" on suppr toutes les "" si '' on suppr toutes les ''
-
-ft_trim_quote
-->lire la chaine de charactere jusqu'a trouver ' ou "
-->met la type de quote dans un char 'c'
-->compte le nombre de fois ou tu a le char c
-->alloc a la taille du mot - le nombre de fois ou tu as le char c
-->faire une copie du tableau en passant les char
-->renvoyer la copie
-
-
-int		nbr_arg;
-
-
-//output
-int verif_output(t_data *data, int *y, int *z, char *str);
-int verif_lign(t_data *data, char *str);
-
-	data->output->append = 0;
-	data->output->sign = 0;
-	data->output->here_d = 0;
+quand trop de outfile on a des doubles free

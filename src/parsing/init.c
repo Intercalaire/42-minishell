@@ -35,5 +35,8 @@ void	init_data(t_data *data)
 	data->output->here_d = 0;
 	data->meter->nbr_arg = 0;
 	data->meter->nbr_pipe = 0;
-
+	data->meter->nbr_outfile = 0;
+	data->meter->nbr_h_doc = 0;
+	data->meter->nbr_infile = 0;
+	data->meter->nbr_outfile_append = 0;
 }
