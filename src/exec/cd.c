@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:44:47 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/29 10:08:59 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/06/22 07:44:35 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -15,71 +15,91 @@
 #include "../../include/parsing/minishell.h"
 #include <limits.h>
 
-
-
-int cd(t_data *data, char **arg)
+static void	env_update(t_data *data, char *oldpwd)
 {
-    int k;
-    char *oldpwd;
-    char *newpwd;
-    char *home;
-    char *error_msg;
+	char	*newpwd;
 
-    if (arg && arg[1])
-    {
-        printf("cd: too many arguments");
-        return (1);
-    }
-    k = search_env(data, "HOME");
-    if (k == -1 && !arg)
-    {
-        printf("cd: HOME not set");
-        return (1);
-    }
-    oldpwd = ft_calloc(PATH_MAX, sizeof(char));
-    getcwd(oldpwd, PATH_MAX);
-    home = ft_strdup(data->env[k] + 5);
-    printf("\n\nhome = |%s|\n\n", home);
-    if (!arg || ft_strncmp(arg[0], "~", 1) == 0 || ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
-        {
-                char *path;
-    if (!arg || arg[0][1] == '\0') // if arg[0] is just "~"
-    {
-        path = ft_strdup(home);
-    }
-    else // if arg[0] is "~" followed by other characters
-    {
-        path = ft_strjoin(home, arg[0] + 1);
-    }
-    if (chdir(path) != 0)
-    {
-        perror("cd: error changing directory");
-    }
-    free(path);
-        }
-    else
-    {
-        if (chdir(arg[0]) != 0)
-        {
-        error_msg = ft_calloc(strlen("cd: ") + strlen(arg[0]) + 1, sizeof(char));
-            ft_strlcpy(error_msg, "cd: ", strlen("cd: ") + 1);
-            ft_strlcat(error_msg, arg[0], strlen("cd: ") + strlen(arg[0]) + 1);
-            perror(error_msg);
-            free(error_msg);
-        }
-    }
-newpwd = ft_calloc(PATH_MAX, sizeof(char));
-getcwd(newpwd, PATH_MAX);
-if (search_env(data, "OLDPWD") == -1)
-    add_env(data, "OLDPWD", oldpwd);
-else
-    change_env(data, "OLDPWD", oldpwd);
-if (search_env(data, "PWD") == -1)
-    add_env(data, "PWD", newpwd);
-else
-    change_env(data, "PWD", newpwd);
-free(oldpwd);
-free(newpwd);
-free(home);
-return (0);
+	newpwd = ft_calloc(PATH_MAX, sizeof(char));
+	getcwd(newpwd, PATH_MAX);
+	if (search_env(data, "OLDPWD") == -1)
+		add_env(data, "OLDPWD", oldpwd);
+	else
+		change_env(data, "OLDPWD", oldpwd);
+	if (search_env(data, "PWD") == -1)
+		add_env(data, "PWD", newpwd);
+	else
+		change_env(data, "PWD", newpwd);
+	free(newpwd);
+	free(oldpwd);
+}
+
+static void	create_path(char *home, char **arg)
+{
+	char	*path;
+
+	if (!arg || arg[0][1] == '\0')
+		path = ft_strdup(home);
+	else
+	{
+		if (ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
+			path = ft_strdup(arg[0]);
+		else
+			path = ft_strjoin(home, arg[0] + 1);
+		if (chdir(path) != 0)
+			perror("cd: error changing directory");
+	}
+	free(path);
+}
+
+static void	directory_error(char **arg)
+{
+	char	*error_msg;
+
+	if (chdir(arg[0]) != 0)
+	{
+		error_msg = ft_calloc(strlen("cd: ")
+				+ strlen(arg[0]) + 1, sizeof(char));
+		ft_strlcpy(error_msg, "cd: ", strlen("cd: ") + 1);
+		ft_strlcat(error_msg, arg[0], strlen("cd: ") + strlen(arg[0]) + 1);
+		perror(error_msg);
+		free(error_msg);
+	}
+}
+
+static int	check_arg(char **arg, int k)
+{
+	if (arg && arg[1])
+	{
+		printf("cd: too many arguments");
+		return (1);
+	}
+	if (k == -1 && !arg)
+	{
+		printf("cd: HOME not set");
+		return (1);
+	}
+	return (0);
+}
+
+int	cd(t_data *data, char **arg)
+{
+	char	*oldpwd;
+	char	*home;
+	int		k;
+
+	k = 0;
+	k = search_env(data, "HOME");
+	if (check_arg(arg, k))
+		return (1);
+	oldpwd = ft_calloc(PATH_MAX, sizeof(char));
+	getcwd(oldpwd, PATH_MAX);
+	home = ft_strdup(data->env[k] + 5);
+	if (!arg || ft_strncmp(arg[0], "~", 1) == 0
+		|| ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
+		create_path(home, arg);
+	else
+		directory_error(arg);
+	env_update(data, oldpwd);
+	free(home);
+	return (0);
 }

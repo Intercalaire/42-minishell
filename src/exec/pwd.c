@@ -56,13 +56,16 @@ void cpy_env(t_data *data, char **environnement)
 	data->env = ft_calloc(len_env + 1, sizeof(char *));
 	if (!data->env)
 		return;
-	// exit_error("Alloc Error\n");
 	while (environnement[i])
 	{
 		data->env[i] = ft_strdup(environnement[i]);
 		if (!data->env[i])
-			// exit_error("Alloc Error\n");
-			return;
+        {
+            // Si l'allocation de mémoire échoue, libérer toute la mémoire déjà allouée
+            ft_free_strtab(data->env);
+            return;
+        }
 		i++;
 	}
+
 }

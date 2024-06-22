@@ -6,12 +6,9 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:05:46 by hsolet            #+#    #+#             */
-/*   Updated: 2024/05/04 12:27:09 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/06/22 07:54:16 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//ctrl C = SIGINT -> rl_on_new_line
-//ctrl \ = SIGQUIT
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdio.h>
@@ -19,22 +16,34 @@
 #include <stdlib.h>
 #include <readline/history.h>
 #include "../../include/parsing/minishell.h"
-static void handler(int signum)
+
+static void	handler(int signum)
 {
 	(void)signum;
 	printf("\n");
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
- //   g_data = signum;
-    
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	//g_data = signum;
 }
 
+static void	sigquit_handler(int signum)
+{
+	(void)signum;
+	printf("Quit (core dumped)\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	//g_data = signum;
+}
 
-
-void ft_sig(void)
+void	ft_sig(t_data *data)
 {
 	signal(SIGINT, handler);
-    signal(SIGQUIT, SIG_IGN);
+	if (data->sig_status == 0)
+		signal(SIGQUIT, SIG_IGN);
+	else
+	{
+		signal(SIGQUIT, sigquit_handler);
+		data->sig_status = 0;
+	}
 }
-

@@ -52,6 +52,7 @@ int			nbr_pipe;
 int 		nbr_arg;
 int			exit_status;
 char		**env;
+int         sig_status;
 t_output	*output;
 t_meter		*meter;
 t_command	*command;
@@ -95,7 +96,7 @@ int		ft_export(t_data *data, char **arg);
 int		exec(t_data *data, char *cmd, char **arg, char *str);
 int		path(t_data *data, char *cmd, char **arg);
 int		print_env(t_data *data);
-int		echo(t_data *data, char **arg);
+int		echo(char **arg);
 int		cd(t_data *data, char **arg);
 int		search_env(t_data *data, char *str);
 int		my_pipe(t_data *data, char *str);
@@ -105,7 +106,8 @@ void	cpy_env(t_data *data, char **environnement);
 void	change_env(t_data *data, char *key, char *value);
 void	add_env(t_data *data, char *key, char *value);
 void	exit_shell(t_data *data, char *str, char **arg);
-void	ft_sig(void);
+void	ft_sig(t_data *data);
+char    **cpy_envir(char **env);
 
 //output
 int verif_output(t_data *data, int *y,char *str);

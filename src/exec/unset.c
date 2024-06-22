@@ -21,6 +21,11 @@ int ft_unset(t_data *data, char **arg)
 
 	i = 0;
 	j = 0;
+    	while (data->env[j])
+    	    j++;
+    	new_env = ft_calloc((j + 1), sizeof(char *));
+    	if (!new_env)
+		    return (1);
 	while (arg[i])
 	{
 		key = ft_strdup(arg[i]);
@@ -29,14 +34,6 @@ int ft_unset(t_data *data, char **arg)
 		{
 			i++;
 			continue ;
-		}
-    	while (data->env[j] && *data->env[j] != '\0')
-    	    j++;
-    	new_env = ft_calloc((j + 1), sizeof(char *));
-    	if (!new_env)
-		{
-			free(key);
-		    return (1);
 		}
     	j = 0;
     	while (j < env_index) 
@@ -48,14 +45,13 @@ int ft_unset(t_data *data, char **arg)
 		while (data->env[j + 1])
     	{
     	    new_env[j] = ft_strdup(data->env[j + 1]);
-    	    free(data->env[j + 1]);
     	    j++;
     	}
-    	free(data->env);
-    	data->env = new_env;
+    	data->env = cpy_envir(new_env);
 		i++;
 	}
 	free(key);
-	free(new_env);
+	if (new_env)
+		ft_free_strtab(new_env);
 	return (0);
 }

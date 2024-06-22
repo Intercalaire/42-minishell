@@ -24,10 +24,9 @@ static void copy_env(t_data *data)
     while (data->env[i]) 
     {
         new_env[i] = ft_strdup(data->env[i]);
-        free(data->env[i]);
         i++;
     }
-    free(data->env);
+    ft_free_strtab(data->env);
     cpy_env(data, new_env);
     ft_free_strtab(new_env);
 }
@@ -38,17 +37,22 @@ void add_env(t_data *data, char *key, char *value)
     char	*new_env;
     char    *tmp;
 
-
     i = 0;
     copy_env(data);
     while (data->env[i])
         i++;
     new_env = ft_strdup(key);
-    tmp = ft_strjoin(new_env, "=");
-    free(new_env);
-    new_env = ft_strjoin(tmp, value);
-    free(tmp);
-    data->env[i] = ft_strdup(new_env);
+    if (value)
+    {
+        tmp = ft_strjoin(new_env, "=");
+        free(new_env);
+        new_env = ft_strjoin(tmp, value);
+        free(tmp);
+    }
+    free(data->env[i - 1]);
+    data->env[i - 1] = ft_strdup(new_env);
+    free(data->env[i]);
+    data->env[i] = NULL;
     free(new_env);
 }
 
@@ -59,16 +63,24 @@ void change_env(t_data *data, char *key, char *value)
     char    *tmp;
 
     i = search_env(data, key);
+    if (i == -1) {
+        printf("Variable '%s' not found in environment\n", key);
+        return;
+    }
     new_env = ft_strdup(key);
     tmp = ft_strjoin(new_env, "=");
     free(new_env);
-    new_env = tmp;
+    new_env = ft_strdup(tmp);
+    free(tmp);
     tmp = ft_strjoin(new_env, value);
     free(new_env);
-    new_env = tmp;
+    new_env = ft_strdup(tmp);
+    free(tmp);
+    printf("new_env : %s\n", new_env);
     free(data->env[i]);
     data->env[i] = ft_strdup(new_env);
     free(new_env);
+
 }
 
 static void cat_env(t_data *data, char *key, char *value)
@@ -81,7 +93,7 @@ static void cat_env(t_data *data, char *key, char *value)
     tmp = ft_strdup(data->env[i]);
     new_env = ft_strjoin(tmp, value);
     free(data->env[i]);
-    data->env[i] = new_env;
+    data->env[i] = ft_strdup(new_env);
     free(tmp);
     free(new_env);
 }
@@ -98,19 +110,22 @@ static char **bubble_sort(char **arr, int n)
         {
             if (ft_strncmp(arr[j], arr[j + 1], ft_strlen(arr[j + 1])) > 0)
             {
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+                temp = ft_strdup(arr[j]);
+                free(arr[j]);
+                arr[j] = ft_strdup(arr[j + 1]);
+                free(arr[j + 1]);
+                arr[j + 1] = ft_strdup(temp);
+                free(temp);
             }
             j++;
+    
         }
         i++;
     }
-    free(temp);
     return (arr);
 }
 
-static char **cpy_envir(char **env)
+char **cpy_envir(char **env)
 {
     int i = 0;
     int env_len = 0;
@@ -127,7 +142,6 @@ static char **cpy_envir(char **env)
         new_env[i] = ft_strdup(env[i]);
         i++;
     }
-    new_env[i] = NULL;
     return (new_env);
 }
 
@@ -151,10 +165,19 @@ int	ft_export(t_data *data, char **arg)
         bubble_sort(new_env, env_len);
         while (new_env[i])
         {
-            printf("declare -x %s\n", new_env[i]);
+            value = ft_strdup(new_env[i]);
+            key = ft_strtok(data, new_env[i], "=");
+            free(new_env[i]);
+            if (ft_strlen(value) - ft_strlen(key) == 0)
+                printf("declare -x %s\n", key);
+            else 
+                printf("declare -x %s=\"%s\"\n", key, value + ft_strlen(key) + 1);
+            free(key);
+            free(value);
             i++;
         }
-        ft_free_strtab(new_env);
+        free(new_env);
+   
         return (0);
     }
     int s = 0;
@@ -165,43 +188,76 @@ int	ft_export(t_data *data, char **arg)
     }
     while (arg[i])
     {
+
         if (!ft_strchr(arg[i], '='))
+        {
+            printf("test\n");
+            if (search_env(data, arg[i]) == -1 && arg[i])
             {
-                i++;
-                continue ;
+                if (!ft_isalpha(arg[i][0]) && arg[i][0] != '_')
+                {
+                    printf("minishell: export: `%s': not a valid identifier\n", arg[i]);
+                    return 1;
+                }
+                add_env(data, arg[i], NULL); 
             }
+            i++;
+            continue;
+        }
         if (ft_strnstr(arg[i], "+=", ft_strlen(arg[i])) != NULL)
         {
             key = ft_strtok(data, arg[i], "+=");
             if (key)
                 value = ft_strdup(arg[i] + ft_strlen(key) + 2);
-            cat_env(data, key, value);
+            if (search_env(data, key) == -1)  // Si la clé n'existe pas déjà
+            {
+                add_env(data, key, value);  // Ajouter la nouvelle variable
+            }
+            else
+            {
+                cat_env(data, key, value);  // Sinon, concaténer la valeur à la variable existante
+            }
+            free(key);
+            free(value);
             i++;
-            continue ;
+            continue;
         }
         else
         {    
             arg_copy = ft_strdup(arg[i]);
             key = ft_strtok(data, arg[i], "=");
             if (key)
-                value = ft_strdup(arg[i] + ft_strlen(key) + 1);
-            if (!key || !value)
-                return (ft_putstr_fd("Usage: export NAME=VALUE\n", 1));
+            {
+                if (ft_strlen(arg[i]) == ft_strlen(key) + 1)
+                    value = ft_strdup("");
+                else
+                    value = ft_strdup(arg[i] + ft_strlen(key) + 1);
+            }
             if (search_env(data, key) == -1)
             {
                 if (!ft_isalpha(key[0]) && key[0] != '_')
                 {
                     printf("minishell: export: `%s': not a valid identifier\n", arg_copy);
+                    free(arg_copy);
+                    free(key);
+                    free(value);
                     return 1;
                 }
                 add_env(data, key, value);
             }
             else
+                {
+                    printf("test2\n");
+                    printf("key : %s\n", key);
+                    printf("value : %s\n", value);
                 change_env(data, key, value);
+                }
+            free(arg_copy);
+            free(key);
+            if (value)
+                free(value);
             i++;
         }
     }
-    free (key);
-    free (value);
     return (0);
 }

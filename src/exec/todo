@@ -30,3 +30,7 @@ Envoyer les retours d'erreurs dans une variable a l'interieur de data
 	-> (pour parsing) envoyer directement le itoa de la variable dans le cas de "echo $?"
 	
 Ajouter les bon retour d'erreur, que ce soit la valeur ou le message d'erreur (via perror)
+
+pipe, outfile,...->>>>>>
+
+Il me faut un programme permettant de gerer des pipes comme dans bash ainsi qu'un nombre indefinis de outfiles, infiles, heredocs et outfiles append par commande, il faudra donc cree un fichier pour chaque outfiles mais ecrire que dans le dernier appeler par la commande il n'y a egalement que le dernier infiles qui doit etre ecrit cependant si il y a un infile ainsi qu'un heredocs les 2 doivent etre concatener
