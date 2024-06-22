@@ -27,8 +27,16 @@ void outfile_print(t_data *data)
 			{
 				while (data->output->outfile[i][y])
 				{
-					printf("outfile[%d][%d] : %s\n", i, y, data->output->outfile[i][y]);
-					y++;
+					if (data->output->outfile[i][y] != NULL) // Check if the memory has been allocated
+       				{
+            			printf("outfile[%d][%d] : %s\n", i, y, data->output->outfile[i][y]);
+            			y++;
+        			}
+        			else
+        			{
+           				printf("Memory not allocated for outfile[%d][%d]\n", i, y);
+            			break;
+        			}
 				}
 			}
 			i++;
@@ -110,12 +118,8 @@ void infile_print(t_data *data)
 
 static int	outfile(t_data *data, int *y, char *str)
 {
-	int len;
-	
 
-	len = data->nbr_arg;
-    while (data->meter->count_outfile < len - 1)
-    {
+
         data->output->outfile[*y][data->meter->count_outfile] = ft_strdup(str);
         if (!data->output->outfile[*y][data->meter->count_outfile])
         {
@@ -123,19 +127,14 @@ static int	outfile(t_data *data, int *y, char *str)
             return (2);
         }
         data->meter->count_outfile++;
-    }
 	outfile_print(data);
     return (0);
 }
 
 static int outfile_append(t_data *data, int *y, char *str)
 {
-	int len;
 
 
-	len = data->nbr_arg;
-    while (data->meter->count_outfile_append < len - 1)
-    {
         data->output->outfile_append[*y][data->meter->count_outfile_append] = ft_strdup(str);
         if (!data->output->outfile_append[*y][data->meter->count_outfile_append])
         {
@@ -143,20 +142,14 @@ static int outfile_append(t_data *data, int *y, char *str)
             return (2);
         }
         data->meter->count_outfile_append++;
-    }
+    
 	outfile_append_print(data);
     return (0);
 }
 
 static int	infile(t_data *data, int *y, char *str)
 {
-    
-	int len;
 
-
-	len = data->nbr_arg;
-    while (data->meter->count_infile < len - 1)
-    {
         data->output->infile[*y][data->meter->count_infile] = ft_strdup(str);
         if (!data->output->infile[*y][data->meter->count_infile])
         {
@@ -164,20 +157,14 @@ static int	infile(t_data *data, int *y, char *str)
             return (2);
         }
         data->meter->count_infile++;
-    }
+    
 	infile_print(data);
     return (0);
 }
 
 static int	h_doc(t_data *data, int *y, char *str)
 {
-    
-	int len;
 
-
-	len = data->nbr_arg;
-    while (data->meter->count_h_doc < len - 1)
-    {
         data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup(str);
         if (!data->output->h_doc[*y][data->meter->count_h_doc])
         {
@@ -185,7 +172,7 @@ static int	h_doc(t_data *data, int *y, char *str)
             return (2);
         }
         data->meter->count_h_doc++;
-    }
+    
 	h_doc_print(data);
     return (0);
 }
@@ -206,26 +193,21 @@ int count_output(t_data *data, char *str)
     int i;
 
     i = 0;
-	data->meter->nbr_arg = 0;
-    while (str[i])
-    {
+
         if (str[i] == '>' && str[i + 1] != '>')
-            data->meter->nbr_outfile++;
-        if (str[i] == '>' && str[i + 1] == '>')
+            data->meter->nbr_outfile += 1;
+        else if (str[i + 1] && str[i] == '>' && str[i + 1] == '>')
         {
-            data->meter->nbr_outfile_append++;
-            i++;
+            data->meter->nbr_outfile_append += 1;
         }
-        if (str[i] == '<' && str[i + 1] != '<')
-            data->meter->nbr_infile++;
-        if (str[i] == '<' && str[i + 1] == '<')
+        else if (str[i] == '<' && str[i + 1] != '<')
+            data->meter->nbr_infile += 1;
+        else if (str[i + 1] && str[i] == '<' && str[i + 1] == '<')
         {
-            data->meter->nbr_h_doc++;
-            i++;
+            data->meter->nbr_h_doc += 1;
         }
 		else
-			return (2);
-    }
+			return (1);
 	return (0);
 }
 
@@ -292,10 +274,12 @@ void count_all(t_data *data, int *y)
 {
 	int i;
 
-	i = 0;
+	i = 1;
 	while (data->command->lign[i])
 	{
-		if (count_output(data, data->command->lign[i])== 2)
+		 int count_output_result = count_output(data, data->command->lign[i]);
+    printf("count_output_result: %d\n", count_output_result);
+		if (!count_output_result)
 			i+=2;
 		else
 			{

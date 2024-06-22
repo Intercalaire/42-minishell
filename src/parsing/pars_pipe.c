@@ -91,8 +91,16 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 
 	while (*z < data->nbr_arg)
 	{
-		if (data->command->lign[(*i) + 1] && verif_lign(data, data->command->lign[(*i)]) == 0)
-			verif_output(data, y, data->command->lign[(*i) + 1]);
+		
+if (data->command->lign[(*i)] && data->command->lign[(*i) + 1]) 
+{
+    if (verif_lign(data, data->command->lign[(*i)]) == 0) 
+	{
+		*i += 1;
+        verif_output(data, y, data->command->lign[(*i)]);
+	
+    }
+}
 		else
 		{
 			data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
