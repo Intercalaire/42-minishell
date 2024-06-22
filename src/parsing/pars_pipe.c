@@ -93,13 +93,16 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 	{
 		if (verif_lign(data, data->command->lign[(*i)]) == 0)
 			verif_output(data, y, z, data->command->lign[(*i) + 1]);
-		data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
-		if (!data->command->arg[*y][*z])
+		else
 		{
-			ft_free_data_no_str(data);
-			return (2);
+			data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)++]);
+			if (!data->command->arg[*y][*z])
+			{
+				ft_free_data_no_str(data);
+				return (2);
+			}
+			(*z)++;
 		}
-		(*z)++;
 	}
 	return (0);
 }
