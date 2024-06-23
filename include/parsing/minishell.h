@@ -123,7 +123,7 @@ int		verif_output(t_data *data, int *y, char *str);
 int		verif_lign(t_data *data, char *str);
 void	init_global(t_data *data);
 int		count_output(t_data *data, char *str);
-void	count_all(t_data *data, int *y);
+void	count_all(t_data *data, int *y, int i);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"

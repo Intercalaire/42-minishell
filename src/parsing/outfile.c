@@ -270,12 +270,9 @@ int verif_output(t_data *data, int *y, char *str)
 	}
 	return (0);
 }
-void count_all(t_data *data, int *y)
+void count_all(t_data *data, int *y, int i)
 {
-	int i;
-
-	i = 1;
-	while (data->command->lign[i])
+	while (data->command->lign[i] && *data->command->lign[i] != '|')
 	{
 		 int count_output_result = count_output(data, data->command->lign[i]);
     printf("count_output_result: %d\n", count_output_result);

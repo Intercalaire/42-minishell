@@ -76,10 +76,7 @@ static void	print_arg(t_data *data)
 
 static void	handle_pipe(t_data *data, int *i, int *y)
 {
-	data->command->arg[*y] = ft_calloc(1, sizeof(char *));
-	if (!data->command->arg[*y])
-		ft_error_prog(data, "Allocation error", "Error");
-	data->command->arg[*y][0] = NULL;
+	(void)data;
 	(*i)++;
 	(*y)++;
 }
@@ -87,32 +84,45 @@ static void	handle_pipe(t_data *data, int *i, int *y)
 static int	handle_args(t_data *data, int *i, int *y, int *z)
 {
 	count_args(data, *i);
-	count_all(data, y);
-
-	while (*z < data->nbr_arg)
-	{
+	count_all(data, y, *i);
 		
-if (data->command->lign[(*i)] && data->command->lign[(*i) + 1]) 
+while (data->command->lign[(*i)] && *data->command->lign[(*i)] != '|')
 {
-    if (verif_lign(data, data->command->lign[(*i)]) == 0) 
-	{
-		*i += 1;
-        verif_output(data, y, data->command->lign[(*i)]);
-	
+    if (data->command->lign[(*i)] && data->command->lign[(*i) + 1]) 
+    {
+        if (verif_lign(data, data->command->lign[(*i)]) == 0) 
+        {
+			(*i)++;
+            verif_output(data, y, data->command->lign[(*i)]);
+        }
+        else
+        {
+            data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
+            if (!data->command->arg[*y][*z])
+            {
+				printf("Error1 here\n");
+                ft_free_data_no_str(data);
+                return (2);
+            }
+			printf("arg[%d][%d] : %s\n", *y, *z, data->command->arg[*y][*z]);
+            (*z)++;
+        }
     }
+    else
+    {
+        data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
+        if (!data->command->arg[*y][*z])
+        {
+			printf("Error2 here\n");
+            ft_free_data_no_str(data);
+            return (2);
+        }
+		printf("arg[%d][%d] : %s\n", *y, *z, data->command->arg[*y][*z]);
+        (*z)++;
+    }
+        (*i)++;
 }
-		else
-		{
-			data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
-			if (!data->command->arg[*y][*z])
-			{
-				ft_free_data_no_str(data);
-				return (2);
-			}
-		(*z)++;
-		}
-		(*i)++;
-	}
+	printf("\nError here\n");
 	return (0);
 }
 
@@ -129,6 +139,8 @@ int	pars_pipe(t_data *data)
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = 0;
+		printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
+		printf("avancee pipe : %d\n", data->nbr_pipe);
 		data->meter->count_outfile = 0;
 		data->meter->count_h_doc = 0;
 		data->meter->count_infile = 0;
@@ -136,21 +148,24 @@ int	pars_pipe(t_data *data)
 		data->command->cmd[y] = ft_strdup_2(data, data->command->lign[i++]);
 		if (!data->command->cmd[y])
 		{
+			printf("Error here????????\n");
 			ft_free_data_no_str(data);
 			return (2);
 		}
+		while (data->command->lign[i] && *data->command->lign[i] != '|')
+		{
+			handle_args(data, &i, &y, &z);
+			printf("avancee args : %d\n", i);
+		}
+	printf("\narg[0][0] : %s\n\n", data->command->arg[0][0]);
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{
+			printf("pipe\n");
 			handle_pipe(data, &i, &y);
 			continue ;
 		}
-		while (data->command->lign[i] && *data->command->lign[i] != '|')
-		{
-			if (handle_args(data, &i, &y, &z) == 2)
-				return (2);
-		}
-		i++;
 		y++;
+		i++;
 	}
 	print_cmd(data);
 	print_arg(data);
