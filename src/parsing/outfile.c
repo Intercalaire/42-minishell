@@ -195,16 +195,24 @@ int count_output(t_data *data, char *str)
     i = 0;
 
         if (str[i] == '>' && str[i + 1] != '>')
+		{
             data->meter->nbr_outfile += 1;
+			data->output->append = 0;
+		}
         else if (str[i + 1] && str[i] == '>' && str[i + 1] == '>')
         {
             data->meter->nbr_outfile_append += 1;
+			data->output->append = 1;
         }
         else if (str[i] == '<' && str[i + 1] != '<')
+		{	
             data->meter->nbr_infile += 1;
+			data->output->here_d = 0;
+		}
         else if (str[i + 1] && str[i] == '<' && str[i + 1] == '<')
         {
             data->meter->nbr_h_doc += 1;
+			data->output->here_d = 1;
         }
 		else
 			return (1);

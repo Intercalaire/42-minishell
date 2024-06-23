@@ -1,1 +1,0 @@
-/nfs/homes/hsolet/42_Project/minishell/42-minishell

@@ -30,9 +30,7 @@ void	init_data(t_data *data)
 	data->nbr_arg = 0;
 	data->exit_status = 0;
 	data->sig_status = 0;
-	data->output->append = 0;
 	data->output->sign = 0;
-	data->output->here_d = 0;
 	data->meter->nbr_arg = 0;
 	data->meter->nbr_pipe = 0;
 	data->meter->nbr_outfile = 0;

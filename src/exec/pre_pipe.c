@@ -28,25 +28,25 @@ while (i <= nbr_pipe)
 {
     pipe(fd); // Create a pipe 
 
-    if (data->outfiles[i] != NULL)
+    if (data->output->outfile[i] != NULL)
     {
-        outfile = open(data->outfiles[i], O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+        outfile = open(data->output->outfile[i], O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
         if (outfile == -1)
         {
             perror("open");
             return 1;
         }
     }
-    if (data->infiles[i] != NULL)
+    if (data->output->infile[i] != NULL)
     {
-        infile = open(data->infiles[i], O_RDONLY);
+        infile = open(data->output->infile[i], O_RDONLY);
         if (infile == -1)
         {
             perror("open");
             return 1;
         }
     }
-    if (data->heredocs[i] != NULL)
+    if (data->output->h_doc[i] != NULL)
     {
         infile = handle_heredoc(data->delimiter[i]);
     }
@@ -100,66 +100,7 @@ typedef struct command_data {
     char *str;
 } command_data_t;
 
-void pre_pipe(data_t *data, int nbr_pipe, char *str)
-{
-    command_data_t cmd_data;
-    cmd_data->fd =ft_calloc(2, sizeof(int));
-    cmd_data->fd_in = 0;
-    cmd_data->i = 0;
-
-    while (i <= nbr_pipe)
-    {
-        pipe(fd); // Create a pipe 
-
-        cmd_data.fd[0] = fd[0];
-        cmd_data.fd[1] = fd[1];
-        cmd_data.i = i;
-        cmd_data.nbr_pipe = nbr_pipe;
-        if (data->outfiles[i] != NULL)
-        {
-            cmd_data.outfile = open(data->outfiles[i], O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-            if (cmd_data.outfile == -1)
-            {
-                perror("open");
-                return;
-            }
-        }
-
-        if (data->infiles[i] != NULL)
-        {
-            cmd_data.infile = open(data->infiles[i], O_RDONLY);
-            if (cmd_data.infile == -1)
-            {
-                perror("open");
-                return;
-            }
-            execute_command(data, &cmd_data, str);
-            close(cmd_data.infile);
-        }
-
-        if (data->EOF[i] != NULL)
-        {
-            cmd_data.infile = handle_heredoc(data->EOF[i]);
-            if (cmd_data.infile == -1)
-            {
-                perror("handle_heredoc");
-                return;
-            }
-            execute_command(data, &cmd_data, str);
-            close(cmd_data.infile);
-        }
-
-        if (cmd_data.outfile != -1)
-        {
-            close(cmd_data.outfile);
-        }
-
-        fd_in = fd[0];
-        i++;
-    }
-}
-
-void execute_command(data_t *data, command_data_t *cmd_data, char *str)
+static void execute_command(data_t *data, command_data_t *cmd_data, char *str)
 {
     pid_t pid = fork();
     if (pid == -1)
@@ -189,5 +130,67 @@ void execute_command(data_t *data, command_data_t *cmd_data, char *str)
     {
         wait(NULL);  
         close(cmd_data->fd[1]);  
+    }
+}
+void pre_pipe(t_data *data, char *str)
+{
+    command_data_t cmd_data;
+    cmd_data->fd =ft_calloc(2, sizeof(int));
+    cmd_data->fd_in = 0;
+    cmd_data->i = 0;
+    int nbr_pipe;
+
+    nbr_pipe = 0;
+    while (data->command->cmd[nbr_pipe + 1])
+        nbr_pipe++;
+    while (i <= nbr_pipe)
+    {
+        pipe(fd); // Create a pipe 
+
+        cmd_data.fd[0] = fd[0];
+        cmd_data.fd[1] = fd[1];
+        cmd_data.i = i;
+        cmd_data.nbr_pipe = nbr_pipe;
+        if (data->output->outfile[i] != NULL)
+        {
+            cmd_data.outfile = open(data->output->outfile[i], O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+            if (cmd_data.outfile == -1)
+            {
+                perror("open");
+                return;
+            }
+        }
+
+        if (data->output->infile[i] != NULL)
+        {
+            cmd_data.infile = open(data->output->infile[i], O_RDONLY);
+            if (cmd_data.infile == -1)
+            {
+                perror("open");
+                return;
+            }
+            execute_command(data, &cmd_data, str);
+            close(cmd_data.infile);
+        }
+
+        if (data->output->h_doc[i] != NULL)
+        {
+            cmd_data.infile = handle_heredoc(data->output->h_doc[i]);
+            if (cmd_data.infile == -1)
+            {
+                perror("handle_heredoc");
+                return;
+            }
+            execute_command(data, &cmd_data, str);
+            close(cmd_data.infile);
+        }
+
+        if (cmd_data.outfile != -1)
+        {
+            close(cmd_data.outfile);
+        }
+
+        fd_in = fd[0];
+        i++;
     }
 }
