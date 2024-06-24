@@ -188,7 +188,7 @@ void	init_global(t_data *data)
 		ft_error_prog(data, "Allocation error", "Error");
 }
 
-int count_output(t_data *data, char *str)
+int count_output(t_data *data, char *str, int y)
 {
     int i;
 
@@ -197,22 +197,22 @@ int count_output(t_data *data, char *str)
         if (str[i] == '>' && str[i + 1] != '>')
 		{
             data->meter->nbr_outfile += 1;
-			data->output->append = 0;
+			data->output->append[y] = 0;
 		}
         else if (str[i + 1] && str[i] == '>' && str[i + 1] == '>')
         {
             data->meter->nbr_outfile_append += 1;
-			data->output->append = 1;
+			data->output->append[y] = 1;
         }
         else if (str[i] == '<' && str[i + 1] != '<')
 		{	
             data->meter->nbr_infile += 1;
-			data->output->here_d = 0;
+			data->output->here_d[y] = 0;
 		}
         else if (str[i + 1] && str[i] == '<' && str[i + 1] == '<')
         {
             data->meter->nbr_h_doc += 1;
-			data->output->here_d = 1;
+			data->output->here_d[y] = 1;
         }
 		else
 			return (1);
@@ -255,7 +255,7 @@ int verif_output(t_data *data, int *y, char *str)
 {
 	if (!str || data->output->sign == 0)
 		return (2);
-    count_output(data, str);
+    count_output(data, str, *y);
 	if (data->output->sign == 1)
 	{
 		if (outfile(data, y, str) == 2)
@@ -282,7 +282,7 @@ void count_all(t_data *data, int *y, int i)
 {
 	while (data->command->lign[i] && *data->command->lign[i] != '|')
 	{
-		 int count_output_result = count_output(data, data->command->lign[i]);
+		 int count_output_result = count_output(data, data->command->lign[i], *y);
     printf("count_output_result: %d\n", count_output_result);
 		if (!count_output_result)
 			i+=2;
@@ -297,6 +297,7 @@ void count_all(t_data *data, int *y, int i)
 	printf("nbr_outfile : %d\n", data->meter->nbr_outfile);
 	printf("nbr_outfile_append : %d\n", data->meter->nbr_outfile_append);
 	printf("nbr_infile : %d\n", data->meter->nbr_infile);
+	printf("nbr_heredoc : %d\n", data->meter->nbr_h_doc);
 	data->output->infile[*y] = ft_calloc(data->meter->nbr_infile + 1, sizeof(char *));
 	if (!data->output->infile)
 		ft_error_prog(data, "Allocation error", "Error");

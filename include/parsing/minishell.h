@@ -44,9 +44,9 @@ int		count_outfile_append;
 
 typedef struct s_output
 {
-int		append;
+int		*append;
 int		sign;
-int		here_d;
+int		*here_d;
 char	***outfile;
 char	***outfile_append;
 char	***infile;
@@ -122,7 +122,7 @@ char    **cpy_envir(char **env);
 int		verif_output(t_data *data, int *y, char *str);
 int		verif_lign(t_data *data, char *str);
 void	init_global(t_data *data);
-int		count_output(t_data *data, char *str);
+int		count_output(t_data *data, char *str, int y);
 void	count_all(t_data *data, int *y, int i);
 
 # define PIPE "syntax error near unexpected token `|'"

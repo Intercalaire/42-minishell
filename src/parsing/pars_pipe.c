@@ -35,6 +35,12 @@ static void	utils_pars_pipe(t_data *data)
 	data->command->arg = ft_calloc(data->nbr_pipe + 2, sizeof(char **));
 	if (!data->command->arg)
 		ft_error_prog(data, "Allocation error", "Error");
+	data->output->here_d = ft_calloc(data->nbr_pipe + 2, sizeof(int));
+	if (!data->output->here_d)
+		ft_error_prog(data, "Allocation error", "Error");
+	data->output->append = ft_calloc(data->nbr_pipe + 2, sizeof(int));
+	if (!data->output->append)
+		ft_error_prog(data, "Allocation error", "Error");
 	init_global(data);
 }
 
@@ -139,8 +145,6 @@ int	pars_pipe(t_data *data)
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = 0;
-		printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
-		printf("avancee pipe : %d\n", data->nbr_pipe);
 		data->meter->count_outfile = 0;
 		data->meter->count_h_doc = 0;
 		data->meter->count_infile = 0;
@@ -157,7 +161,6 @@ int	pars_pipe(t_data *data)
 			handle_args(data, &i, &y, &z);
 			printf("avancee args : %d\n", i);
 		}
-	printf("\narg[0][0] : %s\n\n", data->command->arg[0][0]);
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{
 			printf("pipe\n");

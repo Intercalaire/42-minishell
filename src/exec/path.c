@@ -100,9 +100,13 @@ if (pid == 0)
             ft_free_strtab(args);
         i++;
 }
-	else
+else
+{
+    if (waitpid(pid, NULL, 0) == -1)
     {
-		waitpid(pid, NULL, 0);
+        perror("waitpid");
+        data->exit_status = 1;
     }
+}
     return 0;
 }
