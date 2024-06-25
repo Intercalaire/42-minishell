@@ -16,6 +16,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <fcntl.h>
 
 
 
@@ -74,22 +75,23 @@ if (pid == 0)
             j++;
         }
     }
+
     if (execve(full_path, args, data->env) == -1)
     {
         if (errno == ENOENT)
         {
             printf("%s: command not found\n", args[0]);   
-            data->exit_status = 127;
+            exit(127);
         }
         else if (errno == EACCES)
         {
             perror(args[0]);
-            data->exit_status = 1;
+            exit(1);
         }
         else
         {
             perror(args[0]);
-            data->exit_status = 127;
+            exit(127);
         }
     }
         if (full_path)

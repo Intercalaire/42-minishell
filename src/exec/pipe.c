@@ -108,7 +108,7 @@ void create_infiles(t_data *data, int i)
         if (infd < 0) 
         {
             perror("open_infile");
-            return;
+            exit(1);
         }
 
         j++;
@@ -146,6 +146,127 @@ void create_infiles_heredoc(t_data *data, int i)
     }
 }
 
+int my_pipe(t_data *data, char *str)
+{
+int status = 0;
+
+int i = 0;
+int *son_pid;
+int nbr_pipe;
+int original_stdin = dup(STDIN_FILENO);
+if (original_stdin == -1) {
+    perror("dup");
+    return 1;
+}
+//close(original_stdin);
+int original_stdout = dup(STDOUT_FILENO);
+if (original_stdout == -1) {
+    perror("dup");
+    return 1;
+}
+//close(original_stdout);
+nbr_pipe = 0;
+while (data->command->cmd[nbr_pipe + 1])
+    nbr_pipe++;
+son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
+if (son_pid == NULL)
+    return (1);
+if (nbr_pipe == 0) 
+{
+    if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
+    {
+        handle_heredocs(data, i);
+        create_infiles_heredoc(data, i);
+    }
+    if (data->output->infile[i]) 
+        create_infiles(data, i);
+    if (data->output->outfile[i]) 
+        create_outfiles(data, i);
+    if (data->output->outfile_append[i]) 
+        create_outfiles_append(data, i);
+    exec(data, data->command->cmd[0], data->command->arg[0], str);
+     dup2(original_stdin, STDIN_FILENO);
+    close(original_stdin);
+    dup2(original_stdout, STDOUT_FILENO);
+    close(original_stdout);
+    free(son_pid);
+    return (0);
+}
+int fd[2];
+
+
+int fd_in = 0;
+while (i <= nbr_pipe)
+{
+    pipe(fd); 
+    son_pid[i] = fork();
+    if (son_pid[i] == -1)
+    {
+        close(fd[0]);
+        close(fd[1]);
+        return (1);
+    }
+    else if (son_pid[i] == 0) 
+    {
+        if (data->output->h_doc[i] != NULL && *data->output->h_doc[i] != NULL)
+        {
+            handle_heredocs(data, i);
+            create_infiles_heredoc(data, i);
+        }
+        else if (data->output->infile[i]) 
+            create_infiles(data, i);
+        else 
+        {
+             dup2(fd_in, STDIN_FILENO);
+            close(fd_in);
+        }
+        
+        if (data->output->outfile[i]) 
+            create_outfiles(data, i);
+        if (data->output->outfile_append[i]) 
+            create_outfiles_append(data, i);
+        
+
+        if (i != nbr_pipe )
+        {
+            dup2(fd[1], STDOUT_FILENO);
+        }
+          close(fd[1]);
+          close(fd[0]);
+        exec(data, data->command->cmd[i], data->command->arg[i], str);
+
+        exit(1);
+    } 
+    else
+    {
+        close(fd[1]);
+          if (i != 0) {
+                close(fd_in);
+          }
+        fd_in = fd[0];
+        if (data->output->here_d[i] == 1)
+            waitpid(son_pid[i], &status, 0);
+        i++;
+    }
+}
+i = 0;
+while (i <= nbr_pipe)
+{
+
+        waitpid(son_pid[i], &status, 0);
+    if (i == nbr_pipe - 1)
+        waitpid(son_pid[i - 1], &status, 0);
+    i++;
+}
+            dup2(original_stdin, STDIN_FILENO);
+        close(original_stdin);
+        dup2(original_stdout, STDOUT_FILENO);
+        close(original_stdout);
+free(son_pid);
+return 0;
+
+}
+/*
 int my_pipe(t_data *data, char *str)
 {
 int status = 0;
@@ -251,4 +372,4 @@ while (i <= nbr_pipe)
 free(son_pid);
 return 0;
 
-}
+}*/

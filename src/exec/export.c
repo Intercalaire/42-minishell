@@ -224,8 +224,16 @@ int	ft_export(t_data *data, char **arg)
         }
         else
         {    
-            arg_copy = ft_strdup(arg[i]);
-            key = ft_strtok(data, arg[i], "=");
+        arg_copy = ft_strdup(arg[i]);
+        if (!ft_isalpha(arg[i][0]) && arg[i][0] != '_')
+                {
+                    printf("minishell: export: `%s': not a valid identifier\n", arg_copy);
+                    free(arg_copy);
+                    return 1;
+                }
+
+    key = ft_strtok(data, arg[i], "=");
+
             if (key)
             {
                 if (ft_strlen(arg[i]) == ft_strlen(key) + 1)
@@ -235,14 +243,7 @@ int	ft_export(t_data *data, char **arg)
             }
             if (search_env(data, key) == -1)
             {
-                if (!ft_isalpha(key[0]) && key[0] != '_')
-                {
-                    printf("minishell: export: `%s': not a valid identifier\n", arg_copy);
-                    free(arg_copy);
-                    free(key);
-                    free(value);
-                    return 1;
-                }
+                
                 add_env(data, key, value);
             }
             else
