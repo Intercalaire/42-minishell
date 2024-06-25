@@ -28,6 +28,8 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str)
 	if (data)
 	{
 		free(data->command);
+		free(data->output);
+		free(data->meter);
 	}
 }
 

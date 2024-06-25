@@ -60,11 +60,11 @@ char *ft_trim_quote(char *str)
     int i = 0;
     int j = 0;
     char quote = 0;
-    char *result = malloc(ft_strlen(str) + 1);
+    char *result;
 
-    if (result == NULL)
+	result = ft_calloc((ft_strlen(str) + 1), sizeof(char));
+    if (result == NULL || str == NULL)
         return (NULL);
-
     while (str[i])
     {
         handle_char(result, str, &i, &j, &quote);

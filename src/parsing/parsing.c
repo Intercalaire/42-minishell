@@ -41,9 +41,15 @@ int	main(int argc, char **argv, char **env)
 			|| look_pipe(data, str) == 1)
 			continue ;
 		if (try_ft_strtok(data, str) == 1)
+		{
+			ft_little_error_prog(data, str, "Error");
 			continue ;
+		}
 		if (pars_pipe(data) == 2)
+		{
+			ft_free_data(data, str);
 			continue ;
+		}
 		my_pipe(data, str);
 		ft_free_data(data, str);
 	}

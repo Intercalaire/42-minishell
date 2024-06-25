@@ -47,6 +47,8 @@ void	ft_free_data(t_data *data, char *str)
 			free(data->output->append);
 		free(data->output);
 	}
+	if (data->meter)
+		free(data->meter);
 	free(str);
 }
 

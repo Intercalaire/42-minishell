@@ -138,21 +138,20 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 			}
 			else
 			{
-			data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
-			if (!data->command->arg[*y][*z])
-			{
-				ft_free_data_no_str(data);
-				return (2);
-			}
-			printf("arg[%d][%d] : %s\n", *y, *z, data->command->arg[*y][*z]);
-			(*z)++;
+				data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
+				if (!data->command->arg[*y][*z])
+				{
+					ft_free_data_no_str(data);
+					return (2);
+				}
+				(*z)++;
 			}
 		}
-			(*i)++;
+		(*i)++;
 	}
-		printf("\nError here\n");
-		return (0);
-	}
+	printf("\nError here\n");
+	return (0);
+}
 
 int	pars_pipe(t_data *data)
 {
@@ -173,7 +172,8 @@ int	pars_pipe(t_data *data)
 		data->meter->count_outfile_append = 0;
 		while (data->command->lign[i] && *data->command->lign[i] != '|')
 		{
-			handle_args(data, &i, &y, &z);
+			if (handle_args(data, &i, &y, &z) == 2)
+				return (2);
 		}
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{

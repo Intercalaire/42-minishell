@@ -20,6 +20,8 @@ static void	add_token(t_data *data, char *token);
 static void	add_token(t_data *data, char *token)
 {
 	data->command->lign[data->count] = ft_strdup(token);
+	if (!data->command->lign[data->count])
+		ft_free_data_no_str(data);
 	data->count++;
 }
 
