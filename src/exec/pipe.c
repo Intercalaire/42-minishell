@@ -231,13 +231,21 @@ while (i <= nbr_pipe)
         close(original_stdout);
         exit(1);
     } 
-    else 
+    else if (son_pid[i] > 0)
     {
-        waitpid(son_pid[i], &status, 0);
         close(fd[1]);
-        fd_in = fd[0]; 
-        i++;
+        fd_in = fd[0];
+        if (data->output->here_d[i] == 1)
+            waitpid(son_pid[i], &status, 0);
     }
+        i++;
+}
+i = 0;
+while (i <= nbr_pipe)
+{
+    if (data->output->here_d[i] == 0)
+        waitpid(son_pid[i], &status, 0);
+    i++;
 }
 
 free(son_pid);
