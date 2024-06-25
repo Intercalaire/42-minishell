@@ -123,7 +123,7 @@ static int	outfile(t_data *data, int *y, char *str)
         data->output->outfile[*y][data->meter->count_outfile] = ft_strdup(str);
         if (!data->output->outfile[*y][data->meter->count_outfile])
         {
-            ft_free_data_no_str(data);
+            ft_free_data(data, str);
             return (2);
         }
         data->meter->count_outfile++;
@@ -138,7 +138,7 @@ static int outfile_append(t_data *data, int *y, char *str)
         data->output->outfile_append[*y][data->meter->count_outfile_append] = ft_strdup(str);
         if (!data->output->outfile_append[*y][data->meter->count_outfile_append])
         {
-            ft_free_data_no_str(data);
+            ft_free_data(data, str);
             return (2);
         }
         data->meter->count_outfile_append++;
@@ -153,7 +153,7 @@ static int	infile(t_data *data, int *y, char *str)
         data->output->infile[*y][data->meter->count_infile] = ft_strdup(str);
         if (!data->output->infile[*y][data->meter->count_infile])
         {
-            ft_free_data_no_str(data);
+            ft_free_data(data, str);
             return (2);
         }
         data->meter->count_infile++;
@@ -168,7 +168,7 @@ static int	h_doc(t_data *data, int *y, char *str)
         data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup(str);
         if (!data->output->h_doc[*y][data->meter->count_h_doc])
         {
-            ft_free_data_no_str(data);
+            ft_free_data(data, str);
             return (2);
         }
         data->meter->count_h_doc++;
@@ -282,8 +282,8 @@ void count_all(t_data *data, int *y, int i)
 {
 	while (data->command->lign[i] && *data->command->lign[i] != '|')
 	{
-		 int count_output_result = count_output(data, data->command->lign[i], *y);
-    printf("count_output_result: %d\n", count_output_result);
+		int count_output_result = count_output(data, data->command->lign[i], *y);
+		printf("count_output_result: %d\n", count_output_result);
 		if (!count_output_result)
 			i+=2;
 		else
@@ -292,12 +292,12 @@ void count_all(t_data *data, int *y, int i)
 				i++;
 			}
 	}
-	printf("nbr_arg : %d\n", data->meter->nbr_arg);
-	printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
-	printf("nbr_outfile : %d\n", data->meter->nbr_outfile);
-	printf("nbr_outfile_append : %d\n", data->meter->nbr_outfile_append);
-	printf("nbr_infile : %d\n", data->meter->nbr_infile);
-	printf("nbr_heredoc : %d\n", data->meter->nbr_h_doc);
+	// printf("nbr_arg : %d\n", data->meter->nbr_arg);
+	// printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
+	// printf("nbr_outfile : %d\n", data->meter->nbr_outfile);
+	// printf("nbr_outfile_append : %d\n", data->meter->nbr_outfile_append);
+	// printf("nbr_infile : %d\n", data->meter->nbr_infile);
+	// printf("nbr_heredoc : %d\n", data->meter->nbr_h_doc);
 	data->output->infile[*y] = ft_calloc(data->meter->nbr_infile + 1, sizeof(char *));
 	if (!data->output->infile)
 		ft_error_prog(data, "Allocation error", "Error");

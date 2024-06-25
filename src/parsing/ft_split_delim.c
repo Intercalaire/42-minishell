@@ -23,12 +23,19 @@ static int	handle_quotes(char *str, char *new_str, int i, int j)
 
 static int	handle_special_chars(char *str, char *new_str, int i, int j)
 {
-	if (i > 0 && str[i - 1] != ' ' && new_str[j - 1] != ' ' && !(str[i] == '<' && str[i - 1] == '<' && str[i + 1] != '<'))
+	// Ajouter un espace avant si nécessaire
+	if (i > 0 && str[i - 1] != ' ' && (str[i] == '>' || str[i] == '<'))
 	{
 		new_str[j++] = ' ';
 	}
 	new_str[j++] = str[i];
-	if (str[i + 1] != '\0' && str[i + 1] != ' ' && new_str[j - 1] != ' ' && !(str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<'))
+	// Gérer spécifiquement les cas ">>" et "<<"
+	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<'))
+	{
+		new_str[j++] = str[++i]; // Ajouter le deuxième caractère et avancer l'index
+	}
+	// Ajouter un espace après si nécessaire
+	if (str[i + 1] != '\0' && str[i + 1] != ' ' && (str[i] == '>' || str[i] == '<'))
 	{
 		new_str[j++] = ' ';
 	}
@@ -61,11 +68,24 @@ char	*ft_split_delim(t_data *data, char *str)
 		{
 			in_quotes = !in_quotes;
 			j = handle_quotes(str, new_str, i, j);
+			i++; // Avancer après avoir traité les guillemets
 		}
-		else if ((str[i] == '|' || (str[i] == '>' && str[i+1] != '>') || (str[i] == '<' && str[i+1] != '<')) && !in_quotes)
-			j = handle_special_chars(str, new_str, i, j);
+		else if ((str[i] == '>' || str[i] == '<') && !in_quotes)
+		{
+			if (str[i + 1] == str[i]) // Pour '>>' ou '<<'
+			{
+				j = handle_special_chars(str, new_str, i, j);
+				i++; // Sauter le deuxième caractère de '>>' ou '<<'
+			}
+			else
+			{
+				j = handle_special_chars(str, new_str, i, j);
+			}
+		}
 		else
+		{
 			new_str[j++] = str[i];
+		}
 		i++;
 	}
 	new_str[j] = '\0';

@@ -30,13 +30,13 @@ int	main(int argc, char **argv, char **env)
 		str = readline("Minishell >");
 		if (!str)
 			exit_shell(data, str, NULL);
-		remove_end_space(str);
 		if (ft_strlen(str) == 0)
 		{
 			ft_little_error_prog_no_msg(data, str);
 			continue ;
 		}
 		add_history(str);
+		remove_end_space(str);
 		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
 			|| look_pipe(data, str) == 1)
 			continue ;
