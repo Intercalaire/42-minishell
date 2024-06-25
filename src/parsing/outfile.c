@@ -119,67 +119,59 @@ void infile_print(t_data *data)
 static int	outfile(t_data *data, int *y, char *str)
 {
 
-
-        data->output->outfile[*y][data->meter->count_outfile] = ft_strdup(str);
-        if (!data->output->outfile[*y][data->meter->count_outfile])
-        {
-            ft_free_data(data, str);
-            return (2);
-        }
-        data->meter->count_outfile++;
+	data->output->outfile[*y][data->meter->count_outfile] = ft_strdup(str);
+		if (!data->output->outfile[*y][data->meter->count_outfile])
+		{
+			ft_free_data(data, str);
+			return (2);
+		}
+		data->meter->count_outfile++;
 	outfile_print(data);
-    return (0);
+	return (0);
 }
 
 static int outfile_append(t_data *data, int *y, char *str)
 {
-
-
-        data->output->outfile_append[*y][data->meter->count_outfile_append] = ft_strdup(str);
-        if (!data->output->outfile_append[*y][data->meter->count_outfile_append])
-        {
-            ft_free_data(data, str);
-            return (2);
-        }
-        data->meter->count_outfile_append++;
-    
+	data->output->outfile_append[*y][data->meter->count_outfile_append] = ft_strdup(str);
+	if (!data->output->outfile_append[*y][data->meter->count_outfile_append])
+	{
+		ft_free_data(data, str);
+		return (2);
+	}
+	data->meter->count_outfile_append++;
 	outfile_append_print(data);
-    return (0);
+	return (0);
 }
 
 static int	infile(t_data *data, int *y, char *str)
 {
-
-        data->output->infile[*y][data->meter->count_infile] = ft_strdup(str);
-        if (!data->output->infile[*y][data->meter->count_infile])
-        {
-            ft_free_data(data, str);
-            return (2);
-        }
-        data->meter->count_infile++;
-    
+	data->output->infile[*y][data->meter->count_infile] = ft_strdup(str);
+	if (!data->output->infile[*y][data->meter->count_infile])
+	{
+		ft_free_data(data, str);
+		return (2);
+	}
+	data->meter->count_infile++;	
 	infile_print(data);
-    return (0);
+	return (0);
 }
 
 static int	h_doc(t_data *data, int *y, char *str)
 {
-
-        data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup(str);
-        if (!data->output->h_doc[*y][data->meter->count_h_doc])
-        {
-            ft_free_data(data, str);
-            return (2);
-        }
-        data->meter->count_h_doc++;
-    
+	data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup(str);
+	if (!data->output->h_doc[*y][data->meter->count_h_doc])
+	{
+		ft_free_data(data, str);
+		return (2);
+	}
+	data->meter->count_h_doc++;	
 	h_doc_print(data);
-    return (0);
+	return (0);
 }
 
 void	init_global(t_data *data)
 {
-	printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
+	// printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
 	data->output->h_doc = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
 	data->output->infile = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
 	data->output->outfile = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
@@ -280,10 +272,11 @@ int verif_output(t_data *data, int *y, char *str)
 }
 void count_all(t_data *data, int *y, int i)
 {
+	int count_output_result;
 	while (data->command->lign[i] && *data->command->lign[i] != '|')
 	{
-		int count_output_result = count_output(data, data->command->lign[i], *y);
-		printf("count_output_result: %d\n", count_output_result);
+		count_output_result = count_output(data, data->command->lign[i], *y);
+		// printf("count_output_result: %d\n", count_output_result);
 		if (!count_output_result)
 			i+=2;
 		else

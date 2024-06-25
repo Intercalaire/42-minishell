@@ -68,24 +68,26 @@ char	*ft_split_delim(t_data *data, char *str)
 		{
 			in_quotes = !in_quotes;
 			j = handle_quotes(str, new_str, i, j);
-			i++; // Avancer après avoir traité les guillemets
 		}
-		else if ((str[i] == '>' || str[i] == '<') && !in_quotes)
+		else if ((str[i] == '|' || (str[i] == '>' || str[i] == '<')) && !in_quotes)
 		{
-			if (str[i + 1] == str[i]) // Pour '>>' ou '<<'
+			if (j > 0 && new_str[j - 1] != ' ') {
+				new_str[j++] = ' ';
+			}
+			
+			if (str[i + 1] == str[i])
 			{
 				j = handle_special_chars(str, new_str, i, j);
-				i++; // Sauter le deuxième caractère de '>>' ou '<<'
+				i++;
 			}
 			else
 			{
 				j = handle_special_chars(str, new_str, i, j);
 			}
+			new_str[j++] = ' ';
 		}
 		else
-		{
 			new_str[j++] = str[i];
-		}
 		i++;
 	}
 	new_str[j] = '\0';

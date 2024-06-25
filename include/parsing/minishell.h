@@ -45,8 +45,8 @@ int		count_outfile_append;
 typedef struct s_output
 {
 int		*append;
-int		sign;
 int		*here_d;
+int		sign;
 char	***outfile;
 char	***outfile_append;
 char	***infile;
