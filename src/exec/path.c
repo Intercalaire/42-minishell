@@ -77,10 +77,16 @@ if (pid == 0)
     }
 
     if (execve(full_path, args, data->env) == -1)
-    {
+    { 
+        if (var)
+            ft_free_strtab(var);
+        if (full_path)
+            free(full_path);         
+        if (args)
+            ft_free_strtab(args);
         if (errno == ENOENT)
         {
-            printf("%s: command not found\n", args[0]);   
+            printf("%s: command not found\n", cmd);
             exit(127);
         }
         else if (errno == EACCES)
@@ -94,21 +100,63 @@ if (pid == 0)
             exit(127);
         }
     }
-        if (full_path)
-            free(full_path);
-        if (var)    
+            if (var)
             ft_free_strtab(var);
+        if (full_path)
+            free(full_path);         
         if (args)
             ft_free_strtab(args);
-        i++;
 }
 else
 {
-    if (waitpid(pid, NULL, 0) == -1)
+        int status;
+    if (waitpid(pid, &status, 0) == -1)
     {
         perror("waitpid");
         data->exit_status = 1;
     }
+    else
+{
+    if (WIFEXITED(status))
+    {
+        int exit_status = WEXITSTATUS(status);
+        data->exit_status = exit_status; // Le processus enfant s'est terminé normalement
+    }
+   else if (WIFSIGNALED(status))
+    {
+        int term_sig = WTERMSIG(status);
+        if (term_sig == SIGSEGV)
+        {
+            printf("Segmentation fault\n");
+            data->exit_status = 128 + SIGSEGV; // Convention pour signaler un segfault
+        }
+        else if (term_sig == SIGINT)
+        {
+            printf("Interruption par signal SIGINT\n");
+            data->exit_status = 128 + SIGINT;
+        }
+        else if (term_sig == SIGABRT)
+        {
+            printf("Abandon (signal SIGABRT)\n");
+            data->exit_status = 128 + SIGABRT;
+        }
+        else if (term_sig == SIGFPE)
+        {
+            printf("Erreur de calcul flottant (signal SIGFPE)\n");
+            data->exit_status = 128 + SIGFPE;
+        }
+        else if (term_sig == SIGILL)
+        {
+            printf("Instruction illégale (signal SIGILL)\n");
+            data->exit_status = 128 + SIGILL;
+        }
+        else if (term_sig == SIGTERM)
+        {
+            printf("Terminaison (signal SIGTERM)\n");
+            data->exit_status = 128 + SIGTERM;
+        }
+    }
+}
 }
     return 0;
 }

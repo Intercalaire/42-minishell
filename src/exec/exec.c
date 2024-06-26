@@ -22,7 +22,7 @@ int	exec(t_data *data, char *cmd, char **arg, char *str)
 	else if (!ft_strncmp(cmd, "pwd", 4))
 		data->exit_status = pwd();
 	else if (!ft_strncmp(cmd, "env", 4))
-		data->exit_status = print_env(data);
+		data->exit_status = print_env(data, arg);
 	else if (!ft_strncmp(cmd, "export", 7))
 		data->exit_status = ft_export(data, arg);
 	else if (!ft_strncmp(cmd, "unset", 6))

@@ -13,11 +13,16 @@
 #include <stdio.h>
 #include "../../include/parsing/minishell.h"
 
-int	print_env(t_data *data)
+int	print_env(t_data *data, char **arg)
 {
 	int	i;
 
 	i = 0;
+	if (arg[0])
+	{
+		printf("env: %s: Too mush argument\n", arg[0]);
+		return (1);
+	}
 	while (data->env[i])
 	{
 		printf("%s\n", data->env[i]);

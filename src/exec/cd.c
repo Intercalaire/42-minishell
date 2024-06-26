@@ -33,11 +33,11 @@ static void	env_update(t_data *data, char *oldpwd)
 	free(oldpwd);
 }
 
-static void	create_path(char *home, char **arg)
+static int	create_path(char *home, char **arg)
 {
 	char	*path;
 
-	if (!arg || arg[0][1] == '\0')
+	if (!arg || !arg[0])
 		path = ft_strdup(home);
 	else
 	{
@@ -45,13 +45,19 @@ static void	create_path(char *home, char **arg)
 			path = ft_strdup(arg[0]);
 		else
 			path = ft_strjoin(home, arg[0] + 1);
-		if (chdir(path) != 0)
-			perror("cd: error changing directory");
+	}
+	if (chdir(path) != 0)
+	{
+		perror("cd: error changing directory");
+		free(path);
+		free(home);
+		return (1);
 	}
 	free(path);
+	return (0);
 }
 
-static void	directory_error(char **arg)
+static int	directory_error(char **arg)
 {
 	char	*error_msg;
 
@@ -63,7 +69,9 @@ static void	directory_error(char **arg)
 		ft_strlcat(error_msg, arg[0], strlen("cd: ") + strlen(arg[0]) + 1);
 		perror(error_msg);
 		free(error_msg);
+		return (1);
 	}
+	return (0);
 }
 
 static int	check_arg(char **arg, int k)
@@ -87,19 +95,24 @@ int	cd(t_data *data, char **arg)
 	char	*home;
 	int		k;
 
+	home = NULL;
 	k = 0;
 	k = search_env(data, "HOME");
 	if (check_arg(arg, k))
 		return (1);
 	oldpwd = ft_calloc(PATH_MAX, sizeof(char));
 	getcwd(oldpwd, PATH_MAX);
-	home = ft_strdup(data->env[k] + 5);
+	if (k != -1)
+		home = ft_strdup(data->env[k] + 5);		
 	if (!arg || ft_strncmp(arg[0], "~", 1) == 0
 		|| ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
-		create_path(home, arg);
+		{
+			if (create_path(home, arg))
+				return (1);
+		env_update(data, oldpwd);
+}
 	else
 		directory_error(arg);
-	env_update(data, oldpwd);
 	free(home);
 	return (0);
 }

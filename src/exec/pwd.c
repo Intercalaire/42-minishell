@@ -67,5 +67,4 @@ void cpy_env(t_data *data, char **environnement)
         }
 		i++;
 	}
-
 }

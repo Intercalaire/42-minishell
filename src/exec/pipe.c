@@ -18,6 +18,26 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+static int close_fd(int fd)
+{
+    if (fd != -1)
+    {
+        close(fd);
+        return 0;
+    }
+    return 1;
+}
+void close_secure()
+    {
+        int i;
+        i = 3;
+        while (i < 1024)
+        {
+            close(i);
+            i++;
+        }
+    }
+
 void handle_heredocs(t_data *data, int i)
 {
     char *line;
@@ -58,7 +78,7 @@ void create_outfiles(t_data *data, int i)
     {
         if (outfd != -1) 
         {
-            close(outfd);
+            close_fd(outfd);
         }
         
         outfd = open(data->output->outfile[i][j], O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -67,34 +87,42 @@ void create_outfiles(t_data *data, int i)
             perror("open_outfile");
             return ;   
         }
+        if (data->output->outfile[i][j + 1])
+            close_fd(outfd);
         j++;
     }
     if (data->output->append[i] == 0)
+    {
         dup2(outfd, STDOUT_FILENO);
-    close(outfd);
+    close_fd(outfd);
+    }
 }
 
 void create_outfiles_append(t_data *data, int i)
 {
     int outfd = -1;
     int j = 0;
-    while (data->output->outfile[i][j] != NULL) 
+    while (data->output->outfile_append[i][j] != NULL) 
     {
         if (outfd != -1) 
         {
-            close(outfd);
+            close_fd(outfd);
         }
-        outfd = open(data->output->outfile[i][j], O_WRONLY | O_CREAT | O_APPEND, 0644);
+        outfd = open(data->output->outfile_append[i][j], O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (outfd < 0) 
         {
             perror("open_outfile_append");
             return ;
         }
+        if (data->output->outfile_append[i][j + 1])
+            close_fd(outfd);
         j++;
     }
     if (data->output->append[i] == 1)
+    {
         dup2(outfd, STDOUT_FILENO);
-    close(outfd);
+        close_fd(outfd);
+    }   
 }
 void create_infiles(t_data *data, int i)
 {
@@ -103,19 +131,22 @@ void create_infiles(t_data *data, int i)
     while (data->output->infile[i][j] != NULL) 
     {
         if (infd != -1) 
-            close(infd); 
+            close_fd(infd); 
         infd = open(data->output->infile[i][j], O_RDONLY);
         if (infd < 0) 
         {
             perror("open_infile");
             exit(1);
         }
-
+        if (data->output->infile[i][j + 1])
+            close_fd(infd);
         j++;
     }
     if (data->output->here_d[i] == 0)
+        {
         dup2(infd, STDIN_FILENO);
-    close(infd);
+            close_fd(infd);
+        }
 }
 void create_infiles_heredoc(t_data *data, int i)
 {
@@ -128,7 +159,7 @@ void create_infiles_heredoc(t_data *data, int i)
     {
         tmpfile = ft_strjoin("tmp_files/",data->output->h_doc[i][j - 1]);
         if (infd != -1) 
-            close(infd); 
+            close_fd(infd); 
         infd = open(tmpfile, O_RDONLY);
         if (infd < 0) 
         {
@@ -137,8 +168,10 @@ void create_infiles_heredoc(t_data *data, int i)
         }
     }
     if (data->output->here_d[i] == 1)
+        {
         dup2(infd, STDIN_FILENO);
-    close(infd);
+            close_fd(infd);
+            }
     if (data->output->h_doc[i][j - 1] != NULL)
     {
         unlink(tmpfile);
@@ -158,13 +191,13 @@ if (original_stdin == -1) {
     perror("dup");
     return 1;
 }
-//close(original_stdin);
+close(original_stdin);
 int original_stdout = dup(STDOUT_FILENO);
 if (original_stdout == -1) {
     perror("dup");
     return 1;
 }
-//close(original_stdout);
+close(original_stdout);
 nbr_pipe = 0;
 while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
@@ -184,12 +217,13 @@ if (nbr_pipe == 0)
         create_outfiles(data, i);
     if (data->output->outfile_append[i]) 
         create_outfiles_append(data, i);
-    exec(data, data->command->cmd[0], data->command->arg[0], str);
-     dup2(original_stdin, STDIN_FILENO);
-    close(original_stdin);
-    dup2(original_stdout, STDOUT_FILENO);
-    close(original_stdout);
     free(son_pid);
+    exec(data, data->command->cmd[0], data->command->arg[0], str);
+    dup2(original_stdin, STDIN_FILENO);
+    close_fd(original_stdin);
+    dup2(original_stdout, STDOUT_FILENO);
+    close_fd(original_stdout);
+    close_secure();
     return (0);
 }
 int fd[2];
@@ -202,8 +236,9 @@ while (i <= nbr_pipe)
     son_pid[i] = fork();
     if (son_pid[i] == -1)
     {
-        close(fd[0]);
-        close(fd[1]);
+        close_fd(fd[0]);
+        close_fd(fd[1]);
+        free(son_pid);
         return (1);
     }
     else if (son_pid[i] == 0) 
@@ -218,7 +253,7 @@ while (i <= nbr_pipe)
         else 
         {
              dup2(fd_in, STDIN_FILENO);
-            close(fd_in);
+            close_fd(fd_in);
         }
         
         if (data->output->outfile[i]) 
@@ -228,44 +263,47 @@ while (i <= nbr_pipe)
         
 
         if (i != nbr_pipe )
-        {
             dup2(fd[1], STDOUT_FILENO);
-        }
-          close(fd[1]);
-          close(fd[0]);
+          close_fd(fd[1]);
+          close_fd(fd[0]);
         exec(data, data->command->cmd[i], data->command->arg[i], str);
-
-        exit(1);
+        exit(127);
     } 
     else
     {
-        close(fd[1]);
+        close_fd(fd[1]);
           if (i != 0) {
-                close(fd_in);
+                close_fd(fd_in);
           }
         fd_in = fd[0];
+        close_fd(fd[0]);
         if (data->output->here_d[i] == 1)
             waitpid(son_pid[i], &status, 0);
         i++;
     }
 }
 i = 0;
-while (i <= nbr_pipe)
-{
-
+while (i <= nbr_pipe) {
+    if (data->output->here_d[i] == 0) 
         waitpid(son_pid[i], &status, 0);
-    if (i == nbr_pipe - 1)
-        waitpid(son_pid[i - 1], &status, 0);
+close_secure();        
+close_fd(fd[0]);
+        close_fd(fd[1]);
     i++;
 }
-            dup2(original_stdin, STDIN_FILENO);
-        close(original_stdin);
+        free(son_pid);
+        close_fd(fd_in);
+
+        dup2(original_stdin, STDIN_FILENO);
+        close_fd(original_stdin);
         dup2(original_stdout, STDOUT_FILENO);
-        close(original_stdout);
-free(son_pid);
+        close_fd(original_stdout);
+
+
 return 0;
 
 }
+
 /*
 int my_pipe(t_data *data, char *str)
 {
