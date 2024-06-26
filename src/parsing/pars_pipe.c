@@ -131,19 +131,13 @@ static int	handle_args(t_data *data, int *i, int *y, int *z)
 			{
 				data->command->cmd[*y] = ft_strdup_2(data, data->command->lign[(*i)]);
 				if (!data->command->cmd[*y])
-					{
-						ft_free_data_no_str(data);
 						return (2);
-					}
 			}
 			else
 			{
 				data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
 				if (!data->command->arg[*y][*z])
-				{
-					ft_free_data_no_str(data);
 					return (2);
-				}
 				(*z)++;
 			}
 		}

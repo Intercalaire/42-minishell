@@ -26,6 +26,7 @@ void	init_data(t_data *data)
 	data->output->outfile_append = NULL;
 	data->count = 0;
 	data->size = 0;
+	data->len_env = 0;
 	data->nbr_pipe = 0;
 	data->nbr_arg = 0;
 	data->exit_status = 0;

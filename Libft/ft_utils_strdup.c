@@ -12,28 +12,13 @@
 
 #include "libft.h"
 
-// static char *allocate_result(char *str);
 static int is_quote(char c);
-// static int is_special_char(char c);
 static void handle_char(char *result, char *str, int *i, int *j, char *quote);
-
-// static char *allocate_result(char *str)
-// {
-// 	char *result = ft_calloc((ft_strlen(str) + 1), sizeof(char));
-// 	if (!result)
-// 		return (NULL);
-// 	return result;
-// }
 
 static int is_quote(char c)
 {
 	return (c == '"' || c == '\'');
 }
-
-// static int is_special_char(char c)
-// {
-// 	return (c == '$' || c == '`' || c == '\\' || c == '!');
-// }
 
 static void handle_char(char *result, char *str, int *i, int *j, char *quote)
 {

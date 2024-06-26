@@ -61,6 +61,7 @@ int			nbr_pipe;
 int 		nbr_arg;
 int			exit_status;
 char		**env;
+int			len_env;
 int         sig_status;
 t_output	*output;
 t_meter		*meter;
