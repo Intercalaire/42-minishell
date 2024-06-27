@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
+int g_sig = 0;
 
 void	init_data(t_data *data)
 {
@@ -38,4 +39,5 @@ void	init_data(t_data *data)
 	data->meter->nbr_h_doc = 0;
 	data->meter->nbr_infile = 0;
 	data->meter->nbr_outfile_append = 0;
+	g_sig = 0;
 }

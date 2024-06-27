@@ -38,30 +38,134 @@ void close_secure()
         }
     }
 
+char *get_env_value(t_data *data, char *varName)
+{
+    int index = search_env(data, varName);
+    if (index == -1) return NULL; // La variable d'environnement n'a pas été trouvée
+
+    char *entry = data->env[index];
+    char *value = strchr(entry, '='); // Trouver le signe '='
+    if (!value) return NULL; // Format invalide, pas de valeur
+
+    return value + 1; // Retourner la valeur (après le signe '=')
+}
+
+char *expand_env_vars(t_data *data, char *line)
+{
+    // Étape 1 : Calculer la taille nécessaire
+    int size_needed = 1; // Pour le caractère de fin de chaîne '\0'
+    for (char *ptr = line; *ptr; ptr++)
+    {
+        if (*ptr == '$')
+        {
+            // Trouver la fin du nom de la variable
+            char *end = ptr + 1;
+            while (isalnum(*end) || *end == '_') end++;
+
+            // Calculer la taille du nom de la variable
+            char varName[256];
+            int len = end - (ptr + 1);
+            strncpy(varName, ptr + 1, len);
+            varName[len] = '\0';
+
+            // Obtenir la valeur de la variable d'environnement
+            char *value = get_env_value(data, varName);
+            if (value)
+            {
+                size_needed += strlen(value); // Ajouter la taille de la valeur
+            }
+
+            ptr = end - 1; // Avancer le pointeur
+        }
+        else
+        {
+            size_needed++; // Pour le caractère courant
+        }
+    }
+
+    // Étape 2 : Allouer suffisamment de mémoire
+    char *result = malloc(size_needed);
+    if (!result) return NULL;
+
+    // Étape 3 : Construire la chaîne avec les valeurs des variables
+    char *temp = result;
+    for (char *ptr = line; *ptr; ptr++)
+    {
+        if (*ptr == '$')
+        {
+            char *end = ptr + 1;
+            while (isalnum(*end) || *end == '_') end++;
+
+            int len = end - (ptr + 1);
+            char varName[256];
+            strncpy(varName, ptr + 1, len);
+            varName[len] = '\0';
+
+            char *value = get_env_value(data, varName);
+            if (value)
+            {
+                strncpy(temp, value, size_needed - (temp - result));
+                temp += strlen(value);
+            }
+
+            ptr = end - 1;
+        }
+        else
+        {
+            *temp++ = *ptr;
+        }
+    }
+    *temp = '\0'; // Terminer la chaîne correctement
+
+    return result;
+}
+void signal_handler(int signum) {
+    // Vérifiez si c'est le signal attendu, par exemple SIGINT
+    if (signum == SIGINT) 
+    {
+        g_sig = signum; // Mettez à jour g_sig pour indiquer la réception du signal
+        // Ici, ajoutez le code pour libérer les ressources allouées, si nécessaire
+    }
+}
 void handle_heredocs(t_data *data, int i)
 {
     char *line;
     int j = 0;
+    signal(SIGINT, signal_handler);
     while (data->output->h_doc[i][j] != NULL)
     {
-        char *tmpfile = ft_strjoin("tmp_files/",data->output->h_doc[i][j]);
+        char *tmpfile = ft_strjoin("tmp_files/", data->output->h_doc[i][j]);
         int fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd == -1)
         {
             perror("open_dans_heredoc");
+            free(tmpfile);
             return;
         }
-while ((line = readline(">")) != NULL)
-{
-    if (strcmp(line, data->output->h_doc[i][j]) == 0)
-    {
-        free(line);
-        break;
-    }
-    write(fd, line, strlen(line));
-    write(fd, "\n", 1);
-    free(line);
-}
+        
+        while ((line = readline(">")) != NULL)
+        {
+            if (g_sig) {
+            // Si g_sig est défini, libérez les ressources et sortez
+            free(line);
+            close(fd); 
+            fd = open(tmpfile, O_WRONLY | O_TRUNC, 0644);
+            write(fd, "", 0);
+            close(fd);
+            free(tmpfile);
+            return;
+            }
+            if (strcmp(line, data->output->h_doc[i][j]) == 0)
+            {
+                free(line);
+                break;
+            }
+            char *expanded_line = expand_env_vars(data, line); // Interpréter les variables d'environnement
+            write(fd, expanded_line, strlen(expanded_line));
+            write(fd, "\n", 1);
+            free(expanded_line);
+            free(line);
+        }
         close(fd);
         if (data->output->h_doc[i][j + 1])
             unlink(tmpfile);
@@ -191,13 +295,15 @@ if (original_stdin == -1) {
     perror("dup");
     return 1;
 }
-close(original_stdin);
+   close(original_stdin);
+
 int original_stdout = dup(STDOUT_FILENO);
 if (original_stdout == -1) {
     perror("dup");
     return 1;
 }
 close(original_stdout);
+
 nbr_pipe = 0;
 while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
@@ -220,10 +326,10 @@ if (nbr_pipe == 0)
     free(son_pid);
     exec(data, data->command->cmd[0], data->command->arg[0], str);
     dup2(original_stdin, STDIN_FILENO);
-    close_fd(original_stdin);
+    close(original_stdin);
     dup2(original_stdout, STDOUT_FILENO);
-    close_fd(original_stdout);
-    close_secure();
+    close(original_stdout);
+    //close_secure();
     return (0);
 }
 int fd[2];
@@ -263,8 +369,10 @@ while (i <= nbr_pipe)
         
 
         if (i != nbr_pipe )
-            dup2(fd[1], STDOUT_FILENO);
-          close_fd(fd[1]);
+            {
+                dup2(fd[1], STDOUT_FILENO);
+                close_fd(fd[1]);
+            }
           close_fd(fd[0]);
         exec(data, data->command->cmd[i], data->command->arg[i], str);
         exit(127);
@@ -277,7 +385,7 @@ while (i <= nbr_pipe)
           }
         fd_in = fd[0];
         close_fd(fd[0]);
-        if (data->output->here_d[i] == 1)
+        if (*data->output->h_doc[i])
             waitpid(son_pid[i], &status, 0);
         i++;
     }
@@ -286,9 +394,9 @@ i = 0;
 while (i <= nbr_pipe) {
     if (data->output->here_d[i] == 0) 
         waitpid(son_pid[i], &status, 0);
-close_secure();        
-close_fd(fd[0]);
-        close_fd(fd[1]);
+    close_secure();        
+    close_fd(fd[0]);
+    close_fd(fd[1]);
     i++;
 }
         free(son_pid);

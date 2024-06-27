@@ -17,23 +17,23 @@
 #include <readline/history.h>
 #include "../../include/parsing/minishell.h"
 
+//extern int g_sig = 0;
+
 static void	handler(int signum)
 {
-	(void)signum;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	//g_data = signum;
+	g_sig = signum;
 }
 
 static void	sigquit_handler(int signum)
 {
-	(void)signum;
 	printf("Quit (core dumped)\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	//g_data = signum;
+	g_sig = signum;
 }
 
 void	ft_sig(t_data *data)

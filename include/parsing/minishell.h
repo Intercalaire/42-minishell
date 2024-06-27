@@ -21,6 +21,8 @@
 # include <readline/history.h>
 # include <string.h>
 
+extern int g_sig;
+
 typedef struct s_command
 {
 char	**lign;
@@ -67,6 +69,7 @@ t_output	*output;
 t_meter		*meter;
 t_command	*command;
 }	t_data;
+
 
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
@@ -118,6 +121,8 @@ void	add_env(t_data *data, char *key, char *value);
 void	exit_shell(t_data *data, char *str, char **arg);
 void	ft_sig(t_data *data);
 char    **cpy_envir(char **env);
+void    cat_env(t_data *data, char *key, char *value);
+char    **bubble_sort(char **arr, int n);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

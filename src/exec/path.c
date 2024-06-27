@@ -78,12 +78,6 @@ if (pid == 0)
 
     if (execve(full_path, args, data->env) == -1)
     { 
-        if (var)
-            ft_free_strtab(var);
-        if (full_path)
-            free(full_path);         
-        if (args)
-            ft_free_strtab(args);
         if (errno == ENOENT)
         {
             printf("%s: command not found\n", cmd);
@@ -100,12 +94,6 @@ if (pid == 0)
             exit(127);
         }
     }
-            if (var)
-            ft_free_strtab(var);
-        if (full_path)
-            free(full_path);         
-        if (args)
-            ft_free_strtab(args);
 }
 else
 {
@@ -158,5 +146,11 @@ else
     }
 }
 }
+        if (var)
+            ft_free_strtab(var);
+        if (full_path)
+            free(full_path);         
+        if (args)
+            ft_free_strtab(args);
     return 0;
 }

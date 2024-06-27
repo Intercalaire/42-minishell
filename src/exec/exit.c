@@ -102,7 +102,7 @@ void exit_shell(t_data *data, char *str, char **arg)
     exit_code = get_exit_code(data, arg);
 
     ft_free_data(data, str);
-        ft_free_strtab(data->env);
+    ft_free_strtab(data->env);
     if (data)
         free(data);
     rl_free_line_state();
