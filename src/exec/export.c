@@ -48,7 +48,7 @@ static void print_declare(t_data *data, int i)
         while (new_env[i])
         {
             value = ft_strdup(new_env[i]);
-            key = ft_strtok(data, new_env[i], "=");
+            key = ft_strtok(new_env[i], "=");
             free(new_env[i]);
             if (ft_strlen(value) - ft_strlen(key) == 0)
                 printf("declare -x %s\n", key);
@@ -97,7 +97,7 @@ int	ft_export(t_data *data, char **arg)
         }
         if (ft_strnstr(arg[i], "+=", ft_strlen(arg[i])) != NULL)
         {
-            key = ft_strtok(data, arg[i], "+=");
+            key = ft_strtok(arg[i], "+=");
             if (key)
                 value = ft_strdup(arg[i] + ft_strlen(key) + 2);
             if (search_env(data, key) == -1)  // Si la clé n'existe pas déjà
@@ -119,7 +119,7 @@ int	ft_export(t_data *data, char **arg)
                     return 1;
                 }
 
-    key = ft_strtok(data, arg[i], "=");
+    key = ft_strtok(arg[i], "=");
 
             if (key)
             {

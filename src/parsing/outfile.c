@@ -171,7 +171,6 @@ static int	h_doc(t_data *data, int *y, char *str)
 
 void	init_global(t_data *data)
 {
-	// printf("nbr_pipe : %d\n", data->meter->nbr_pipe);
 	data->output->h_doc = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
 	data->output->infile = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
 	data->output->outfile = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
@@ -214,28 +213,40 @@ int count_output(t_data *data, char *str, int y)
 int verif_lign(t_data *data, char *str)
 {
 	int i;
+	int in_quote;
 
 	if (!str)
 		return (2);
 	i = 0;
+	in_quote = 0;
 	data->output->sign = 0;
 	printf("str : %s\n", str);
 	while (str[i])
     {
-        if (str[i] == '>' && str[i + 1] != '>')
-            data->output->sign = 1;
-        if (str[i] == '>' && str[i + 1] == '>')
+		if (str[i] == '\"' || str[i] == '\'')
         {
-            data->output->sign = 2;
-            i++;
+            if (in_quote == 0)
+                in_quote = 1;
+            else
+                in_quote = 0;
         }
-        if (str[i] == '<' && str[i + 1] != '<')
-            data->output->sign = 3;
-        if (str[i] == '<' && str[i + 1] == '<')
-        {
-            data->output->sign = 4;
-            i++;
-        }
+		if (in_quote == 0)
+			{
+			if (str[i] == '>' && str[i + 1] != '>')
+				data->output->sign = 1;
+			if (str[i] == '>' && str[i + 1] == '>')
+			{
+				data->output->sign = 2;
+				i++;
+			}
+			if (str[i] == '<' && str[i + 1] != '<')
+				data->output->sign = 3;
+			if (str[i] == '<' && str[i + 1] == '<')
+			{
+				data->output->sign = 4;
+				i++;
+			}
+		}
         i++;
     }
 	if (data->output->sign == 0)
@@ -270,9 +281,11 @@ int verif_output(t_data *data, int *y, char *str)
 	}
 	return (0);
 }
-void count_all(t_data *data, int *y, int i)
+int count_all(t_data *data, int *y, int i)
 {
 	int count_output_result;
+
+	count_output_result = 0;
 	while (data->command->lign[i] && *data->command->lign[i] != '|')
 	{
 		count_output_result = count_output(data, data->command->lign[i], *y);
@@ -292,18 +305,11 @@ void count_all(t_data *data, int *y, int i)
 	// printf("nbr_infile : %d\n", data->meter->nbr_infile);
 	// printf("nbr_heredoc : %d\n", data->meter->nbr_h_doc);
 	data->output->infile[*y] = ft_calloc(data->meter->nbr_infile + 1, sizeof(char *));
-	if (!data->output->infile)
-		ft_error_prog(data, "Allocation error", "Error");
 	data->output->h_doc[*y] = ft_calloc(data->meter->nbr_h_doc + 1, sizeof(char *));
-	if (!data->output->h_doc)
-		ft_error_prog(data, "Allocation error", "Error");
 	data->output->outfile_append[*y] = ft_calloc(data->meter->nbr_outfile_append + 1, sizeof(char *));
-	if (!data->output->outfile_append)
-		ft_error_prog(data, "Allocation error", "Error");
 	data->output->outfile[*y] = ft_calloc(data->meter->nbr_outfile + 1, sizeof(char *));
-	if (!data->output->outfile)
-		ft_error_prog(data, "Allocation error", "Error");
 	data->command->arg[*y] = ft_calloc(data->nbr_arg + 1, sizeof(char *));
-	if (!data->command->arg[*y])
-		ft_error_prog(data, "Allocation error", "Error");
+	if (!data->output->infile || !data->output->h_doc || !data->output->outfile_append || !data->output->outfile || !data->command->arg)
+		return (2);
+	return (0);
 }

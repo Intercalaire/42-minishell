@@ -40,9 +40,9 @@ int	main(int argc, char **argv, char **env)
 		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
 			|| look_pipe(data, str) == 1)
 			continue ;
-		if (try_ft_strtok(data, str) == 1)
+		if (try_ft_strtok(data, str) == 2)
 		{
-			ft_little_error_prog(data, str, "Error");
+			ft_error_prog(data, str, "Error");
 			continue ;
 		}
 		if (pars_pipe(data) == 2)
@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **env)
 			ft_free_data(data, str);
 			continue ;
 		}
-		my_pipe(data, str);
+		//my_pipe(data, str);
 		ft_free_data(data, str);
 	}
 	ft_end_error_prog(data, str, "exit");

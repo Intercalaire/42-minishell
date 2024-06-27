@@ -14,6 +14,7 @@
 
 static int	handle_quotes(char *str, char *new_str, int i, int j);
 static int	handle_special_chars(char *str, char *new_str, int i, int j);
+static char	*init_new_str(char *new_str, char *str);
 
 static int	handle_quotes(char *str, char *new_str, int i, int j)
 {
@@ -23,18 +24,15 @@ static int	handle_quotes(char *str, char *new_str, int i, int j)
 
 static int	handle_special_chars(char *str, char *new_str, int i, int j)
 {
-	// Ajouter un espace avant si nécessaire
 	if (i > 0 && str[i - 1] != ' ' && (str[i] == '>' || str[i] == '<'))
 	{
 		new_str[j++] = ' ';
 	}
 	new_str[j++] = str[i];
-	// Gérer spécifiquement les cas ">>" et "<<"
 	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<'))
 	{
-		new_str[j++] = str[++i]; // Ajouter le deuxième caractère et avancer l'index
+		new_str[j++] = str[++i];
 	}
-	// Ajouter un espace après si nécessaire
 	if (str[i + 1] != '\0' && str[i + 1] != ' ' && (str[i] == '>' || str[i] == '<'))
 	{
 		new_str[j++] = ' ';
@@ -42,15 +40,15 @@ static int	handle_special_chars(char *str, char *new_str, int i, int j)
 	return (j);
 }
 
-static char	*init_new_str(t_data *data, char *new_str, char *str)
+static char	*init_new_str(char *new_str, char *str)
 {
 	new_str = ft_calloc(ft_strlen(str) * 3 + 1, sizeof(char));
 	if (!new_str)
-		ft_error_prog(data, NULL, "Error");
+		return (NULL);
 	return (new_str);
 }
 
-char	*ft_split_delim(t_data *data, char *str)
+char	*ft_split_delim(char *str)
 {
 	int		in_quotes;
 	char	*new_str;
@@ -58,7 +56,9 @@ char	*ft_split_delim(t_data *data, char *str)
 	int		i;
 
 	new_str = NULL;
-	new_str = init_new_str(data, new_str, str);
+	new_str = init_new_str(new_str, str);
+	if (!new_str)
+		return (NULL);
 	in_quotes = 0;
 	i = 0;
 	j = 0;

@@ -34,7 +34,14 @@ void	count_pipes_outside_quotes(t_data *data, const char *str)
 		i++;
 	}
 }
-
+int init_zero(t_data *data)
+{
+	data->meter->count_outfile = 0;
+	data->meter->count_h_doc = 0;
+	data->meter->count_infile = 0;
+	data->meter->count_outfile_append = 0;
+	return (0);
+}
 void	remove_end_space(char *str)
 {
 	int	len;

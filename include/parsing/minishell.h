@@ -73,8 +73,8 @@ t_command	*command;
 
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
-char	*ft_strtok(t_data *data, char *str, const char *delim);
-char	*ft_split_delim(t_data *data, char *str);
+char	*ft_strtok(char *str, const char *delim);
+char	*ft_split_delim(char *str);
 int		remove_arg_strtab(t_data *data);
 
 //parsing
@@ -89,6 +89,7 @@ char	*ft_strdup_2(t_data *data, const char *s);
 void	count_pipes_outside_quotes(t_data *data, const char *str);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
+int		init_zero(t_data *data);
 
 //free
 void 	ft_little_error_prog(t_data *data, char *str, char *msg);
@@ -129,7 +130,7 @@ int		verif_output(t_data *data, int *y, char *str);
 int		verif_lign(t_data *data, char *str);
 void	init_global(t_data *data);
 int		count_output(t_data *data, char *str, int y);
-void	count_all(t_data *data, int *y, int i);
+int	count_all(t_data *data, int *y, int i);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"

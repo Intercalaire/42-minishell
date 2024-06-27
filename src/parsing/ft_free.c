@@ -83,20 +83,21 @@ void	ft_free_strarg(char ***tab)
 		while (tab[i])
 		{
 			j = 0;
-			if (!tab[i])
-				return ;
-			while (tab[i][j])
+			if (tab[i])
 			{
-				if (tab[i][j])
+				while (tab[i][j])
 				{
-					free(tab[i][j]);
-					tab[i][j] = NULL;
+					if (tab[i][j])
+					{
+						free(tab[i][j]);
+						tab[i][j] = NULL;
+					}
+					j++;
 				}
-				j++;
+				free(tab[i]);
+				tab[i] = NULL;
+				i++;
 			}
-			free(tab[i]);
-			tab[i] = NULL;
-			i++;
 		}
 		free(tab);
 		tab = NULL;

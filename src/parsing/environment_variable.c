@@ -16,6 +16,7 @@ static char		*environment_variable(t_data *data, char *str);
 static int		ktq_utils(int in_qte_dble, int in_qte_sple);
 static int		know_the_quote(char *str);
 static	char	*make_the_char(t_data *data, char *str);
+static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 
 // char	*ft_strdup_2(t_data *data, const char *s)
 // {
@@ -103,12 +104,12 @@ static	char	*make_the_char(t_data *data, char *str);
 // 	free(str);
 // 	return (result);
 // }
+
 char	*ft_strdup_2(t_data *data, const char *s)
 {
 	int		i;
 	int		j;
 	char	*str;
-	char	*result;
 
 	i = 0;
 	j = 0;
@@ -119,20 +120,35 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	str = ft_calloc((i + 1), sizeof(char));
 	if (str == NULL)
 		return (NULL);
-	while (j < i)
+	return (ft_strdup_utils(data, s, str ,i));
+}
+
+static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
+{
+	int j;
+	int k;
+	char *env_str;
+
+	j = 0;
+	k = 0;
+	env_str = NULL;
+	while (k < i)
 	{
-		if (str[i] == '$')
+		if (s[k] == '$')
 		{
-			str = ft_strdup(environment_variable(data, str));
+			env_str = environment_variable(data, (char *)&s[k]);
+			if (env_str)
+			{
+				while (*env_str)
+					str[j++] = *env_str++;
+				k += data->len_env;
+			}
 		}
-		j += data->len_env;
-		str[j] = s[j];
-		j++;
+		else
+			str[j++] = s[k++];
 	}
 	str[j] = '\0';
-	result = ft_trim_quote(str);
-	free(str);
-	return (result);
+	return (ft_trim_quote(str));
 }
 
 
@@ -153,7 +169,7 @@ static char	*environment_variable(t_data *data, char *str)
 		printf("value = %s\n", value);
 		i = search_env(data, value + 1);
 		if (i == -1)
-			return (" ");
+			return ("""");
 		free(value);
 		value = ft_strdup(data->env[i] + value_len);
 	}

@@ -55,8 +55,7 @@ char *ft_trim_quote(char *str)
         handle_char(result, str, &i, &j, &quote);
         i++;
     }
-
     result[j] = '\0';
-
+	free(str);
     return (result);
 }

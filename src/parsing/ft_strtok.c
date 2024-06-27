@@ -78,7 +78,7 @@ static char	*adjust_pointers(char **src, char *next_token, char *s)
 	return (s);
 }
 
-char	*ft_strtok(t_data *data, char *str, const char *delim)
+char	*ft_strtok(char *str, const char *delim)
 {
 	static char	*src = NULL;
 	char		*next_token;
@@ -95,6 +95,6 @@ char	*ft_strtok(t_data *data, char *str, const char *delim)
 		src++;
 	next_token = find_next_token(src, delim);
 	ret = adjust_pointers(&src, next_token, s);
-	ret = ft_split_delim(data, ret);
+	ret = ft_split_delim(ret);
 	return (ret);
 }

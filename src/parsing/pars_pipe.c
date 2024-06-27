@@ -13,7 +13,7 @@
 #include "../../include/parsing/minishell.h"
 
 static void	count_args(t_data *data, int i);
-static void	utils_pars_pipe(t_data *data);
+static int	utils_pars_pipe(t_data *data);
 static void	handle_pipe(t_data *data, int *i, int *y);
 static int	handle_args(t_data *data, int *i, int *y, int *z);
 
@@ -27,21 +27,22 @@ static void	count_args(t_data *data, int i)
 	}
 }
 
-static void	utils_pars_pipe(t_data *data)
+static int	utils_pars_pipe(t_data *data)
 {
 	data->command->cmd = ft_calloc(data->nbr_pipe + 2, sizeof(char *));
 	if (!data->command->cmd)
-		ft_error_prog(data, "Allocation error", "Error");
+		return (2);
 	data->command->arg = ft_calloc(data->nbr_pipe + 2, sizeof(char **));
 	if (!data->command->arg)
-		ft_error_prog(data, "Allocation error", "Error");
+		return (2);
 	data->output->here_d = ft_calloc(data->nbr_pipe + 2, sizeof(int));
 	if (!data->output->here_d)
-		ft_error_prog(data, "Allocation error", "Error");
+		return (2);
 	data->output->append = ft_calloc(data->nbr_pipe + 2, sizeof(int));
 	if (!data->output->append)
-		ft_error_prog(data, "Allocation error", "Error");
+		return (2);
 	init_global(data);
+	return (0);
 }
 
 static void	print_cmd(t_data *data)
@@ -90,7 +91,8 @@ static void	handle_pipe(t_data *data, int *i, int *y)
 static int	handle_args(t_data *data, int *i, int *y, int *z)
 {
 	count_args(data, *i);
-	count_all(data, y, *i);
+	if (count_all(data, y, *i) == 2)
+		return (2);
 		
 	while (data->command->lign[(*i)] && *data->command->lign[(*i)] != '|')
 	{
@@ -156,14 +158,12 @@ int	pars_pipe(t_data *data)
 	i = 0;
 	y = 0;
 	data->meter->nbr_pipe = data->nbr_pipe;
-	utils_pars_pipe(data);
+	if (utils_pars_pipe(data) == 2)
+		return (2);
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = 0;
-		data->meter->count_outfile = 0;
-		data->meter->count_h_doc = 0;
-		data->meter->count_infile = 0;
-		data->meter->count_outfile_append = 0;
+		init_zero(data);
 		while (data->command->lign[i] && *data->command->lign[i] != '|')
 		{
 			if (handle_args(data, &i, &y, &z) == 2)
