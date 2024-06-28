@@ -14,23 +14,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "../../include/parsing/minishell.h"
-/*
-void pwd(void)
-{
-	int i;
-	char *str;
 
-	i = 1;
-	str = ft_calloc(i, sizeof(char));
-	while (getcwd(str, i) == NULL)
-	{
-		i++;
-		free(str);
-		str = ft_calloc(i, sizeof(char));
-	}
-	printf("%s", str);
-}
-*/
 int pwd(void)
 {
 	char pwd[PATH_MAX];
@@ -61,8 +45,7 @@ void cpy_env(t_data *data, char **environnement)
 		data->env[i] = ft_strdup(environnement[i]);
 		if (!data->env[i])
         {
-            // Si l'allocation de mémoire échoue, libérer toute la mémoire déjà allouée
-            ft_free_strtab(data->env);
+			            ft_free_strtab(data->env);
             return;
         }
 		i++;

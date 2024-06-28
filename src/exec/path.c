@@ -53,8 +53,15 @@ int path(t_data *data, char *cmd, char **arg)
 ft_sig(data);
 if (pid == 0)
 {
-    if (ft_strncmp(cmd, "./", 2) == 0)
-        full_path = strdup(cmd);
+    if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+{
+    // cmd est un chemin absolu ou relatif, essayez de l'exécuter directement
+    if (execve(cmd, args, data->env) == -1)
+    {
+        perror(cmd);
+        exit(127); // Sortie avec une erreur si execve échoue
+    }
+}
     else 
     {
         tmp = ft_strjoin(var[i], "/");

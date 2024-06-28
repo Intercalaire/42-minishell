@@ -17,7 +17,6 @@
 #include <readline/history.h>
 #include "../../include/parsing/minishell.h"
 
-//extern int g_sig = 0;
 
 static void	handler(int signum)
 {
@@ -45,5 +44,13 @@ void	ft_sig(t_data *data)
 	{
 		signal(SIGQUIT, sigquit_handler);
 		data->sig_status = 0;
+	}
+	if (g_sig)
+	{
+		if (g_sig == SIGQUIT)
+			data->sig_status = 131;
+		if (g_sig == SIGINT)
+			data->sig_status = 130;
+		g_sig = 0;
 	}
 }
