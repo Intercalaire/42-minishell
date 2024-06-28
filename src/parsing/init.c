@@ -11,13 +11,21 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
-int g_sig = 0;
+
+int	g_sig = 0;
+static void	init_utils(t_data *data);
 
 void	init_data(t_data *data)
 {
 	data->command = malloc(sizeof(t_command));
+	if (!data->command)
+		return (2);
 	data->meter = malloc(sizeof(t_meter));
+	if (!data->meter)
+		return (2);
 	data->output = malloc(sizeof(t_output));
+	if (!data->output)
+		return (2);
 	data->command->arg = NULL;
 	data->command->cmd = NULL;
 	data->command->lign = NULL;
@@ -27,6 +35,11 @@ void	init_data(t_data *data)
 	data->output->outfile_append = NULL;
 	data->output->here_d = NULL;
 	data->output->append = NULL;
+	init_utils(data);
+}
+
+static void	init_utils(t_data *data)
+{
 	data->count = 0;
 	data->size = 0;
 	data->len_env = 0;
@@ -42,4 +55,5 @@ void	init_data(t_data *data)
 	data->meter->nbr_infile = 0;
 	data->meter->nbr_outfile_append = 0;
 	g_sig = 0;
+	data->in_quote = 0;
 }

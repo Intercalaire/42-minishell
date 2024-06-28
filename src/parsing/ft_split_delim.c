@@ -29,11 +29,13 @@ static int	handle_special_chars(char *str, char *new_str, int i, int j)
 		new_str[j++] = ' ';
 	}
 	new_str[j++] = str[i];
-	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<'))
+	if ((str[i] == '>' && str[i + 1] == '>')
+		|| (str[i] == '<' && str[i + 1] == '<'))
 	{
 		new_str[j++] = str[++i];
 	}
-	if (str[i + 1] != '\0' && str[i + 1] != ' ' && (str[i] == '>' || str[i] == '<'))
+	if (str[i + 1] != '\0' && str[i + 1] != ' '
+		&& (str[i] == '>' || str[i] == '<'))
 	{
 		new_str[j++] = ' ';
 	}
@@ -71,9 +73,8 @@ char	*ft_split_delim(char *str)
 		}
 		else if ((str[i] == '|' || (str[i] == '>' || str[i] == '<')) && !in_quotes)
 		{
-			if (j > 0 && new_str[j - 1] != ' ') {
+			if (j > 0 && new_str[j - 1] != ' ')
 				new_str[j++] = ' ';
-			}
 			
 			if (str[i + 1] == str[i])
 			{
@@ -81,9 +82,7 @@ char	*ft_split_delim(char *str)
 				i++;
 			}
 			else
-			{
 				j = handle_special_chars(str, new_str, i, j);
-			}
 			new_str[j++] = ' ';
 		}
 		else

@@ -12,50 +12,58 @@
 
 #include "libft.h"
 
-static int is_quote(char c);
-static void handle_char(char *result, char *str, int *i, int *j, char *quote);
+static int	is_quote(char c);
+static void	handle_char(char *result, char *str, t_str_index *index);
 
-static int is_quote(char c)
+static int	is_quote(char c)
 {
 	return (c == '"' || c == '\'');
 }
 
-static void handle_char(char *result, char *str, int *i, int *j, char *quote)
+static void	handle_char(char *result, char *str, t_str_index *index)
 {
-	if (str[*i] == '\\' && (str[*i+1] == '\'' || str[*i+1] == '\"') && *quote == '\"')
+	if (str[*(index->i)] == '\\' && (str[*(index->i) + 1] == '\''
+			|| str[*(index->i) + 1] == '\"') && *(index->quote) == '\"')
 	{
-		result[(*j)++] = str[++(*i)];
+		result[(*(index->j))++] = str[++(*(index->i))];
 	}
-	else if (is_quote(str[*i]) && *quote == 0)
+	else if (is_quote(str[*(index->i)]) && *(index->quote) == 0)
 	{
-		*quote = str[*i];
+		*(index->quote) = str[*(index->i)];
 	}
-	else if (str[*i] == *quote)
+	else if (str[*(index->i)] == *(index->quote))
 	{
-		*quote = 0;
+		*(index->quote) = 0;
 	}
 	else
 	{
-		result[(*j)++] = str[*i];
+		result[(*(index->j))++] = str[*(index->i)];
 	}
 }
 
-char *ft_trim_quote(char *str)
+char	*ft_trim_quote(char *str)
 {
-    int i = 0;
-    int j = 0;
-    char quote = 0;
-    char *result;
+	int			i;
+	int			j;
+	char		quote;
+	char		*result;
+	t_str_index	index;
 
+	i = 0;
+	j = 0;
+	quote = 0;
+	index.i = &i;
+	index.j = &j;
+	index.quote = &quote;
 	result = ft_calloc((ft_strlen(str) + 1), sizeof(char));
-    if (result == NULL || str == NULL)
-        return (NULL);
-    while (str[i])
-    {
-        handle_char(result, str, &i, &j, &quote);
-        i++;
-    }
-    result[j] = '\0';
+	if (result == NULL || str == NULL)
+		return (NULL);
+	while (str[i])
+	{
+		handle_char(result, str, &index);
+		i++;
+	}
+	result[j] = '\0';
 	free(str);
-    return (result);
+	return (result);
 }

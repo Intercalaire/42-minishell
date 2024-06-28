@@ -12,12 +12,10 @@
 
 #include "../../include/parsing/minishell.h"
 
-static void	count_args(t_data *data, int i);
 static int	utils_pars_pipe(t_data *data);
 static void	handle_pipe(t_data *data, int *i, int *y);
-static int	handle_args(t_data *data, int *i, int *y, int *z);
 
-static void	count_args(t_data *data, int i)
+void	count_args(t_data *data, int i)
 {
 	data->nbr_arg = 0;
 	while (data->command->lign[i] && *data->command->lign[i] != '|')
@@ -43,6 +41,13 @@ static int	utils_pars_pipe(t_data *data)
 		return (2);
 	init_global(data);
 	return (0);
+}
+
+static void	handle_pipe(t_data *data, int *i, int *y)
+{
+	(void)data;
+	(*i)++;
+	(*y)++;
 }
 
 static void	print_cmd(t_data *data)
@@ -72,81 +77,14 @@ static void	print_arg(t_data *data)
 			{
 				while (data->command->arg[i][y])
 				{
-					printf("arg[%d][%d] : %s\n", i, y, data->command->arg[i][y]);
+					printf("arg[%d][%d] : %s\n", i,
+						y, data->command->arg[i][y]);
 					y++;
 				}
 			}
 			i++;
 		}
 	}
-}
-
-static void	handle_pipe(t_data *data, int *i, int *y)
-{
-	(void)data;
-	(*i)++;
-	(*y)++;
-}
-
-static int	handle_args(t_data *data, int *i, int *y, int *z)
-{
-	count_args(data, *i);
-	if (count_all(data, y, *i) == 2)
-		return (2);
-		
-	while (data->command->lign[(*i)] && *data->command->lign[(*i)] != '|')
-	{
-		if (data->command->lign[(*i)] && data->command->lign[(*i) + 1]) 
-		{
-			if (verif_lign(data, data->command->lign[(*i)]) == 0) 
-			{
-				(*i)++;
-				verif_output(data, y, data->command->lign[(*i)]);
-			}
-			else
-			{
-				if (!data->command->cmd[*y])
-				{
-					data->command->cmd[*y] = ft_strdup_2(data, data->command->lign[(*i)]);
-					if (!data->command->cmd[*y])
-					{
-						ft_free_data_no_str(data);
-						return (2);
-					}
-				}
-				else
-				{
-					data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
-					if (!data->command->arg[*y][*z])
-					{
-						ft_free_data_no_str(data);
-						return (2);
-					}
-					printf("arg[%d][%d] : %s\n", *y, *z, data->command->arg[*y][*z]);
-					(*z)++;
-				}
-			}
-		}
-		else
-		{
-			if (!data->command->cmd[*y])
-			{
-				data->command->cmd[*y] = ft_strdup_2(data, data->command->lign[(*i)]);
-				if (!data->command->cmd[*y])
-						return (2);
-			}
-			else
-			{
-				data->command->arg[*y][*z] = ft_strdup_2(data, data->command->lign[(*i)]);
-				if (!data->command->arg[*y][*z])
-					return (2);
-				(*z)++;
-			}
-		}
-		(*i)++;
-	}
-	printf("\nError here\n");
-	return (0);
 }
 
 int	pars_pipe(t_data *data)
@@ -157,13 +95,11 @@ int	pars_pipe(t_data *data)
 
 	i = 0;
 	y = 0;
-	data->meter->nbr_pipe = data->nbr_pipe;
 	if (utils_pars_pipe(data) == 2)
 		return (2);
 	while (data->nbr_pipe-- >= 0)
 	{
-		z = 0;
-		init_zero(data);
+		z = init_zero(data);
 		while (data->command->lign[i] && *data->command->lign[i] != '|')
 		{
 			if (handle_args(data, &i, &y, &z) == 2)

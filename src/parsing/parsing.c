@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **env)
 			ft_free_data(data, str);
 			continue ;
 		}
-		//my_pipe(data, str);
+		my_pipe(data, str);
 		ft_free_data(data, str);
 	}
 	ft_end_error_prog(data, str, "exit");

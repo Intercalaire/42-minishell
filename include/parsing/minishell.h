@@ -62,6 +62,7 @@ int			size;
 int			nbr_pipe;
 int 		nbr_arg;
 int			exit_status;
+int 		in_quote;
 char		**env;
 int			len_env;
 int         sig_status;
@@ -84,6 +85,8 @@ int 	look_pipe(t_data *data, char *str);
 int 	special_char(t_data *data, char *str);
 void	remove_end_space(char *str);
 char	*ft_strdup_2(t_data *data, const char *s);
+int		handle_args(t_data *data, int *i, int *y, int *z);
+void	count_args(t_data *data, int i);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);
@@ -100,7 +103,6 @@ void 	ft_end_error_prog(t_data *data, char *str, char *msg);
 int		error_code(t_data *data, char *str);
 void	ft_free_strarg(char ***tab);
 void	ft_little_error_prog_no_msg(t_data *data, char *str);
-void	ft_free_data_no_str(t_data *data);
 
 //init
 void	init_data(t_data *data);
@@ -131,6 +133,12 @@ int		verif_lign(t_data *data, char *str);
 void	init_global(t_data *data);
 int		count_output(t_data *data, char *str, int y);
 int	count_all(t_data *data, int *y, int i);
+
+//output_init
+int		outfile(t_data *data, int *y, char *str);
+int		outfile_append(t_data *data, int *y, char *str);
+int		infile(t_data *data, int *y, char *str);
+int		h_doc(t_data *data, int *y, char *str);
 
 # define PIPE "syntax error near unexpected token `|'"
 # define TOKEN "syntax error near unexpected token"

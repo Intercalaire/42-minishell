@@ -27,6 +27,13 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_str_index
+{
+	int		*i;
+	int		*j;
+	char	*quote;
+}	t_str_index;
+
 int		ft_isalpha(int c);
 int		ft_isdigit(int nombre);
 int		ft_isalnum(int c);

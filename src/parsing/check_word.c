@@ -39,7 +39,8 @@ static int	len_ft_strtok(char *str)
 		free(token);
 		token = ft_strtok(NULL, " \t\n\v\r\f");
 	}
-	free(token);
+	if (token)
+		free(token);
 	return (count);
 }
 
@@ -63,10 +64,11 @@ static int	process_tokens(t_data *data, char *str)
 {
 	char	*token;
 	int		i;
+
 	i = 0;
 	count_pipes_outside_quotes(data, str);
 	token = ft_strtok(str, " \t\n\v\r\f");
-	if 	(!token)
+	if (!token)
 		return (2);
 	data->count = 0;
 	while (token != NULL)

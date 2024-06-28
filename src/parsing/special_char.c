@@ -12,7 +12,7 @@
 
 #include "../../include/parsing/minishell.h"
 
-static int double_output(t_data *data, char *str);
+static int	double_output(t_data *data, char *str);
 
 int	special_char(t_data *data, char *str)
 {
@@ -42,12 +42,12 @@ int	special_char(t_data *data, char *str)
 	return (0);
 }
 
-static int double_output(t_data *data, char *str)
+static int	double_output(t_data *data, char *str)
 {
 	int		i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
 		{
