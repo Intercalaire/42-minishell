@@ -21,7 +21,7 @@
 
 
 //dans les cas ou c'est different de echo, cd, pwd, export, unset, env, exit
-int path(t_data *data, char *cmd, char **arg)
+void path(t_data *data, char *cmd, char **arg)
 {
 	int path;
 	char **var;
@@ -41,7 +41,8 @@ int path(t_data *data, char *cmd, char **arg)
     if (path == -1)
     {
         printf("minishell: %s: No such file or directory\n", cmd);
-        return (127);
+        data->exit_status = 127;
+        return ;
     }
 	var = ft_split(data->env[path] + 5, ':');
 	while (var[i])
@@ -88,16 +89,19 @@ if (pid == 0)
         if (errno == ENOENT)
         {
             printf("%s: command not found\n", cmd);
+            data->exit_status = 127;
             exit(127);
         }
         else if (errno == EACCES)
         {
             perror(args[0]);
+            data->exit_status = 1;
             exit(1);
         }
         else
         {
             perror(args[0]);
+            data->exit_status = 127;
             exit(127);
         }
     }
@@ -159,5 +163,4 @@ else
             free(full_path);         
         if (args)
             ft_free_strtab(args);
-    return 0;
 }

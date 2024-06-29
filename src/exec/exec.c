@@ -32,6 +32,6 @@ int	exec(t_data *data, char *cmd, char **arg, char *str)
 	else if (!ft_strncmp(cmd, "exit", 5))
 		exit_shell(data, str, arg);
 	else
-		data->exit_status = path(data, cmd, arg);
+		path(data, cmd, arg);
 	return (0);
 }

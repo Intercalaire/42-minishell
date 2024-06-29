@@ -113,7 +113,7 @@ int		init_data(t_data *data);
 //exec
 int		ft_export(t_data *data, char **arg);
 int		exec(t_data *data, char *cmd, char **arg, char *str);
-int		path(t_data *data, char *cmd, char **arg);
+void		path(t_data *data, char *cmd, char **arg);
 int		print_env(t_data *data, char **arg);
 int		echo(char **arg);
 int		cd(t_data *data, char **arg);
