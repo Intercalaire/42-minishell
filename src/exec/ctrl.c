@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:05:46 by hsolet            #+#    #+#             */
-/*   Updated: 2024/06/22 07:54:16 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/06/29 09:36:58 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <readline/readline.h>
@@ -17,13 +17,11 @@
 #include <readline/history.h>
 #include "../../include/parsing/minishell.h"
 
-
 static void	handler(int signum)
 {
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
 	g_sig = signum;
 }
 
@@ -48,9 +46,9 @@ void	ft_sig(t_data *data)
 	if (g_sig)
 	{
 		if (g_sig == SIGQUIT)
-			data->sig_status = 131;
+			data->exit_status = 131;
 		if (g_sig == SIGINT)
-			data->sig_status = 130;
+			data->exit_status = 130;
 		g_sig = 0;
 	}
 }

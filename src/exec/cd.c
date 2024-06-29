@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:44:47 by hsolet            #+#    #+#             */
-/*   Updated: 2024/06/22 07:44:35 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/06/29 09:38:27 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -103,14 +103,14 @@ int	cd(t_data *data, char **arg)
 	oldpwd = ft_calloc(PATH_MAX, sizeof(char));
 	getcwd(oldpwd, PATH_MAX);
 	if (k != -1)
-		home = ft_strdup(data->env[k] + 5);		
+		home = ft_strdup(data->env[k] + 5);
 	if (!arg || ft_strncmp(arg[0], "~", 1) == 0
 		|| ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
-		{
-			if (create_path(home, arg))
-				return (1);
+	{
+		if (create_path(home, arg))
+			return (1);
 		env_update(data, oldpwd);
-}
+	}
 	else
 		directory_error(arg);
 	free(home);

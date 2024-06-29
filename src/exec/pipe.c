@@ -336,28 +336,28 @@ while (data->command->cmd[nbr_pipe + 1])
 son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
 if (son_pid == NULL)
     return (1);
-// if (nbr_pipe == 0) 
-// {
-//    if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
-//    {
-//        execute_heredoc(data, i);
-//        create_infiles_heredoc(data, i);
-//    }
-//    if (data->output->infile[i]) 
-//        create_infiles(data, i);
-//    if (data->output->outfile[i]) 
-//        create_outfiles(data, i);
-//    if (data->output->outfile_append[i]) 
-//        create_outfiles_append(data, i);
-//    free(son_pid);
-//    exec(data, data->command->cmd[0], data->command->arg[0], str);
-//    dup2(original_stdin, STDIN_FILENO);
-//    close(original_stdin);
-//    dup2(original_stdout, STDOUT_FILENO);
-//    close(original_stdout);
-//    //close_secure();
-//    return (0);
-// }
+if (nbr_pipe == 0) 
+{
+   if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
+   {
+       execute_heredoc(data, i);
+       create_infiles_heredoc(data, i);
+   }
+   if (data->output->infile[i]) 
+       create_infiles(data, i);
+   if (data->output->outfile[i]) 
+       create_outfiles(data, i);
+   if (data->output->outfile_append[i]) 
+       create_outfiles_append(data, i);
+   free(son_pid);
+   exec(data, data->command->cmd[0], data->command->arg[0], str);
+   dup2(original_stdin, STDIN_FILENO);
+   close(original_stdin);
+   dup2(original_stdout, STDOUT_FILENO);
+   close(original_stdout);
+   //close_secure();
+   return (0);
+}
 int fd[2];
 
 while (i <= nbr_pipe)

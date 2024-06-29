@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 	if (!data)
 		return (EXIT_FAILURE);
 	cpy_env(data, env);
-	data->exit_status = 115;
+	data->exit_status = 0;
 	while (1)
 	{
 		init_data(data);

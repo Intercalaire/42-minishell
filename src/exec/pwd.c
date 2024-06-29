@@ -15,9 +15,9 @@
 #include <limits.h>
 #include "../../include/parsing/minishell.h"
 
-int pwd(void)
+int	pwd(void)
 {
-	char pwd[PATH_MAX];
+	char	pwd[PATH_MAX];
 
 	if (getcwd(pwd, PATH_MAX))
 	{
@@ -28,10 +28,10 @@ int pwd(void)
 		return (-1);
 }
 
-void cpy_env(t_data *data, char **environnement)
+void	cpy_env(t_data *data, char **environnement)
 {
-	int len_env;
-	int i;
+	int	len_env;
+	int	i;
 
 	i = 0;
 	len_env = 0;
@@ -39,15 +39,15 @@ void cpy_env(t_data *data, char **environnement)
 		len_env++;
 	data->env = ft_calloc(len_env + 1, sizeof(char *));
 	if (!data->env)
-		return;
+		return ;
 	while (environnement[i])
 	{
 		data->env[i] = ft_strdup(environnement[i]);
 		if (!data->env[i])
-        {
-			            ft_free_strtab(data->env);
-            return;
-        }
+		{
+			ft_free_strtab(data->env);
+			return ;
+		}
 		i++;
 	}
 }
