@@ -41,10 +41,6 @@ void	ft_free_data(t_data *data, char *str)
 			ft_free_strarg(data->output->outfile);
 		if (data->output->outfile_append)
 			ft_free_strarg(data->output->outfile_append);
-		//if (data->output->here_d)
-		//	free(data->output->here_d);
-		//if (data->output->append)
-		//	free(data->output->append);
 		free(data->output);
 	}
 	if (data->meter)

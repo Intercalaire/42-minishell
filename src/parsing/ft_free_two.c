@@ -41,6 +41,6 @@ void	ft_end_error_prog(t_data *data, char *str, char *msg)
 	if (data)
 	{
 		ft_free_data(data, str);
-		//free(data);
+		free(data);
 	}
 }

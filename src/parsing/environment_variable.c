@@ -13,97 +13,9 @@
 #include "../../include/parsing/minishell.h"
 
 static char		*environment_variable(t_data *data, char *str);
-static int		ktq_utils(int in_qte_dble, int in_qte_sple);
 static int		know_the_quote(char *str);
-static	char	*make_the_char(t_data *data, char *str);
-static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
-
-// char	*ft_strdup_2(t_data *data, const char *s)
-// {
-// 	char	*str = NULL;
-// 	char	*env_value;
-// 	int		i;
-// 	int		j;
-// 	char	*final_str;
-// 	char *start_value;
-// 	char *end_value;
-
-// 	start_value = ft_calloc(ft_strlen(s) - ft_strlen(ft_strchr(s, '$')) , sizeof(char));
-// 	if (!start_value)
-// 		return (NULL);
-// 	if (!s)
-// 		return (NULL);
-// 	env_value = NULL;
-// 	if (str == NULL)
-// 		return (NULL);
-// 	i = 0;
-// 	j = 0;
-// 		while (s[i] && s[i] != '$')
-// 			start_value[j++] = s[i++];
-// 		if (s[i] == '$')
-// 		{
-// 			env_value = environment_variable(data, (char *)s);
-// 		}
-// 		j = 0;
-// 		while (s[i])
-// 			end_value = ft_strdup(s + ft_strlen(s) + ft_strlen(env_value));
-// 		if (env_value)
-// 		{
-// 			str = ft_strcat(str, start_value);
-// 			str = ft_strcat(str, env_value);
-// 			str = ft_strcat(str, end_value);
-// 		}
-// 		else
-// 		{
-// 			str = ft_strcat(str, start_value);
-// 			str = ft_strcat(str, end_value);
-// 	}
-// 	printf("env_evalu = %s\n", env_value);
-// 	str[j] = '\0';
-// 	final_str = ft_trim_quote(str);
-// 	return (final_str);
-// }
-
-// char	*ft_strdup_with_env(t_data *data, const char *s)
-// {
-// 	char	*result;
-// 	char	*temp;
-// 	int		i;
-// 	int		len;
-
-// 	if (!s)
-// 		return (NULL);
-// 	result = ft_calloc(1, sizeof(char)); // Initialise avec une chaîne vide
-// 	if (!result)
-// 		return (NULL);
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i] == '$')
-// 		{
-// 			temp = environment_variable(data, (char *)&s[i]); // Cast pour éviter l'erreur de const
-// 			len = strlen(temp);
-// 			result = ft_realloc(result, strlen(result) + len + 1); // Réalloue pour la nouvelle taille
-// 			if (!result)
-// 				return (NULL);
-// 			strcat(result, temp); // Ajoute la valeur de l'environnement à la chaîne
-// 			i += data->len_env; // Saute les caractères de la variable d'environnement
-// 		}
-// 		else
-// 		{
-// 			len = strlen(result);
-// 			result = ft_realloc(result, len + 2); // Réalloue pour ajouter un caractère
-// 			if (!result)
-// 				return (NULL);
-// 			result[len] = s[i];
-// 			result[len + 1] = '\0'; // Assure que la chaîne est toujours terminée par \0
-// 			i++;
-// 		}
-// 	}
-// 	result = ft_trim_quote(  );
-// 	free(str);
-// 	return (result);
-// }
+static char		*make_the_char(t_data *data, char *str);
+static char		*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 
 char	*ft_strdup_2(t_data *data, const char *s)
 {
@@ -120,14 +32,14 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	str = ft_calloc((i + 1), sizeof(char));
 	if (str == NULL)
 		return (NULL);
-	return (ft_strdup_utils(data, s, str ,i));
+	return (ft_strdup_utils(data, s, str, i));
 }
 
 static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 {
-	int j;
-	int k;
-	char *env_str;
+	int		j;
+	int		k;
+	char	*env_str;
 
 	j = 0;
 	k = 0;
@@ -137,6 +49,7 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 		if (s[k] == '$')
 		{
 			env_str = environment_variable(data, (char *)&s[k]);
+			printf("env_str = %s\n", env_str);
 			if (env_str)
 			{
 				while (*env_str)
@@ -151,7 +64,6 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	return (ft_trim_quote(str));
 }
 
-
 static char	*environment_variable(t_data *data, char *str)
 {
 	char	*value;
@@ -159,7 +71,6 @@ static char	*environment_variable(t_data *data, char *str)
 	int		value_len;
 
 	value = NULL;
-	printf("know_the_quote = %d\n", know_the_quote(str));
 	if (know_the_quote(str) == 1 || know_the_quote(str) == 0)
 	{
 		value = make_the_char(data, str);
@@ -167,6 +78,8 @@ static char	*environment_variable(t_data *data, char *str)
 			return (NULL);
 		value_len = ft_strlen(value);
 		printf("value = %s\n", value);
+		if (value[1] == '?')
+			return (ft_itoa(data->exit_status));
 		i = search_env(data, value + 1);
 		if (i == -1)
 			return ("""");
@@ -180,21 +93,18 @@ static char	*environment_variable(t_data *data, char *str)
 
 static	char	*make_the_char(t_data *data, char *str)
 {
-	int i;
-	int start;
+	int	i;
+	int	start;
 
 	i = 0;
 	while (str[i] && str[i] != '$')
 		i++;
-	printf("i = %d\n", i);
 	start = i;
 	i++;
-	while(str[i] && ft_isalnum(str[i]) == 1)
+	while (str[i] && (str[i] == '?' || ft_isalnum(str[i]) == 1))
 		i++;
-	printf("i = %d\n", i);
-	data->len_env = i - start;
+ 	data->len_env = i - start;
 	return (ft_strndup(str + start, i - start));
-	
 }
 
 static int	know_the_quote(char *str)
@@ -222,80 +132,3 @@ static int	know_the_quote(char *str)
 	}
 	return (ktq_utils(in_quote_double, in_quote_simple));
 }
-
-static int	ktq_utils(int in_qte_dble, int in_qte_sple)
-{
-	if (in_qte_dble == 1)
-		return (1);
-	if (in_qte_sple == 1)
-		return (3);
-	return (0);
-}
-
-// static char *handle_quoted_env_var(t_data *data, char *str, char quote_type)
-// {
-// 	char *env_var_name;
-// 	char *value;
-// 	char *trimmed_value;
-// 	char *trimmed_str;
-
-// 	env_var_name = str + 1;
-// 	env_var_name[ft_strlen(env_var_name)-1] = '\0';
-// 	while (env_var_name[0] == '\"' || env_var_name[0] == '\'')
-// 	{
-// 		env_var_name++;
-// 		env_var_name[strlen(env_var_name)-1] = '\0';
-// 	}
-// 	if (env_var_name[0] == '$')
-// 	{
-// 		if (quote_type == '\"' || quote_type == '\'')
-// 			env_var_name++;
-// 		int i = search_env(data, env_var_name);
-// 		if (i != -1)
-// 		{
-// 			if (quote_type == '\"')
-// 			{
-// 				value = ft_strdup(data->env[i] + ft_strlen(env_var_name) + 1);
-// 				if (value == NULL)
-// 					return (NULL);
-// 				trimmed_value = (str[0] == '\"' && str[strlen(str)-1] == '\"') ? value : ft_trim_quote(value);
-// 				if (value != trimmed_value)
-// 					free(value);
-// 				return trimmed_value;
-// 			}
-// 			else if (quote_type == '\'')
-// 			{
-// 				value = ft_strdup(env_var_name - 1);
-// 				trimmed_value = (str[0] == '\'' && str[strlen(str)-1] == '\'') ? value : ft_trim_quote(value);
-// 				if (value != trimmed_value)
-// 					free(value);
-// 				return trimmed_value;
-// 			}
-// 		}
-// 	}
-// 	trimmed_str = ft_trim_quote(str);
-// 	return trimmed_str;
-// }
-
-// static char *handle_simple_env_var(t_data *data, char *str)
-// {
-// 	char *trimmed_str;
-// 	char *trimmed_value;
-// 	char *value;
-// 	int i;
-	
-// 	i = search_env(data, str + 1);
-// 	if (i != -1)
-// 	{
-// 		value = ft_strdup(data->env[i] + ft_strlen(str + 1) + 1);
-// 		if (value == NULL)
-// 			return (NULL);
-// 		trimmed_value = (str[0] == '$' && str[strlen(str)-1] == '$') ? value : ft_trim_quote(value);
-// 		if (value != trimmed_value)
-// 			free(value);
-// 		return trimmed_value;
-// 	}
-// 	trimmed_str = ft_trim_quote(str);
-// 	return trimmed_str;
-// }
-

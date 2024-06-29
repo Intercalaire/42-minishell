@@ -13,7 +13,7 @@
 #include "../../include/parsing/minishell.h"
 
 static int	look_pipe_helper(t_data *data, char *str, int i);
-static int check_pipe_with_spaces(t_data *data, char *str, int i);
+static int	check_pipe_with_spaces(t_data *data, char *str, int i);
 
 int	look_pipe(t_data *data, char *str)
 {
@@ -32,7 +32,7 @@ int	look_pipe(t_data *data, char *str)
 	return (0);
 }
 
-static int check_pipe_with_spaces(t_data *data, char *str, int i)
+static int	check_pipe_with_spaces(t_data *data, char *str, int i)
 {
 	while (str[i] == ' ')
 		i++;
@@ -44,10 +44,10 @@ static int check_pipe_with_spaces(t_data *data, char *str, int i)
 	return (0);
 }
 
-static int look_pipe_helper(t_data *data, char *str, int i)
+static int	look_pipe_helper(t_data *data, char *str, int i)
 {
-	int in_double_quote;
-	int in_single_quote;
+	int	in_double_quote;
+	int	in_single_quote;
 
 	in_double_quote = 0;
 	in_single_quote = 0;

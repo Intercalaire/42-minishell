@@ -15,7 +15,7 @@
 int	g_sig = 0;
 static void	init_utils(t_data *data);
 
-void	init_data(t_data *data)
+int	init_data(t_data *data)
 {
 	data->command = malloc(sizeof(t_command));
 	if (!data->command)
@@ -36,6 +36,7 @@ void	init_data(t_data *data)
 	data->output->here_d = NULL;
 	data->output->append = NULL;
 	init_utils(data);
+	return (0);
 }
 
 static void	init_utils(t_data *data)
@@ -45,7 +46,6 @@ static void	init_utils(t_data *data)
 	data->len_env = 0;
 	data->nbr_pipe = 0;
 	data->nbr_arg = 0;
-	data->exit_status = 0;
 	data->sig_status = 0;
 	data->output->sign = 0;
 	data->meter->nbr_arg = 0;

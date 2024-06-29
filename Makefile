@@ -26,6 +26,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/quote.c \
 		./src/parsing/special_char.c \
 		./src/parsing/environment_variable.c \
+		./src/parsing/environment_variable_utils.c \
 		./src/parsing/check_pipe.c \
 		./src/parsing/ft_strtok.c \
 		./src/parsing/check_word.c \

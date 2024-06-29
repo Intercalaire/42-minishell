@@ -84,9 +84,12 @@ int		quote_verif(t_data *data,char *str);
 int 	look_pipe(t_data *data, char *str);
 int 	special_char(t_data *data, char *str);
 void	remove_end_space(char *str);
-char	*ft_strdup_2(t_data *data, const char *s);
 int		handle_args(t_data *data, int *i, int *y, int *z);
 void	count_args(t_data *data, int i);
+
+//environment_variable
+int		ktq_utils(int in_qte_dble, int in_qte_sple);
+char	*ft_strdup_2(t_data *data, const char *s);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);
@@ -105,7 +108,7 @@ void	ft_free_strarg(char ***tab);
 void	ft_little_error_prog_no_msg(t_data *data, char *str);
 
 //init
-void	init_data(t_data *data);
+int		init_data(t_data *data);
 
 //exec
 int		ft_export(t_data *data, char **arg);
@@ -130,9 +133,9 @@ char    **bubble_sort(char **arr, int n);
 //output
 int		verif_output(t_data *data, int *y, char *str);
 int		verif_lign(t_data *data, char *str);
-void	init_global(t_data *data);
+int		init_global(t_data *data);
 int		count_output(t_data *data, char *str, int y);
-int	count_all(t_data *data, int *y, int i);
+int		count_all(t_data *data, int *y, int i);
 
 //output_init
 int		outfile(t_data *data, int *y, char *str);

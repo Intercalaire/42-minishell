@@ -61,7 +61,7 @@ int	h_doc(t_data *data, int *y, char *str)
 	return (0);
 }
 
-void	init_global(t_data *data)
+int	init_global(t_data *data)
 {
 	data->meter->nbr_pipe = data->nbr_pipe;
 	data->output->h_doc = ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
@@ -79,4 +79,5 @@ void	init_global(t_data *data)
 		= ft_calloc(data->meter->nbr_pipe + 2, sizeof(char **));
 	if (!data->output->outfile_append)
 		return (2);
+	return (0);
 }
