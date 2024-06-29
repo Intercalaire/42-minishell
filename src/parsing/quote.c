@@ -45,12 +45,12 @@ static int	quote(t_data *data, char *str, int in_qte_dble, int in_qte_sple)
 {
 	if (in_qte_dble == 1)
 	{
-		ft_little_error_prog(data, str, QUOTE_DBL);
+		ft_little_error_prog_quote(data, str, QUOTE_DBL);
 		return (1);
 	}
 	if (in_qte_sple == 1)
 	{
-		ft_little_error_prog(data, str, QUOTE_SMP);
+		ft_little_error_prog_quote(data, str, QUOTE_SMP);
 		return (1);
 	}
 	return (0);

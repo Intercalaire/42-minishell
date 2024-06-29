@@ -24,7 +24,7 @@ int	look_pipe(t_data *data, char *str)
 		i++;
 	if (str[i] == '|')
 	{
-		ft_little_error_prog(data, str, PIPE);
+		ft_little_error_prog_quote(data, str, PIPE);
 		return (1);
 	}
 	if (look_pipe_helper(data, str, i) == 1)
@@ -38,7 +38,7 @@ static int	check_pipe_with_spaces(t_data *data, char *str, int i)
 		i++;
 	if (str[i] == '|')
 	{
-		ft_little_error_prog(data, str, PIPE);
+		ft_little_error_prog_quote(data, str, PIPE);
 		return (1);
 	}
 	return (0);
@@ -66,7 +66,7 @@ static int	look_pipe_helper(t_data *data, char *str, int i)
 	}
 	if ((!in_double_quote && !in_single_quote) && i > 0 && str[i - 1] == '|')
 	{
-		ft_little_error_prog(data, str, PIPE);
+		ft_little_error_prog_quote(data, str, PIPE);
 		return (1);
 	}
 	return (0);
