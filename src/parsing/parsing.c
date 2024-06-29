@@ -40,14 +40,19 @@ int	main(int argc, char **argv, char **env)
 		remove_end_space(str);
 		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
 			|| look_pipe(data, str) == 1)
+		{
+			data->exit_status = 2;
 			continue ;
+		}
 		if (try_ft_strtok(data, str) == 2)
 		{
+			data->exit_status = 2;
 			ft_error_prog(data, str, "Error");
 			continue ;
 		}
 		if (pars_pipe(data) == 2)
 		{
+			data->exit_status = 2;
 			ft_free_data(data, str);
 			continue ;
 		}

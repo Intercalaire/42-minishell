@@ -12,9 +12,9 @@
 
 #include "../../include/parsing/minishell.h"
 
-void	ft_little_error_prog(t_data *data, char *str, char *msg)
+void	ft_little_error_prog(t_data *data, char *str, char *msg, char token)
 {
-	printf("%s\n", msg);
+	printf("%s `%c'\n", msg, token);
 	free(str);
 	if (data)
 	{
