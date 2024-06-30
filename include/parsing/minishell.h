@@ -126,10 +126,13 @@ void	cpy_env(t_data *data, char **environnement);
 void	change_env(t_data *data, char *key, char *value);
 void	add_env(t_data *data, char *key, char *value);
 void	exit_shell(t_data *data, char *str, char **arg);
-void	ft_sig(t_data *data);
+int	ft_sig(t_data *data);
 char    **cpy_envir(char **env);
 void    cat_env(t_data *data, char *key, char *value);
 char    **bubble_sort(char **arr, int n);
+void execution(t_data *data, char *cmd, char **args, char *full_path);
+char **create_args(char *cmd, char **arg);
+char *var_path(t_data *data, char *cmd);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

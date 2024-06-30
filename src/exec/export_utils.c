@@ -42,7 +42,6 @@ void	add_env(t_data *data, char *key, char *value)
 	char	*tmp;
 
 	i = 0;
-	printf("i'm here\n");
 	realloc_env(data);
 	while (data->env[i])
 		i++;
@@ -67,7 +66,6 @@ void	change_env(t_data *data, char *key, char *value)
 	char	*new_env;
 	char	*tmp;
 
-	printf("i don't know why but i'm here\n");
 	i = search_env(data, key);
 	if (i == -1)
 	{
@@ -83,7 +81,6 @@ void	change_env(t_data *data, char *key, char *value)
 	free(new_env);
 	new_env = ft_strdup(tmp);
 	free(tmp);
-	printf("new_env : %s\n", new_env);
 	free(data->env[i]);
 	data->env[i] = ft_strdup(new_env);
 	free(new_env);

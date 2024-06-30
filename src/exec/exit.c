@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 08:46:17 by hsolet            #+#    #+#             */
-/*   Updated: 2024/06/29 09:35:48 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/06/30 14:37:55 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
@@ -101,7 +101,6 @@ void	exit_shell(t_data *data, char *str, char **arg)
 {
 	long long	exit_code;
 
-    printf("exit_status: %d\n", data->exit_status);
 	exit_code = get_exit_code(data, arg);
 	ft_free_data(data, str);
 	ft_free_strtab(data->env);
@@ -109,6 +108,5 @@ void	exit_shell(t_data *data, char *str, char **arg)
 		free(data);
 	rl_free_line_state();
 	printf("exit\n");
-    printf("exit_code: %lld\n", exit_code);
 	exit(exit_code);
 }

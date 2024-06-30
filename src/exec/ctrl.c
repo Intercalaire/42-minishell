@@ -6,7 +6,7 @@
 /*   By: hsolet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:05:46 by hsolet            #+#    #+#             */
-/*   Updated: 2024/06/29 09:36:58 by hsolet           ###   ########.fr       */
+/*   Updated: 2024/06/30 14:39:39 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <readline/readline.h>
@@ -22,6 +22,15 @@ static void	handler(int signum)
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_redisplay();
+	g_sig = signum;
+}
+
+static void	path_handler(int signum)
+{
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	g_sig = signum;
 }
 
@@ -33,13 +42,16 @@ static void	sigquit_handler(int signum)
 	g_sig = signum;
 }
 
-void	ft_sig(t_data *data)
+int	ft_sig(t_data *data)
 {
-	signal(SIGINT, handler);
 	if (data->sig_status == 0)
+	{
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, handler);
+	}
 	else
 	{
+		signal(SIGINT, path_handler);
 		signal(SIGQUIT, sigquit_handler);
 		data->sig_status = 0;
 	}
@@ -50,5 +62,7 @@ void	ft_sig(t_data *data)
 		if (g_sig == SIGINT)
 			data->exit_status = 130;
 		g_sig = 0;
+		return (1);
 	}
+	return (0);
 }
