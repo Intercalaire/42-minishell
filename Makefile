@@ -32,6 +32,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/check_word.c \
 		./src/parsing/ft_free_two.c \
 		./src/parsing/ft_split_delim.c \
+		./src/parsing/ft_split_delim_utils.c \
 		./src/parsing/outfile.c \
 		./src/parsing/outfile_utils.c \
 		./src/parsing/outfile_init.c \

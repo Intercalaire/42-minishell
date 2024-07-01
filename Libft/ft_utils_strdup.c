@@ -65,5 +65,6 @@ char	*ft_trim_quote(char *str)
 	}
 	result[j] = '\0';
 	free(str);
+	str = NULL;
 	return (result);
 }

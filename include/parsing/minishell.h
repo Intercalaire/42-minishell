@@ -71,7 +71,6 @@ t_meter		*meter;
 t_command	*command;
 }	t_data;
 
-
 //with ft_strtok
 int 	try_ft_strtok(t_data *data, char *str);
 char	*ft_strtok(char *str, const char *delim);
@@ -110,11 +109,12 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str);
 
 //init
 int		init_data(t_data *data);
+void	init_int_values(int *i, int *j, int *in_quotes);
 
 //exec
 int		ft_export(t_data *data, char **arg);
 int		exec(t_data *data, char *cmd, char **arg, char *str);
-void		path(t_data *data, char *cmd, char **arg);
+void	path(t_data *data, char *cmd, char **arg);
 int		print_env(t_data *data, char **arg);
 int		echo(char **arg);
 int		cd(t_data *data, char **arg);
@@ -126,13 +126,13 @@ void	cpy_env(t_data *data, char **environnement);
 void	change_env(t_data *data, char *key, char *value);
 void	add_env(t_data *data, char *key, char *value);
 void	exit_shell(t_data *data, char *str, char **arg);
-int	ft_sig(t_data *data);
+int		ft_sig(t_data *data);
 char    **cpy_envir(char **env);
 void    cat_env(t_data *data, char *key, char *value);
 char    **bubble_sort(char **arr, int n);
-void execution(t_data *data, char *cmd, char **args, char *full_path);
-char **create_args(char *cmd, char **arg);
-char *var_path(t_data *data, char *cmd);
+void	execution(t_data *data, char *cmd, char **args, char *full_path);
+char	**create_args(char *cmd, char **arg);
+char	*var_path(t_data *data, char *cmd);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

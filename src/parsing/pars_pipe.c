@@ -14,7 +14,7 @@
 
 static int	utils_pars_pipe(t_data *data);
 static void	handle_pipe(t_data *data, int *i, int *y);
-static int	pars_pipe_utils(t_data *data, int *i, int *y, int *z);
+static int pars_pipe_lign(t_data *data, int *i, int *y, int *z);
 
 void	count_args(t_data *data, int i)
 {
@@ -101,7 +101,7 @@ int	pars_pipe(t_data *data)
 	while (data->nbr_pipe-- >= 0)
 	{
 		z = init_zero(data);
-		if (pars_pipe_utils(data, &i, &y, &z) == 2)
+		if (pars_pipe_lign(data, &i, &y, &z) == 2)
 			return (2);
 		if (data->command->lign[i] && *data->command->lign[i] == '|')
 		{
@@ -116,7 +116,7 @@ int	pars_pipe(t_data *data)
 	return (0);
 }
 
-static int pars_pipe_utils(t_data *data, int *i, int *y, int *z)
+static int pars_pipe_lign(t_data *data, int *i, int *y, int *z)
 {
 	if (data->command->lign[*i] && *data->command->lign[*i] != '|')
 	{

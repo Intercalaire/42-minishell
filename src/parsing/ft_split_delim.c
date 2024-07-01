@@ -15,6 +15,7 @@
 static int	handle_quotes(char *str, char *new_str, int i, int j);
 static int	handle_special_chars(char *str, char *new_str, int i, int j);
 static char	*init_new_str(char *new_str, char *str);
+static int	process_char(char *str, char *new_str, int *i, int *j);
 
 static int	handle_quotes(char *str, char *new_str, int i, int j)
 {
@@ -61,9 +62,7 @@ char	*ft_split_delim(char *str)
 	new_str = init_new_str(new_str, str);
 	if (!new_str)
 		return (NULL);
-	in_quotes = 0;
-	i = 0;
-	j = 0;
+	init_int_values(&i, &j, &in_quotes);
 	while (str[i] != '\0')
 	{
 		if (str[i] == '"' || str[i] == '\'')
@@ -72,24 +71,27 @@ char	*ft_split_delim(char *str)
 			j = handle_quotes(str, new_str, i, j);
 		}
 		else if ((str[i] == '|' || (str[i] == '>' || str[i] == '<')) && !in_quotes)
-		{
-			if (j > 0 && new_str[j - 1] != ' ')
-				new_str[j++] = ' ';
-			
-			if (str[i + 1] == str[i])
-			{
-				j = handle_special_chars(str, new_str, i, j);
-				i++;
-			}
-			else
-				j = handle_special_chars(str, new_str, i, j);
-			new_str[j++] = ' ';
-		}
+			j = process_char(str, new_str, &i, &j);
 		else
 			new_str[j++] = str[i];
 		i++;
 	}
 	new_str[j] = '\0';
 	return (new_str);
+}
+
+static int process_char(char *str, char *new_str, int *i, int *j)
+{
+	if (*j > 0 && new_str[*j - 1] != ' ')
+		new_str[(*j)++] = ' ';
+	if (str[*i + 1] == str[*i])
+	{
+		*j = handle_special_chars(str, new_str, *i, *j);
+		(*i)++;
+	}
+	else
+		*j = handle_special_chars(str, new_str, *i, *j);
+	new_str[(*j)++] = ' ';
+	return (*j);
 }
 

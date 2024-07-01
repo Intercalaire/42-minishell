@@ -13,6 +13,7 @@
 #include "../../include/parsing/minishell.h"
 
 static int	double_output(t_data *data, char *str);
+static int	double_output_utils(t_data *data, char *str, int i);
 
 int	special_char(t_data *data, char *str)
 {
@@ -49,27 +50,34 @@ static int	double_output(t_data *data, char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
-		{
-			ft_little_error_prog(data, str, TOKEN, str[i]);
+		if (double_output_utils(data, str, i) == 1)
 			return (1);
-		}
-		if (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
-		{
-			ft_little_error_prog(data, str, TOKEN, str[i]);
-			return (1);
-		}
-		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '<')
-		{
-			ft_little_error_prog(data, str, TOKEN, str[i]);
-			return (1);
-		}
-		if (str[i] == '<' && str[i + 1] == ' ' && str[i + 2] == '<')
-		{
-			ft_little_error_prog(data, str, TOKEN, str[i]);
-			return (1);
-		}
 		i++;
+	}
+	return (0);
+}
+
+static int	double_output_utils(t_data *data, char *str, int i)
+{
+	if (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
+	{
+		ft_little_error_prog(data, str, TOKEN, str[i]);
+		return (1);
+	}
+	if (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
+	{
+		ft_little_error_prog(data, str, TOKEN, str[i]);
+		return (1);
+	}
+	if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '<')
+	{
+		ft_little_error_prog(data, str, TOKEN, str[i]);
+		return (1);
+	}
+	if (str[i] == '<' && str[i + 1] == ' ' && str[i + 2] == '<')
+	{
+		ft_little_error_prog(data, str, TOKEN, str[i]);
+		return (1);
 	}
 	return (0);
 }

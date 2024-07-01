@@ -49,12 +49,12 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 		if (s[k] == '$')
 		{
 			env_str = environment_variable(data, (char *)&s[k]);
-			printf("env_str = %s\n", env_str);
 			if (env_str)
 			{
 				while (*env_str)
 					str[j++] = *env_str++;
 				k += data->len_env;
+				free(env_str);
 			}
 		}
 		else
@@ -77,7 +77,6 @@ static char	*environment_variable(t_data *data, char *str)
 		if (value == NULL)
 			return (NULL);
 		value_len = ft_strlen(value);
-		printf("value = %s\n", value);
 		if (value[1] == '?')
 			return (ft_itoa(data->exit_status));
 		i = search_env(data, value + 1);
@@ -87,7 +86,11 @@ static char	*environment_variable(t_data *data, char *str)
 		value = ft_strdup(data->env[i] + value_len);
 	}
 	else
+	{
+		free(value);
 		return (str);
+	}
+	free(str); // peut etre a enlever
 	return (value);
 }
 
@@ -103,7 +106,7 @@ static	char	*make_the_char(t_data *data, char *str)
 	i++;
 	while (str[i] && (str[i] == '?' || ft_isalnum(str[i]) == 1))
 		i++;
- 	data->len_env = i - start;
+	data->len_env = i - start;
 	return (ft_strndup(str + start, i - start));
 }
 
