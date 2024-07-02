@@ -54,7 +54,6 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 				while (*env_str)
 					str[j++] = *env_str++;
 				k += data->len_env;
-				free(env_str);
 			}
 		}
 		else
@@ -90,7 +89,6 @@ static char	*environment_variable(t_data *data, char *str)
 		free(value);
 		return (str);
 	}
-	free(str); // peut etre a enlever
 	return (value);
 }
 

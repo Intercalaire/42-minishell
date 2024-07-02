@@ -67,17 +67,23 @@ static int	count_all_utils(t_data *data, int *y)
 {
 	data->output->infile[*y]
 		= ft_calloc(data->meter->nbr_infile + 1, sizeof(char *));
+	if (!data->output->infile)
+		return (2);
 	data->output->h_doc[*y]
 		= ft_calloc(data->meter->nbr_h_doc + 1, sizeof(char *));
+	if (!data->output->h_doc)
+		return (2);
 	data->output->outfile_append[*y]
 		= ft_calloc(data->meter->nbr_outfile_append + 1, sizeof(char *));
+	if (!data->output->outfile_append)
+		return (2);
 	data->output->outfile[*y]
 		= ft_calloc(data->meter->nbr_outfile + 1, sizeof(char *));
+	if (!data->output->outfile)
+		return (2);
 	data->command->arg[*y]
 		= ft_calloc(data->nbr_arg + 1, sizeof(char *));
-	if (!data->output->infile || !data->output->h_doc
-		|| !data->output->outfile_append
-		|| !data->output->outfile || !data->command->arg)
+	if (!data->command->arg)
 		return (2);
 	return (0);
 }
