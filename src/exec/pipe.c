@@ -17,6 +17,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 static int close_fd(int fd)
 {
@@ -327,57 +328,48 @@ int status = 0;
 int i = 0;
 int *son_pid;
 int nbr_pipe;
-int original_stdin = dup(STDIN_FILENO);
-if (original_stdin == -1) {
-    perror("dup");
-    return 1;
-}
-   //close(original_stdin);
+data->fd_pipe->std_in = dup(STDIN_FILENO);
+data->fd_pipe->std_out = dup(STDOUT_FILENO);
+//close(data->fd_pipe->std_out);
 
-int original_stdout = dup(STDOUT_FILENO);
-if (original_stdout == -1) {
-    perror("dup");
-    return 1;
-}
-//close(original_stdout);
-
+//signal(SIGINT, SIG_DFL);
+//ft_sig(data);
 nbr_pipe = 0;
 while (data->command->cmd[nbr_pipe + 1])
     nbr_pipe++;
 son_pid = ft_calloc(nbr_pipe + 1, sizeof(int));
 if (son_pid == NULL)
     return (1);
-// if (nbr_pipe == 0) 
-// {
-//    if (data->output->h_doc[0] && *data->output->h_doc[0] != NULL)
-//    {
-//        execute_heredoc(data, 0);
-//        create_infiles_heredoc(data, 0);
-//    }
-//    if (data->output->infile[0]) 
-//        create_infiles(data, 0);
-//    if (data->output->outfile[0]) 
-//        create_outfiles(data, 0);
-//    if (data->output->outfile_append[0]) 
-//        create_outfiles_append(data, 0);
-//    free(son_pid);
-//    exec(data, data->command->cmd[0], data->command->arg[0], str);
-//    dup2(original_stdin, STDIN_FILENO);
-//    close(original_stdin);
-//    dup2(original_stdout, STDOUT_FILENO);
-//    close(original_stdout);
-//    signal(SIGINT, SIG_DFL);
-//    //close_secure();
-//    return (0);
-// }
-int fd[2];
-
 while (i <= nbr_pipe)
 {
     if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
         execute_heredoc(data, i);
     i++;
 }
+if (nbr_pipe == 0) 
+{
+   if (data->output->h_doc[0] && *data->output->h_doc[0] != NULL)
+   {
+       create_infiles_heredoc(data, 0);
+   }
+   if (data->output->infile[0]) 
+       create_infiles(data, 0);
+   if (data->output->outfile[0]) 
+       create_outfiles(data, 0);
+   if (data->output->outfile_append[0]) 
+       create_outfiles_append(data, 0);
+   free(son_pid);
+   exec(data, data->command->cmd[0], data->command->arg[0], str);
+   dup2(data->fd_pipe->std_in, STDIN_FILENO);
+   close(data->fd_pipe->std_in);
+   dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+   close(data->fd_pipe->std_out);
+   //close_secure();
+   return (0);
+}
+int fd[2];
+
+
 i = 0;
 int fd_in = 0;
 while (i <= nbr_pipe)
@@ -393,6 +385,8 @@ while (i <= nbr_pipe)
     }
     else if (son_pid[i] == 0) 
     {
+        //signal(SIGINT, SIG_DFL);
+        //ft_sig(data);
         if (data->output->h_doc[i] != NULL && *data->output->h_doc[i] != NULL)
         {
             printf("dans le if\n");
@@ -439,10 +433,10 @@ while (i <= nbr_pipe)
 }
         free(son_pid);
         close_fd(fd_in);
-        dup2(original_stdin, STDIN_FILENO);
-        close_fd(original_stdin);
-        dup2(original_stdout, STDOUT_FILENO);
-        close_fd(original_stdout);
+        dup2(data->fd_pipe->std_in, STDIN_FILENO);
+        close_fd(data->fd_pipe->std_in);
+        dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+        close_fd(data->fd_pipe->std_out);
         signal(SIGINT, SIG_DFL);
 return 0;
 }

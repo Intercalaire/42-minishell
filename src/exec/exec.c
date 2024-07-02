@@ -14,9 +14,6 @@
 
 int	exec(t_data *data, char *cmd, char **arg, char *str)
 {
-	int	i;
-
-	i = 0;
 	if (!ft_strncmp(cmd, "echo", 5))
 		data->exit_status = echo(arg);
 	else if (!ft_strncmp(cmd, "pwd", 4))

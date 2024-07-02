@@ -26,6 +26,9 @@ int	init_data(t_data *data)
 	data->output = malloc(sizeof(t_output));
 	if (!data->output)
 		return (2);
+	data->fd_pipe = malloc(sizeof(t_fd_pipe));
+	if (!data->fd_pipe)
+		return (2);
 	data->command->arg = NULL;
 	data->command->cmd = NULL;
 	data->command->lign = NULL;

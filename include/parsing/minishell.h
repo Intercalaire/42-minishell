@@ -55,6 +55,12 @@ char	***infile;
 char	***h_doc;
 }	t_output;
 
+typedef struct s_fd_pipe
+{
+    int std_in;
+    int std_out;
+} t_fd_pipe;
+
 typedef struct s_data
 {
 int			count;
@@ -69,6 +75,7 @@ int         sig_status;
 t_output	*output;
 t_meter		*meter;
 t_command	*command;
+t_fd_pipe	*fd_pipe;
 }	t_data;
 
 //with ft_strtok
