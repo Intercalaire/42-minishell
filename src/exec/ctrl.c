@@ -23,6 +23,7 @@ static void	handler(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	printf("handler de base");
 	g_sig = signum;
 }
 
@@ -31,6 +32,7 @@ static void	path_handler(int signum)
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	printf("handler de cat");
 	g_sig = signum;
 }
 
@@ -44,6 +46,7 @@ static void	sigquit_handler(int signum)
 
 int	ft_sig(t_data *data)
 {
+	// printf("sig_status = %d\n", data->sig_status);
 	if (data->sig_status == 0)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -53,7 +56,6 @@ int	ft_sig(t_data *data)
 	{
 		signal(SIGINT, path_handler);
 		signal(SIGQUIT, sigquit_handler);
-		data->sig_status = 0;
 	}
 	if (g_sig)
 	{

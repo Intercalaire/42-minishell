@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 	cpy_env(data, env);
 	data->exit_status = 0;
+	data->sig_status = 0;
 	while (1)
 	{
 		init_data(data);

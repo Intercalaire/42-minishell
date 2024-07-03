@@ -59,6 +59,7 @@ typedef struct s_fd_pipe
 {
     int std_in;
     int std_out;
+    int fd_in;
 } t_fd_pipe;
 
 typedef struct s_data
@@ -140,6 +141,10 @@ char    **bubble_sort(char **arr, int n);
 void	execution(t_data *data, char *cmd, char **args, char *full_path);
 char	**create_args(char *cmd, char **arg);
 char	*var_path(t_data *data, char *cmd);
+void    create_outfiles(t_data *data, int i);
+void    create_outfiles_append(t_data *data, int i);
+void    create_infiles(t_data *data, int i);
+void    create_infiles_heredoc(t_data *data, int i);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);
