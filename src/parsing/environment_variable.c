@@ -20,11 +20,9 @@ static char		*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 char	*ft_strdup_2(t_data *data, const char *s)
 {
 	int		i;
-	int		j;
 	char	*str;
 
 	i = 0;
-	j = 0;
 	if (!s)
 		return (NULL);
 	while (s[i])
@@ -46,18 +44,26 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	env_str = NULL;
 	while (k < i)
 	{
-		if (s[k] == '$')
+		if (s[k] == '$' && (s[k + 1] == ' ' || s[k + 1] == '\0' || s[k + 1] == '"' || s[k + 1] == '\''))
 		{
-			env_str = environment_variable(data, (char *)&s[k]);
+			str[j++] = s[k++];
+		}
+		else if (s[k] == '$')
+		{
+			env_str = environment_variable(data, (char *)s);
 			if (env_str)
 			{
 				while (*env_str)
 					str[j++] = *env_str++;
 				k += data->len_env;
 			}
+			else
+				str[j++] = s[k++];
 		}
 		else
+		{
 			str[j++] = s[k++];
+		}
 	}
 	str[j] = '\0';
 	return (ft_trim_quote(str));
@@ -68,8 +74,9 @@ static char	*environment_variable(t_data *data, char *str)
 	char	*value;
 	int		i;
 	int		value_len;
-
-	value = NULL;
+	
+	printf("str = %s\n", str);
+	printf("know_the_quote(str) = %d\n", know_the_quote(str));
 	if (know_the_quote(str) == 1 || know_the_quote(str) == 0)
 	{
 		value = make_the_char(data, str);
@@ -80,13 +87,12 @@ static char	*environment_variable(t_data *data, char *str)
 			return (ft_itoa(data->exit_status));
 		i = search_env(data, value + 1);
 		if (i == -1)
-			return ("""");
-		free(value);
+			return (ft_strdup(""));
 		value = ft_strdup(data->env[i] + value_len);
 	}
 	else
 	{
-		free(value);
+		make_the_char(data, str);
 		return (str);
 	}
 	return (value);
@@ -117,7 +123,7 @@ static int	know_the_quote(char *str)
 	i = 0;
 	in_quote_simple = 0;
 	in_quote_double = 0;
-	if (str == NULL)
+	if (str == NULL || ft_strlen(str) < 2)
 		return (2);
 	while (str[i] && str[i] != '$')
 	{

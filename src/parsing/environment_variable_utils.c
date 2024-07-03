@@ -20,3 +20,16 @@ int	ktq_utils(int in_qte_dble, int in_qte_sple)
 		return (3);
 	return (0);
 }
+int	ft_isalnum_count(char *str)
+{
+	int	result;
+	int	count;
+
+	result = 0;
+	count = 0;
+	while (str[count])
+		if ((str[count] >= 'a' && str[count] <= 'z') || (str[count] >= 'A' && str[count] <= 'Z')
+		|| (str[count] >= '0' && str[count] <= '9'))
+		result++;
+	return (result);
+}
