@@ -66,6 +66,7 @@ void	change_env(t_data *data, char *key, char *value)
 	char	*new_env;
 	char	*tmp;
 
+	printf("change_env\n");
 	i = search_env(data, key);
 	if (i == -1)
 	{

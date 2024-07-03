@@ -117,15 +117,17 @@ char *expand_env_vars(t_data *data, char *line) {
     *temp = '\0'; // Terminer la chaîne correctement
     return result;
 }
-void signal_handler(int signum) {
+void signal_handler(int signum) 
+{
 	close(0);
+	rl_on_new_line();
 	g_sig = signum;
+	write(STDOUT_FILENO, "\n", 1);
 }
 void handle_heredocs(t_data *data, int i)
 {
 	char *line;
 	int j = 0;
-
 
 	while (data->output->h_doc[i][j] != NULL)
 	{
@@ -137,12 +139,14 @@ void handle_heredocs(t_data *data, int i)
 			free(tmpfile);
 			return;
 		}
+		
 		signal(SIGINT, signal_handler);
 		int is_interactive = isatty(STDIN_FILENO);
 		char *prompt = NULL;
 		if (is_interactive) 
 			prompt = "> ";
-		while ((line = readline(prompt)) != NULL)
+		line = readline(prompt);
+		while (line != NULL)
 		{
 			if (strcmp(line, data->output->h_doc[i][j]) == 0)
 			{
@@ -154,29 +158,32 @@ void handle_heredocs(t_data *data, int i)
 			write(fd, "\n", 1);
 			free(expanded_line);
 			free(line);
+	
+			line = readline(prompt);
 		}
-		if (g_sig == SIGINT)
-			{
-				free(line);
-				close(fd);
-				unlink(tmpfile);
-				free(tmpfile);
-				g_sig = 0;
-				return;
-			}
+				if (g_sig == SIGINT)
+		{
+			free(line);
+			close(fd);
+			unlink(tmpfile);
+			free(tmpfile);
+			g_sig = 0;
+			return;
+		}
 		close(fd);
 		if (data->output->h_doc[i][j + 1])
 			unlink(tmpfile);
 		free(tmpfile);
 		j++;
 	}
-	//signal(SIGINT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 }
 void execute_heredoc(t_data *data, int i)
 {
 	pid_t pid;
 	int status;
- 
+	
+ 		signal(SIGINT, SIG_IGN);
 		pid = fork();
 		if (pid == -1)
 		{
@@ -185,31 +192,12 @@ void execute_heredoc(t_data *data, int i)
 		}
 		if (pid == 0)
 		{
+			
 			handle_heredocs(data, i);
 			exit(EXIT_SUCCESS);
 		}
 		else
-		{   
-			while (1)
-		{
-			pid_t wpid = waitpid(pid, &status, WNOHANG);
-			if (wpid == -1)
-			{
-				perror("waitpid");
-				break;
-			}
-			else if (wpid == 0)
-			{
-				if (g_sig)
-				{
-					kill(pid, SIGINT);  // Envoyer SIGINT au processus enfant
-					g_sig = 0;  // Réinitialiser sigint_received
-				}
-			}
-			else
-				break;  // Le processus enfant a terminé
-		}
-		}
+			waitpid(pid, &status, 0);
 }
 void check_open_files(t_data *data, int i)
 {
@@ -251,7 +239,6 @@ void end_process(t_data *data, int *son_pid, int *fd)
 }
 int	init_fd(t_data *data, int **fd, int **son_pid)
 {
-	data->sig_status = 1;
 	data->fd_pipe->std_in = dup(STDIN_FILENO);
 	if (data->fd_pipe->std_in == -1)
 	{
@@ -278,6 +265,7 @@ int start_process(t_data *data, int *son_pid, char *str)
 	int i;
 
 	i = 0;
+	data->sig_status = 2;
 	while (i <= data->meter->nbr_pipe)
 	{
 		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
@@ -330,7 +318,11 @@ void child_processus(t_data *data, int *fd, int i, char *str)
 }
 
 void parent_processus(t_data *data, int *fd, int *i)
-		{close_fd(fd[1]);
+		{
+			signal(SIGINT, SIG_DFL);
+			data->sig_status = 1;
+			ft_sig(data);
+			close_fd(fd[1]);
 		data->fd_pipe->fd_in = fd[0];
 		close_fd(fd[0]);
 		*i+=1;
@@ -342,7 +334,6 @@ int i;
 int *son_pid;
 int *fd;
 
-		data->sig_status = 1;
 fd = NULL;
 son_pid = NULL;
 i = 0;

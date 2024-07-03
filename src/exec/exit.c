@@ -106,7 +106,6 @@ void	exit_shell(t_data *data, char *str, char **arg)
 	ft_free_strtab(data->env);
 	if (data)
 		free(data);
-	rl_free_line_state();
-	printf("exit\n");
+    printf("exit\n");
 	exit(exit_code);
 }

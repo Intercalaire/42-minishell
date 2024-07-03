@@ -115,7 +115,7 @@ int	ft_export(t_data *data, char **arg)
 			add_env(data, arg[i], NULL);
 		else if (ft_strnstr(arg[i], "+=", ft_strlen(arg[i])) != NULL)
 			plus_equal(data, arg[i]);
-		else
+		else if (ft_strchr(arg[i], '='))
 			equal_sign(data, arg[i]);
 		i++;
 	}
