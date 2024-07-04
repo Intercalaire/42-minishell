@@ -145,6 +145,7 @@ void    create_outfiles(t_data *data, int i);
 void    create_outfiles_append(t_data *data, int i);
 void    create_infiles(t_data *data, int i);
 void    create_infiles_heredoc(t_data *data, int i);
+int     close_fd(int fd);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

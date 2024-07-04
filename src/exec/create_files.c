@@ -17,7 +17,7 @@ void create_outfiles(t_data *data, int i)
     {
         if (outfd != -1) 
         {
-            close(outfd);
+            close_fd(outfd);
         }
         
         outfd = open(data->output->outfile[i][j], O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -27,13 +27,13 @@ void create_outfiles(t_data *data, int i)
             return ;   
         }
         if (data->output->outfile[i][j + 1])
-            close(outfd);
+            close_fd(outfd);
         j++;
     }
     if (data->output->append[i] == 0)
     {
         dup2(outfd, STDOUT_FILENO);
-    close(outfd);
+        close_fd(outfd);
     }
 }
 
@@ -45,7 +45,7 @@ void create_outfiles_append(t_data *data, int i)
     {
         if (outfd != -1) 
         {
-            close(outfd);
+            close_fd(outfd);
         }
         outfd = open(data->output->outfile_append[i][j], O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (outfd < 0) 
@@ -54,13 +54,13 @@ void create_outfiles_append(t_data *data, int i)
             return ;
         }
         if (data->output->outfile_append[i][j + 1])
-            close(outfd);
+            close_fd(outfd);
         j++;
     }
     if (data->output->append[i] == 1)
     {
         dup2(outfd, STDOUT_FILENO);
-        close(outfd);
+        close_fd(outfd);
     }   
 }
 void create_infiles(t_data *data, int i)
@@ -70,7 +70,7 @@ void create_infiles(t_data *data, int i)
     while (data->output->infile[i][j] != NULL) 
     {
         if (infd != -1) 
-            close(infd); 
+            close_fd(infd); 
         infd = open(data->output->infile[i][j], O_RDONLY);
         if (infd < 0) 
         {
@@ -78,13 +78,13 @@ void create_infiles(t_data *data, int i)
             exit(1);
         }
         if (data->output->infile[i][j + 1])
-            close(infd);
+            close_fd(infd);
         j++;
     }
     if (data->output->here_d[i] == 0)
         {
         dup2(infd, STDIN_FILENO);
-            close(infd);
+            close_fd(infd);
         }
 }
 void create_infiles_heredoc(t_data *data, int i)
@@ -108,7 +108,7 @@ void create_infiles_heredoc(t_data *data, int i)
         if (data->output->here_d[i] == 1)
         {
             dup2(infd, STDIN_FILENO);
-            close(infd);
+            close_fd(infd);
         }
         unlink(tmpfile);
         free(tmpfile);

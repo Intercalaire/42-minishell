@@ -47,7 +47,7 @@ int	ft_unset(t_data *data, char **arg)
 	new_env = ft_calloc((j + 1), sizeof(char *));
 	if (!new_env)
 		return (1);
-	while (arg[i])
+	while (arg[i] && ft_isalnum(arg[i][0]))
 	{
 		key = ft_strdup(arg[i]);
 		env_index = search_env(data, key);

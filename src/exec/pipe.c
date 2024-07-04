@@ -18,8 +18,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
-
-static int close_fd(int fd)
+int close_fd(int fd)
 {
 	if (fd != -1)
 	{
@@ -211,13 +210,13 @@ void check_open_files(t_data *data, int i)
 			create_outfiles_append(data, i);
 }
 
-void reset_fd(t_data *data)
-{
-	dup2(data->fd_pipe->std_in, STDIN_FILENO);
-	close(data->fd_pipe->std_in);
-	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
-	close(data->fd_pipe->std_out);
-}
+// void reset_fd(t_data *data)
+// {
+// 	dup2(data->fd_pipe->std_in, STDIN_FILENO);
+// 	close(data->fd_pipe->std_in);
+// 	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+// 	close(data->fd_pipe->std_out);
+// }
 void end_process(t_data *data, int *son_pid, int *fd)
 {
 	int	i;
@@ -234,24 +233,24 @@ void end_process(t_data *data, int *son_pid, int *fd)
 	}
 	free(son_pid);
 	close_fd(data->fd_pipe->fd_in);
-	reset_fd(data);
+	// reset_fd(data);
 	signal(SIGINT, SIG_DFL);
 }
 int	init_fd(t_data *data, int **fd, int **son_pid)
 {
-	data->fd_pipe->std_in = dup(STDIN_FILENO);
-	if (data->fd_pipe->std_in == -1)
-	{
-        perror("dup STDIN_FILENO failed");
-		return (1);
-	}
-	data->fd_pipe->std_out = dup(STDOUT_FILENO);
-	if (data->fd_pipe->std_out == -1) 
-	{
-        perror("dup STDOUT_FILENO failed");
-        close(data->fd_pipe->std_in);
-		return (1);
-    }
+	// data->fd_pipe->std_in = dup(STDIN_FILENO);
+	// if (data->fd_pipe->std_in == -1)
+	// {
+    //     perror("dup STDIN_FILENO failed");
+	// 	return (1);
+	// }
+	// data->fd_pipe->std_out = dup(STDOUT_FILENO);
+	// if (data->fd_pipe->std_out == -1) 
+	// {
+    //     perror("dup STDOUT_FILENO failed");
+    //     close(data->fd_pipe->std_in);
+	// 	return (1);
+    // }
 	*fd = ft_calloc(2, sizeof(int));
 	if (*fd == NULL)
 		return (1);
@@ -260,28 +259,28 @@ int	init_fd(t_data *data, int **fd, int **son_pid)
 		return (1);
 	return (0);
 }
-int start_process(t_data *data, int *son_pid, char *str)
-{
-	int i;
+// int start_process(t_data *data, int *son_pid, char *str)
+// {
+// 	int i;
 
-	i = 0;
-	data->sig_status = 2;
-	while (i <= data->meter->nbr_pipe)
-	{
-		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
-			execute_heredoc(data, i);
-		i++;
-	}
-	if (data->meter->nbr_pipe == 0) 
-	{
-		check_open_files(data, 0);
-		free(son_pid);
-		exec(data, data->command->cmd[0], data->command->arg[0], str);
-		reset_fd(data);
-	   return (0);
-	}
-	return (1);
-}
+// 	i = 0;
+// 	data->sig_status = 2;
+// 	while (i <= data->meter->nbr_pipe)
+// 	{
+// 		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
+// 			execute_heredoc(data, i);
+// 		i++;
+// 	}
+// 	if (data->meter->nbr_pipe == 0) 
+// 	{
+// 		check_open_files(data, 0);
+// 		free(son_pid);
+// 		exec(data, data->command->cmd[0], data->command->arg[0], str);
+// 		reset_fd(data);
+// 	   return (0);
+// 	}
+// 	return (1);
+// }
 int start_fork(int *fd, int *son_pid, int i)
 {
 
@@ -319,12 +318,13 @@ void child_processus(t_data *data, int *fd, int i, char *str)
 
 void parent_processus(t_data *data, int *fd, int *i)
 		{
+			//signal(SIGPIPE, SIG_IGN);
 			signal(SIGINT, SIG_DFL);
 			data->sig_status = 1;
 			ft_sig(data);
 			close_fd(fd[1]);
 		data->fd_pipe->fd_in = fd[0];
-		close_fd(fd[0]);
+		//close_fd(fd[0]);
 		*i+=1;
 }
 
@@ -340,8 +340,8 @@ i = 0;
 printf("data->signal = %d\n", data->sig_status);
 if (init_fd(data, &fd, &son_pid))
 	return (2);
-if (!start_process(data, son_pid, str))
-	return (2);
+// if (!start_process(data, son_pid, str))
+// 	return (2);
 while (i <= data->meter->nbr_pipe)
 {
 	if (start_fork(fd, son_pid, i))

@@ -30,5 +30,6 @@ int	exec(t_data *data, char *cmd, char **arg, char *str)
 		exit_shell(data, str, arg);
 	else
 		path(data, cmd, arg);
+	change_env(data, "_", cmd);
 	return (0);
 }
