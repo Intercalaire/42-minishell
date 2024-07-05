@@ -28,7 +28,7 @@ int	exec(t_data *data, char *cmd, char **arg, char *str)
 		data->exit_status = cd(data, arg);
 	else if (!ft_strncmp(cmd, "exit", 5))
 		exit_shell(data, str, arg);
-	else
+	else if (cmd && *cmd)
 		path(data, cmd, arg);
 	change_env(data, "_", cmd);
 	return (0);

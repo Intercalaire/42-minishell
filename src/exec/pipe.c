@@ -33,7 +33,7 @@ void close_secure()
 		i = 3;
 		while (i < 1024)
 		{
-			close(i);
+			close_fd(i);
 			i++;
 		}
 	}
@@ -217,60 +217,62 @@ void check_open_files(t_data *data, int i)
 // 	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
 // 	close(data->fd_pipe->std_out);
 // }
-void end_process(t_data *data, int *son_pid, int *fd)
-{
-	int	i;
-	int	status;
 
-	i = 0;
-	while (i <= data->meter->nbr_pipe) 
-	{
-		waitpid(son_pid[i], &status, 0);
-		close_secure();        
-		close_fd(fd[0]);
-		close_fd(fd[1]);
-		i++;
-	}
-	free(son_pid);
-	close_fd(data->fd_pipe->fd_in);
-	// reset_fd(data);
-	signal(SIGINT, SIG_DFL);
-}
-int	init_fd(t_data *data, int **fd, int **son_pid)
-{
-	// data->fd_pipe->std_in = dup(STDIN_FILENO);
-	// if (data->fd_pipe->std_in == -1)
-	// {
-    //     perror("dup STDIN_FILENO failed");
-	// 	return (1);
-	// }
-	// data->fd_pipe->std_out = dup(STDOUT_FILENO);
-	// if (data->fd_pipe->std_out == -1) 
-	// {
-    //     perror("dup STDOUT_FILENO failed");
-    //     close(data->fd_pipe->std_in);
-	// 	return (1);
-    // }
-	*fd = ft_calloc(2, sizeof(int));
-	if (*fd == NULL)
-		return (1);
-	*son_pid = ft_calloc(data->meter->nbr_pipe + 1, sizeof(int));
-	if (*son_pid == NULL)
-		return (1);
-	return (0);
-}
+
+// void end_process(t_data *data, int *son_pid)
+// {
+//    int i;
+//     int status;
+
+//     i = 0;
+//     while (i <= data->meter->nbr_pipe) 
+//     {
+//         waitpid(son_pid[i], &status, 0);
+//         i++;
+//     }
+
+//  	close_secure();
+
+//     free(son_pid);
+//     signal(SIGINT, SIG_DFL);
+// }
+
+
+// int	init_fd(t_data *data, int **fd, int **son_pid)
+// {
+// 	// data->fd_pipe->std_in = dup(STDIN_FILENO);
+// 	// if (data->fd_pipe->std_in == -1)
+// 	// {
+//     //     perror("dup STDIN_FILENO failed");
+// 	// 	return (1);
+// 	// }
+// 	// data->fd_pipe->std_out = dup(STDOUT_FILENO);
+// 	// if (data->fd_pipe->std_out == -1) 
+// 	// {
+//     //     perror("dup STDOUT_FILENO failed");
+//     //     close(data->fd_pipe->std_in);
+// 	// 	return (1);
+//     // }
+// 	*fd = ft_calloc(2, sizeof(int));
+// 	if (*fd == NULL)
+// 		return (1);
+// 	*son_pid = ft_calloc(data->meter->nbr_pipe + 1, sizeof(int));
+// 	if (*son_pid == NULL)
+// 		return (1);
+// 	return (0);
+// }
 // int start_process(t_data *data, int *son_pid, char *str)
 // {
 // 	int i;
 
 // 	i = 0;
 // 	data->sig_status = 2;
-// 	while (i <= data->meter->nbr_pipe)
-// 	{
-// 		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
-// 			execute_heredoc(data, i);
-// 		i++;
-// 	}
+	// while (i <= data->meter->nbr_pipe)
+	// {
+	// 	if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
+	// 		execute_heredoc(data, i);
+	// 	i++;
+	// }
 // 	if (data->meter->nbr_pipe == 0) 
 // 	{
 // 		check_open_files(data, 0);
@@ -281,80 +283,144 @@ int	init_fd(t_data *data, int **fd, int **son_pid)
 // 	}
 // 	return (1);
 // }
-int start_fork(int *fd, int *son_pid, int i)
+// int start_fork(int *fd, int *son_pid, int i)
+// {
+
+//   if (pipe(fd) == -1) { // Vérification de l'erreur pour pipe
+//         perror("pipe failed");
+//         free(son_pid); // Libérer la mémoire allouée avant de retourner
+//         return (1);
+//     }
+// 	son_pid[i] = fork();
+// 	if (son_pid[i] == -1)
+// 	{
+// 		close_fd(fd[0]);
+// 		close_fd(fd[1]);
+// 		free(son_pid);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+void child_processus(t_data *data, int *pipefd, int i, char *str)
 {
+		// printf("data->signal = %d\n", data->sig_status);
 
-	pipe(fd);
-	son_pid[i] = fork();
-	if (son_pid[i] == -1)
-	{
-		close_fd(fd[0]);
-		close_fd(fd[1]);
-		free(son_pid);
-		return (1);
-	}
-	
-	return (0);
-}
+		// close_fd(fd[0]);
+		// if (!data->output->infile[i] && !data->output->h_doc[i]) 
+		// {
+		// 	 dup2(data->fd_pipe->fd_in, STDIN_FILENO);
+		// 	 close_fd(data->fd_pipe->fd_in);
+		// }  
+		// if (i != data->meter->nbr_pipe )
+		// 	{
+		// 		dup2(fd[1], STDOUT_FILENO);
+		// 		close_fd(fd[1]);
+		// 	}
+		// exec(data, data->command->cmd[i], data->command->arg[i], str);
+		//close_fd(pipefd[0]);
+		if (i != 0) {
 
-void child_processus(t_data *data, int *fd, int i, char *str)
-{
-		printf("data->signal = %d\n", data->sig_status);
-
+                if (dup2(data->fd_pipe->fd_in, STDIN_FILENO) == -1) {
+                    perror("dup2");
+                    exit(EXIT_FAILURE);
+                }
+                close_fd(data->fd_pipe->fd_in);
+		}
 		check_open_files(data, i);
-		if (!data->output->infile[i] && !data->output->h_doc[i]) 
+		if (i != data->meter->nbr_pipe) 
 		{
-			 dup2(data->fd_pipe->fd_in, STDIN_FILENO);
-			 close_fd(data->fd_pipe->fd_in);
-		}  
-		if (i != data->meter->nbr_pipe )
+        	if (dup2(pipefd[1], STDOUT_FILENO) == -1) 
 			{
-				dup2(fd[1], STDOUT_FILENO);
-				close_fd(fd[1]);
-			}
-		  close_fd(fd[0]);
+        	    perror("dup2");
+        	    exit(EXIT_FAILURE);
+        	}
+        	close_fd(pipefd[1]);
+        	close_fd(pipefd[0]);
+        }
+		//printf("AAcmd = %s\n", data->command->cmd[i]);
 		exec(data, data->command->cmd[i], data->command->arg[i], str);
-}
+		exit(EXIT_FAILURE);
+		}
 
-void parent_processus(t_data *data, int *fd, int *i)
-		{
-			//signal(SIGPIPE, SIG_IGN);
-			signal(SIGINT, SIG_DFL);
-			data->sig_status = 1;
-			ft_sig(data);
-			close_fd(fd[1]);
-		data->fd_pipe->fd_in = fd[0];
-		//close_fd(fd[0]);
-		*i+=1;
+void parent_processus(t_data *data, int *pipefd, int *i)
+{
+	// 	//signal(SIGPIPE, SIG_IGN);
+		// close_fd(pipefd[1]);
+		signal(SIGINT, SIG_DFL);
+		data->sig_status = 1;
+		ft_sig(data);
+	// data->fd_pipe->fd_in = fd[0];
+	// //close_secure();
+	// //close_fd(fd[0]);
+	// *i+=1;
+	if (*i != 0) {
+            close(data->fd_pipe->fd_in);
+        }
+    if (*i != data->meter->nbr_pipe ) {
+         close(pipefd[1]);
+        data->fd_pipe->fd_in = pipefd[0]; 
+	}
 }
 
 int my_pipe(t_data *data, char *str)
 {
-int i;
-int *son_pid;
-int *fd;
+// int i;
+// int *son_pid;
+// int *fd;
 
-fd = NULL;
-son_pid = NULL;
-i = 0;
+// fd = NULL;
+// son_pid = NULL;
+// i = 0;
+
+    int pipefd[2];
+    pid_t pid;
+	int i = 0;
+	data->fd_pipe->fd_in = 0;
+
+
 printf("data->signal = %d\n", data->sig_status);
-if (init_fd(data, &fd, &son_pid))
-	return (2);
+// if (init_fd(data, &fd, &son_pid))
+	// return (2);
 // if (!start_process(data, son_pid, str))
 // 	return (2);
-while (i <= data->meter->nbr_pipe)
-{
-	if (start_fork(fd, son_pid, i))
-		return (2);
-	if (son_pid[i] == 0) 
-	{
-		child_processus(data, fd, i, str);
-		exit(127);
-	} 
-	else
-		parent_processus(data, fd, &i);
-}
-end_process(data, son_pid, fd);
-return (0);
-}
 
+	while (i <= data->meter->nbr_pipe )
+	{
+		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
+			execute_heredoc(data, i);
+		i++;
+	}
+
+	for (i = 0; i <= data->meter->nbr_pipe; i++)
+	{
+				write(1, "child\n", 6);
+		   if (i != data->meter->nbr_pipe ) {
+	            if (pipe(pipefd) == -1) {
+	                perror("pipe");
+	                exit(EXIT_FAILURE);
+	            }
+	        }
+
+	        pid = fork();
+	        if (pid == -1) {
+	            perror("fork");
+	            exit(EXIT_FAILURE);
+	        }
+		if (pid == 0) 
+		{
+			write(1, "child\n", 6);
+			child_processus(data, pipefd, i, str);
+			exit(127);
+		} 
+		else
+			parent_processus(data, pipefd, &i);
+	}
+	// end_process(data, son_pid);
+	  for (int i = 0; i <= data->meter->nbr_pipe; i++) {
+	        wait(NULL);
+			//close_secure();
+	    }
+	return (0);
+
+}
