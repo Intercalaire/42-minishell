@@ -65,7 +65,7 @@ static char	*adjust_pointers(char **src, char *next_token, char *s)
 {
 	if (*next_token != '\0')
 	{
-		if (*next_token == '"' || *next_token == '\'' || *next_token == '$')
+		if (*next_token == '"' || *next_token == '\'')
 			s = adjust_pointers_with_quotes(src, next_token, s);
 		else
 			s = adjust_pointers_without_qts(src, next_token, s);

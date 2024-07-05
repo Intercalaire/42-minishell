@@ -90,13 +90,18 @@ int 	pars_pipe(t_data *data);
 int		quote_verif(t_data *data,char *str);
 int 	look_pipe(t_data *data, char *str);
 int 	special_char(t_data *data, char *str);
-void	remove_end_space(char *str);
+int     remove_end_space(t_data *data, char *str);
 int		handle_args(t_data *data, int *i, int *y, int *z);
 void	count_args(t_data *data, int i);
+int		look_out(t_data *data, char *str);
 
 //environment_variable
 int		ktq_utils(int in_qte_dble, int in_qte_sple);
 char	*ft_strdup_2(t_data *data, const char *s);
+char	*env_var_utils(t_data *data, char *value, int quote);
+char	*char_dollar_stop(char *value);
+int		check_dollar_stop(char *value);
+int     ft_ischar_no_quotes(int c);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);
@@ -164,5 +169,6 @@ int		h_doc(t_data *data, int *y, char *str);
 # define TOKEN "syntax error near unexpected token"
 # define QUOTE_SMP "syntax error near unexpected token `\''"
 # define QUOTE_DBL "syntax error near unexpected token `\"'"
+# define OUT "syntax error near unexpected token `newline'"
 
 #endif

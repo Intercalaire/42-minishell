@@ -44,10 +44,10 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	env_str = NULL;
 	while (k < i)
 	{
-		if (s[k] == '$' && (s[k + 1] == ' ' || s[k + 1] == '\0' || s[k + 1] == '"' || s[k + 1] == '\''))
-		{
+		if (s[k] == '$' && !s[k + 1])
 			str[j++] = s[k++];
-		}
+		if (s[k] == '$' && s[k + 1] == '$')
+			return (ft_trim_quote(str));
 		else if (s[k] == '$')
 		{
 			env_str = environment_variable(data, (char *)s);
@@ -61,9 +61,7 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 				str[j++] = s[k++];
 		}
 		else
-		{
 			str[j++] = s[k++];
-		}
 	}
 	str[j] = '\0';
 	return (ft_trim_quote(str));
@@ -72,23 +70,15 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 static char	*environment_variable(t_data *data, char *str)
 {
 	char	*value;
-	int		i;
-	int		value_len;
+	int 	quote;
 	
-	printf("str = %s\n", str);
-	printf("know_the_quote(str) = %d\n", know_the_quote(str));
-	if (know_the_quote(str) == 1 || know_the_quote(str) == 0)
+	quote = know_the_quote(str);
+	if (quote < 2)
 	{
 		value = make_the_char(data, str);
 		if (value == NULL)
 			return (NULL);
-		value_len = ft_strlen(value);
-		if (value[1] == '?')
-			return (ft_itoa(data->exit_status));
-		i = search_env(data, value + 1);
-		if (i == -1)
-			return (ft_strdup(""));
-		value = ft_strdup(data->env[i] + value_len);
+		return (env_var_utils(data, value, quote));
 	}
 	else
 	{
@@ -108,7 +98,7 @@ static	char	*make_the_char(t_data *data, char *str)
 		i++;
 	start = i;
 	i++;
-	while (str[i] && (str[i] == '?' || ft_isalnum(str[i]) == 1))
+	while (str[i] && ft_ischar_no_quotes(str[i]) == 1)
 		i++;
 	data->len_env = i - start;
 	return (ft_strndup(str + start, i - start));
@@ -123,7 +113,7 @@ static int	know_the_quote(char *str)
 	i = 0;
 	in_quote_simple = 0;
 	in_quote_double = 0;
-	if (str == NULL || ft_strlen(str) < 2)
+	if (str == NULL || ft_strlen(str) == 1)
 		return (2);
 	while (str[i] && str[i] != '$')
 	{

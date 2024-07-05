@@ -93,7 +93,6 @@ int	try_ft_strtok(t_data *data, char *str)
 	if (initialize_data(data, str) == 2)
 		return (2);
 	process_tokens(data, str);
-	printf("%d\n", data->size);
-	printf("pipe ; %d\n", data->nbr_pipe);
+	free(str);
 	return (0);
 }

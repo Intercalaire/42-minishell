@@ -21,6 +21,7 @@ void	ft_little_error_prog(t_data *data, char *str, char *msg, char token)
 		free(data->command);
 		free(data->output);
 		free(data->meter);
+		free(data->fd_pipe);
 	}
 }
 
@@ -33,6 +34,7 @@ void	ft_little_error_prog_quote(t_data *data, char *str, char *msg)
 		free(data->command);
 		free(data->output);
 		free(data->meter);
+		free(data->fd_pipe);
 	}
 }
 
@@ -44,6 +46,7 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str)
 		free(data->command);
 		free(data->output);
 		free(data->meter);
+		free(data->fd_pipe);
 	}
 }
 

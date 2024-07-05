@@ -55,6 +55,8 @@ void	ft_free_data(t_data *data, char *str)
 	}
 	if (data->meter)
 		free(data->meter);
+	if (data->fd_pipe)
+		free(data->fd_pipe);
 	free(str);
 	str = NULL;
 }

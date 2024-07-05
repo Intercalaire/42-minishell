@@ -43,13 +43,23 @@ int	init_zero(t_data *data)
 	return (0);
 }
 
-void	remove_end_space(char *str)
+int	remove_end_space(t_data *data, char *str)
 {
 	int	len;
+	size_t	i;
 
+	i = 0;
 	if (str == NULL)
 	{
-		return ;
+		ft_little_error_prog_no_msg(data, str);
+		return (2);
+	}
+	while (str[i] == ' ')
+		i++;
+	if (i == ft_strlen(str))
+	{
+		ft_little_error_prog_no_msg(data, str);
+		return (2);
 	}
 	len = ft_strlen(str);
 	while (len > 0 && str[len - 1] == ' ')
@@ -57,6 +67,7 @@ void	remove_end_space(char *str)
 		str[len - 1] = '\0';
 		len--;
 	}
+	return (0);
 }
 
 char	*ft_strcat(char *dest, char *src)

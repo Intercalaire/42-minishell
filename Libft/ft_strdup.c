@@ -33,6 +33,7 @@ char	*ft_strdup(const char *s)
 		i--;
 		j++;
 	}
+	str[j] = '\0';
 	return (str);
 }
 
@@ -57,5 +58,6 @@ char	*ft_strndup(const char *s, int n)
 		i--;
 		j++;
 	}
+	str[j] = '\0';
 	return (str);
 }
