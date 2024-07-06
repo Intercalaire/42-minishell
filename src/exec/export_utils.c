@@ -90,16 +90,29 @@ void	change_env(t_data *data, char *key, char *value)
 
 void	cat_env(t_data *data, char *key, char *value)
 {
-	int		i;
-	char	*new_env;
-	char	*tmp;
+    int		i;
+    char	*new_env;
+    char	*tmp;
+    char	*key_value_str;
 
-	i = search_env(data, key);
-	tmp = ft_strdup(data->env[i]);
-	new_env = ft_strjoin(tmp, value);
-	free(data->env[i]);
-	data->env[i] = ft_strdup(new_env);
-	free(tmp);
+    i = search_env(data, key);
+    if (i == -1)
+	{
+		printf("Variable '%s' not found in environment\n", key);
+        return;
+	}
+    tmp = ft_strdup(data->env[i]);
+    if (!strchr(tmp, '=')) 
+    {
+        key_value_str = ft_strjoin(key, "=");
+        new_env = ft_strjoin(key_value_str, value);
+        free(key_value_str);
+    }
+    else
+        new_env = ft_strjoin(tmp, value);
+    free(data->env[i]);
+    data->env[i] = ft_strdup(new_env);
+    free(tmp);
 	free(new_env);
 }
 

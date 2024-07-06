@@ -41,19 +41,19 @@ void close_secure()
 char *get_env_value(t_data *data, char *varName)
 {
 	int index = search_env(data, varName);
-	if (index == -1) return NULL; // La variable d'environnement n'a pas été trouvée
+	if (index == -1) return NULL; 
 
 	char *entry = data->env[index];
-	char *value = strchr(entry, '='); // Trouver le signe '='
-	if (!value) return NULL; // Format invalide, pas de valeur
+	char *value = strchr(entry, '='); 
+	if (!value) return NULL;
 
-	return value + 1; // Retourner la valeur (après le signe '=')
+	return value + 1; 
 }
 
 
 int handle_special_case(t_data *data, char **ptr) {
     int size = strlen(ft_itoa(data->exit_status));
-    *ptr += 2; // Passer le $? et le caractère suivant
+    *ptr += 2; 
     return size;
 }
 
@@ -66,15 +66,15 @@ int handle_env_var(t_data *data, char **ptr) {
         strncpy(varName, *ptr + 1, len);
         varName[len] = '\0';
         char *value = get_env_value(data, varName);
-        *ptr = end; // Mettre à jour le pointeur pour passer le nom de la variable
+        *ptr = end; 
         return value ? strlen(value) : 0;
     }
-    *ptr = end; // Dans le cas où len <= 0, passer le caractère actuel
+    *ptr = end; 
     return 0;
 }
 
 int calculate_size_needed(t_data *data, char *line) {
-    int size_needed = 1; // Pour le caractère de fin de chaîne '\0'
+    int size_needed = 1; 
     char *ptr = line;
     while (*ptr) {
         if (*ptr == '$') {
@@ -90,34 +90,6 @@ int calculate_size_needed(t_data *data, char *line) {
     }
     return size_needed;
 }
-// int calculate_size_needed(t_data *data, char *line) {
-//     int size_needed = 1; // Pour le caractère de fin de chaîne '\0'
-//     char *ptr = line;
-//     while (*ptr) {
-//         if (*ptr == '$') {
-//             if (*(ptr + 1) == '?') {
-//                 size_needed += strlen(ft_itoa(data->exit_status));
-//                 ptr += 2;
-//             } else {
-//                 char *end = ptr + 1;
-//                 while (isalnum(*end) || *end == '_') end++;
-//                 int len = end - (ptr + 1);
-//                 if (len > 0) {
-//                     char varName[256];
-//                     strncpy(varName, ptr + 1, len);
-//                     varName[len] = '\0';
-//                     char *value = get_env_value(data, varName);
-//                     if (value) size_needed += strlen(value);
-//                 }
-//                 ptr = end;
-//             }
-//         } else {
-//             size_needed++;
-//             ptr++;
-//         }
-//     }
-//     return size_needed;
-// }
 
 void handle_env_var2(t_data *data, char **temp, char **ptr) {
     char *end = *ptr + 1;
@@ -162,7 +134,7 @@ void build_final_string(t_data *data, char *result, char *line) {
             copy_normal_chars(&temp, &ptr);
         }
     }
-    *temp = '\0'; // Terminer la chaîne correctement
+    *temp = '\0';
 }
 
 char *expand_env_vars(t_data *data, char *line) {
@@ -173,72 +145,6 @@ char *expand_env_vars(t_data *data, char *line) {
     return result;
 }
 
-// char *expand_env_vars(t_data *data, char *line) {
-//     int size_needed = 1; // Pour le caractère de fin de chaîne '\0'
-//     char *ptr = line;
-
-//     // Étape 1 : Calculer la taille nécessaire
-//     while (*ptr) {
-//         if (*ptr == '$') {
-//             if (*(ptr + 1) == '?') { // Traitement spécial pour "$?"
-//                 size_needed += strlen(ft_itoa(data->exit_status));
-//                 ptr += 2; // Passer "$?"
-//             } else {
-//                 char *end = ptr + 1;
-//                 while (isalnum(*end) || *end == '_') end++;
-//                 int len = end - (ptr + 1);
-//                 if (len > 0) { // Si le nom de la variable est non vide
-//                     char varName[256];
-//                     strncpy(varName, ptr + 1, len);
-//                     varName[len] = '\0';
-//                     char *value = get_env_value(data, varName);
-//                     if (value) size_needed += strlen(value);
-//                 }
-//                 ptr = end;
-//             }
-//         } else {
-//             size_needed++;
-//             ptr++;
-//         }
-//     }
-
-//     // Étape 2 : Allouer suffisamment de mémoire
-//     char *result = malloc(size_needed);
-//     if (!result) return NULL;
-
-//     // Étape 3 : Construire la chaîne avec les valeurs des variables
-//     char *temp = result;
-//     ptr = line;
-//     while (*ptr) {
-//         if (*ptr == '$') {
-//             if (*(ptr + 1) == '?') {
-//                 char *value = ft_itoa(data->exit_status);
-//                 strcpy(temp, value);
-//                 temp += strlen(value);
-//                 ptr += 2;
-//             } else {
-//                 char *end = ptr + 1;
-//                 while (isalnum(*end) || *end == '_') end++;
-//                 int len = end - (ptr + 1);
-//                 if (len > 0) {
-//                     char varName[256];
-//                     strncpy(varName, ptr + 1, len);
-//                     varName[len] = '\0';
-//                     char *value = get_env_value(data, varName);
-//                     if (value) {
-//                         strcpy(temp, value);
-//                         temp += strlen(value);
-//                     }
-//                 }
-//                 ptr = end;
-//             }
-//         } else {
-//             *temp++ = *ptr++;
-//         }
-//     }
-//     *temp = '\0'; // Terminer la chaîne correctement
-//     return result;
-// }
 void signal_handler(int signum) 
 {
 	close(0);
@@ -317,65 +223,12 @@ void handle_heredocs(t_data *data, int i)
 			return;
         handle_user_input(data, fd, data->output->h_doc[i][j]);
         cleanup_and_close(fd, tmpfiles, data->output->h_doc[i][j + 1]);
+		free(tmpfiles);
         j++;
     }
     signal(SIGINT, SIG_DFL);
 }
 
-// void handle_heredocs(t_data *data, int i)
-// {
-// 	char *line;
-// 	int j = 0;
-
-// 	while (data->output->h_doc[i][j] != NULL)
-// 	{
-// 		char *tmpfile = ft_strjoin("tmp_files/", data->output->h_doc[i][j]);
-// 		int fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 		if (fd == -1)
-// 		{
-// 			perror("open_dans_heredoc");
-// 			free(tmpfile);
-// 			return;
-// 		}
-		
-// 		signal(SIGINT, signal_handler);
-// 		int is_interactive = isatty(STDIN_FILENO);
-// 		char *prompt = NULL;
-// 		if (is_interactive) 
-// 			prompt = "> ";
-// 		line = readline(prompt);
-// 		while (line != NULL)
-// 		{
-// 			if (strcmp(line, data->output->h_doc[i][j]) == 0)
-// 			{
-// 				free(line);
-// 				break;
-// 			}
-// 			char *expanded_line = expand_env_vars(data, line);
-// 			write(fd, expanded_line, strlen(expanded_line));
-// 			write(fd, "\n", 1);
-// 			free(expanded_line);
-// 			free(line);
-	
-// 			line = readline(prompt);
-// 		}
-// 				if (g_sig == SIGINT)
-// 		{
-// 			free(line);
-// 			close(fd);
-// 			unlink(tmpfile);
-// 			free(tmpfile);
-// 			g_sig = 0;
-// 			return;
-// 		}
-// 		close(fd);
-// 		if (data->output->h_doc[i][j + 1])
-// 			unlink(tmpfile);
-// 		free(tmpfile);
-// 		j++;
-// 	}
-// 	signal(SIGINT, SIG_DFL);
-// }
 void execute_heredoc(t_data *data, int i)
 {
 	pid_t pid;
@@ -399,9 +252,9 @@ void execute_heredoc(t_data *data, int i)
 }
 void check_open_files(t_data *data, int i)
 {
-		if (data->output->h_doc[i] != NULL && *data->output->h_doc[i] != NULL)
+		if (data->output->h_doc[i] && data->output->here_d[i] == 1)
 			create_infiles_heredoc(data, i);
-		if (data->output->infile[i]) 
+		if (data->output->infile[i] && data->output->here_d[i] == 0) 
 			create_infiles(data, i);
 		if (data->output->outfile[i]) 
 			create_outfiles(data, i);
@@ -409,64 +262,38 @@ void check_open_files(t_data *data, int i)
 			create_outfiles_append(data, i);
 }
 
-// void reset_fd(t_data *data)
-// {
-// 	dup2(data->fd_pipe->std_in, STDIN_FILENO);
-// 	close(data->fd_pipe->std_in);
-// 	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
-// 	close(data->fd_pipe->std_out);
-// }
+void reset_fd(t_data *data)
+{
+	dup2(data->fd_pipe->std_in, STDIN_FILENO);
+	close(data->fd_pipe->std_in);
+	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+	close(data->fd_pipe->std_out);
+}
 
-
-// void end_process(t_data *data, int *son_pid)
-// {
-//    int i;
-//     int status;
-
-//     i = 0;
-//     while (i <= data->meter->nbr_pipe) 
-//     {
-//         waitpid(son_pid[i], &status, 0);
-//         i++;
-//     }
-
-//  	close_secure();
-
-//     free(son_pid);
-//     signal(SIGINT, SIG_DFL);
-// }
-
-
-// int	init_fd(t_data *data, int **fd, int **son_pid)
-// {
-// 	// data->fd_pipe->std_in = dup(STDIN_FILENO);
-// 	// if (data->fd_pipe->std_in == -1)
-// 	// {
-//     //     perror("dup STDIN_FILENO failed");
-// 	// 	return (1);
-// 	// }
-// 	// data->fd_pipe->std_out = dup(STDOUT_FILENO);
-// 	// if (data->fd_pipe->std_out == -1) 
-// 	// {
-//     //     perror("dup STDOUT_FILENO failed");
-//     //     close(data->fd_pipe->std_in);
-// 	// 	return (1);
-//     // }
-// 	*fd = ft_calloc(2, sizeof(int));
-// 	if (*fd == NULL)
-// 		return (1);
-// 	*son_pid = ft_calloc(data->meter->nbr_pipe + 1, sizeof(int));
-// 	if (*son_pid == NULL)
-// 		return (1);
-// 	return (0);
-// }
+int	init_fd(t_data *data)
+{
+	data->fd_pipe->std_in = dup(STDIN_FILENO);
+	if (data->fd_pipe->std_in == -1)
+	{
+        perror("dup STDIN_FILENO failed");
+		return (1);
+	}
+	// close(data->fd_pipe->std_in);
+	data->fd_pipe->std_out = dup(STDOUT_FILENO);
+	if (data->fd_pipe->std_out == -1) 
+	{
+        perror("dup STDOUT_FILENO failed");
+		return (1);
+    }
+	// close(data->fd_pipe->std_out);
+	return (0);
+}
 
 int start_process(t_data *data, char *str)
 {
 	int i;
 
 	i = 0;
-	data->sig_status = 2;
 	while (i <= data->meter->nbr_pipe)
 	{
 		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
@@ -475,52 +302,23 @@ int start_process(t_data *data, char *str)
 	}
 	if (data->meter->nbr_pipe == 0) 
 	{
+		init_fd(data);
 		check_open_files(data, 0);
 		exec(data, data->command->cmd[0], data->command->arg[0], str);
-		//reset_fd(data);
+		reset_fd(data);
 	   return (0);
 	}
 	return (1);
 }
-// int start_fork(int *fd, int *son_pid, int i)
-// {
 
-//   if (pipe(fd) == -1) { // Vérification de l'erreur pour pipe
-//         perror("pipe failed");
-//         free(son_pid); // Libérer la mémoire allouée avant de retourner
-//         return (1);
-//     }
-// 	son_pid[i] = fork();
-// 	if (son_pid[i] == -1)
-// 	{
-// 		close_fd(fd[0]);
-// 		close_fd(fd[1]);
-// 		free(son_pid);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 void child_processus(t_data *data, int *pipefd, int i, char *str)
 {
-		// printf("data->signal = %d\n", data->sig_status);
 
-		// close_fd(fd[0]);
-		// if (!data->output->infile[i] && !data->output->h_doc[i]) 
-		// {
-		// 	 dup2(data->fd_pipe->fd_in, STDIN_FILENO);
-		// 	 close_fd(data->fd_pipe->fd_in);
-		// }  
-		// if (i != data->meter->nbr_pipe )
-		// 	{
-		// 		dup2(fd[1], STDOUT_FILENO);
-		// 		close_fd(fd[1]);
-		// 	}
-		// exec(data, data->command->cmd[i], data->command->arg[i], str);
-		//close_fd(pipefd[0]);
-		if (i != 0) {
-
-                if (dup2(data->fd_pipe->fd_in, STDIN_FILENO) == -1) {
+		if (i != 0) 
+		{
+                if (dup2(data->fd_pipe->fd_in, STDIN_FILENO) == -1) 
+				{
                     perror("dup2");
                     exit(EXIT_FAILURE);
                 }
@@ -537,21 +335,20 @@ void child_processus(t_data *data, int *pipefd, int i, char *str)
         	close_fd(pipefd[1]);
         	close_fd(pipefd[0]);
         }
-		//printf("AAcmd = %s\n", data->command->cmd[i]);
 		exec(data, data->command->cmd[i], data->command->arg[i], str);
 
 		}
 
-void parent_processus(t_data *data, int *pipefd, int *i)
+void parent_processus(t_data *data, int *pipefd, int i)
 {
 	signal(SIGINT, SIG_DFL);
 	data->sig_status = 1;
 	ft_sig(data);
-	if (*i != 0) {
-            close(data->fd_pipe->fd_in);
-        }
-    if (*i != data->meter->nbr_pipe ) {
-         close(pipefd[1]);
+	if (i != 0) 
+        close(data->fd_pipe->fd_in);
+    if (i != data->meter->nbr_pipe ) 
+	{
+        close(pipefd[1]);
         data->fd_pipe->fd_in = pipefd[0]; 
 	}
 }
@@ -571,7 +368,7 @@ int execute_fork(t_data *data, char *str, int i, int *pipefd)
 		exit(127);
 	} 
 	else
-		parent_processus(data, pipefd, &i);
+		parent_processus(data, pipefd, i);
 	return (0);
 }
 
@@ -583,15 +380,15 @@ int my_pipe(t_data *data, char *str)
 	data->fd_pipe->fd_in = 0;
 	if (data->meter->nbr_pipe == 0)
 	{
-	if (!start_process(data, str))
+	if (start_process(data, str))
 		return (2);
 	}
 	else
 	{
-		i = 0;
+	i = 0;
 		while (i <= data->meter->nbr_pipe)
 		{
-					if (i != data->meter->nbr_pipe ) {
+			if (i != data->meter->nbr_pipe ) {
 				if (pipe(pipefd) == -1) {
 					perror("pipe");
 					return (2);

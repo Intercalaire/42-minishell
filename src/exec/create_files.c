@@ -70,39 +70,37 @@ void create_infiles(t_data *data, int i)
     while (data->output->infile[i][j] != NULL) 
     {
         if (infd != -1) 
-            close_fd(infd); 
+            close_fd(infd); // Assurez-vous de fermer le descripteur précédent
         infd = open(data->output->infile[i][j], O_RDONLY);
         if (infd < 0) 
         {
             perror("open_infile");
-            exit(1);
+            return;
         }
-        if (data->output->infile[i][j + 1])
-            close_fd(infd);
         j++;
     }
-    if (data->output->here_d[i] == 0)
-        {
+    if (infd != -1 && data->output->here_d[i] == 0) // Correction pour s'assurer que infd est valide
+    {
         dup2(infd, STDIN_FILENO);
-            close_fd(infd);
-        }
+        close_fd(infd);
+    }
 }
+
 void create_infiles_heredoc(t_data *data, int i)
 {
     char *tmpfile;
-    int j;
+    int j = 0;
     int infd;
-
-    j = 0;
     while (data->output->h_doc[i][j] != NULL) 
         j++;
-    if (data->output->h_doc[i][j - 1])
+    if (j > 0 && data->output->h_doc[i][j - 1]) // Vérifiez si j > 0 pour éviter un accès hors limites
     {
-        tmpfile = ft_strjoin("tmp_files/",data->output->h_doc[i][j - 1]);
-        infd = open(tmpfile, O_RDONLY | O_CREAT, 0644);
+        tmpfile = ft_strjoin("tmp_files/", data->output->h_doc[i][j - 1]);
+        infd = open(tmpfile, O_RDONLY, 0644); // Correction: O_RDONLY sans O_CREAT
         if (infd < 0) 
         {
             perror("open_heredoc");
+            free(tmpfile);
             return;
         }
         if (data->output->here_d[i] == 1)
