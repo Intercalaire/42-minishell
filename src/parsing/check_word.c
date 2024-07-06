@@ -20,6 +20,7 @@ static int	add_token(t_data *data, char *token);
 static int	add_token(t_data *data, char *token)
 {
 	data->command->lign[data->count] = ft_strdup(token);
+	free(token);
 	if (!data->command->lign[data->count])
 		return (2);
 	data->count++;
@@ -36,11 +37,8 @@ static int	len_ft_strtok(char *str)
 	while (token != NULL)
 	{
 		count++;
-		free(token);
 		token = ft_strtok(NULL, " \t\n\v\r\f");
 	}
-	if (token)
-		free(token);
 	return (count);
 }
 
@@ -54,7 +52,7 @@ static int	initialize_data(t_data *data, char *str)
 	data->count = len_ft_strtok(tmp);
 	data->size = data->count;
 	free(tmp);
-	data->command->lign = ft_calloc((data->count + 1), sizeof(char **));
+	data->command->lign = ft_calloc((data->count + 1), sizeof(char *));
 	if (!data->command->lign)
 		return (2);
 	return (0);
@@ -74,7 +72,6 @@ static int	process_tokens(t_data *data, char *str)
 	while (token != NULL)
 	{
 		add_token(data, token);
-		free(token);
 		printf("lign : %s\n", data->command->lign[i]);
 		token = ft_strtok(NULL, " \t\n\v\r\f");
 		if (!token)

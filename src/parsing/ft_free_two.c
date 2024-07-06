@@ -56,6 +56,7 @@ void	ft_end_error_prog(t_data *data, char *str, char *msg)
 	if (data)
 	{
 		ft_free_data(data, str);
+		ft_free_strtab(data->env);
 		free(data);
 	}
 }

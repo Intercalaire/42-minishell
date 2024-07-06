@@ -49,7 +49,7 @@ static int check_symbols(t_data *data, char *str)
 			{
 				if (str[i + 1] == '>' || str[i + 1] == '<')
 					i++;
-				while (str[i] || str[i] == ' ')
+				while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
 				{
 					if (str[i] == '|')
 					{

@@ -83,7 +83,6 @@ t_fd_pipe	*fd_pipe;
 int 	try_ft_strtok(t_data *data, char *str);
 char	*ft_strtok(char *str, const char *delim);
 char	*ft_split_delim(char *str);
-int		remove_arg_strtab(t_data *data);
 
 //parsing
 int 	pars_pipe(t_data *data);
@@ -101,7 +100,8 @@ char	*ft_strdup_2(t_data *data, const char *s);
 char	*env_var_utils(t_data *data, char *value, int quote);
 char	*char_dollar_stop(char *value);
 int		check_dollar_stop(char *value);
-int     ft_ischar_no_quotes(int c);
+int		ft_ischar_no_quotes(int c);
+char	*ft_strdup_condition(char *s, char *str, int *j, int *k);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);
@@ -116,7 +116,6 @@ void 	ft_error_prog(t_data *data, char *str, char *msg);
 void 	ft_free_data(t_data *data, char *str);
 void 	ft_free_strtab(char **tab);
 void 	ft_end_error_prog(t_data *data, char *str, char *msg);
-int		error_code(t_data *data, char *str);
 void	ft_free_strarg(char ***tab);
 void	ft_little_error_prog_no_msg(t_data *data, char *str);
 

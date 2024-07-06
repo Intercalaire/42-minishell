@@ -42,13 +42,10 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	j = 0;
 	k = 0;
 	env_str = NULL;
+	str = ft_strdup_condition((char *)s, str, &j, &k);
 	while (k < i)
 	{
-		if (s[k] == '$' && !s[k + 1])
-			str[j++] = s[k++];
-		if (s[k] == '$' && s[k + 1] == '$')
-			return (ft_trim_quote(str));
-		else if (s[k] == '$')
+		if (s[k] == '$')
 		{
 			env_str = environment_variable(data, (char *)s);
 			if (env_str)
