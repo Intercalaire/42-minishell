@@ -12,10 +12,10 @@
 
 #include "../../include/parsing/minishell.h"
 
-static int	check_symbols(t_data *data, char *str);
-static int	check_last_character(t_data *data, char *str);
+static int check_symbols(t_data *data, char *str);
+static int check_last_character(t_data *data, char *str);
 
-static int	check_last_character(t_data *data, char *str)
+static int check_last_character(t_data *data, char *str)
 {
 	int len;
 
@@ -49,7 +49,7 @@ static int check_symbols(t_data *data, char *str)
 			{
 				if (str[i + 1] == '>' || str[i + 1] == '<')
 					i++;
-				while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
+				while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\r' || str[i] == '\f'))
 				{
 					if (str[i] == '|')
 					{
@@ -65,7 +65,7 @@ static int check_symbols(t_data *data, char *str)
 	return (0);
 }
 
-int	look_out(t_data *data, char *str)
+int look_out(t_data *data, char *str)
 {
 	if (check_last_character(data, str))
 		return (1);
