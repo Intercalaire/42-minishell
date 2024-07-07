@@ -49,6 +49,7 @@ typedef struct s_output
 int		*append;
 int		*here_d;
 int		sign;
+int     fd;
 char	***outfile;
 char	***outfile_append;
 char	***infile;

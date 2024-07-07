@@ -123,16 +123,17 @@ void copy_normal_chars(char **temp, char **ptr) {
 void build_final_string(t_data *data, char *result, char *line) {
     char *temp = result;
     char *ptr = line;
-    while (*ptr) {
-        if (*ptr == '$') {
-            if (*(ptr + 1) == '?') {
+    while (*ptr) 
+	{
+        if (*ptr == '$') 
+		{
+            if (*(ptr + 1) == '?')
                 handle_special_case2(data, &temp, &ptr);
-            } else {
+			else
                 handle_env_var2(data, &temp, &ptr);
-            }
-        } else {
+		}
+        else
             copy_normal_chars(&temp, &ptr);
-        }
     }
     *temp = '\0';
 }
@@ -164,7 +165,7 @@ int create_tmp_file(char *tmpfiles)
     return fd; 
 }
 
-void handle_user_input(t_data *data, int fd, char *end_word) 
+void handle_user_input(t_data *data, char *end_word) 
 {
     char *line;
 	int is_interactive;
@@ -185,51 +186,54 @@ void handle_user_input(t_data *data, int fd, char *end_word)
 			break;
     	}
     	expanded_line = expand_env_vars(data, line);
-    	write(fd, expanded_line, strlen(expanded_line));
-    	write(fd, "\n", 1);
+    	write(data->output->fd, expanded_line, strlen(expanded_line));
+    	write(data->output->fd, "\n", 1);
     	free(expanded_line);
     	free(line);
     	line = readline(prompt);
     }
 }
 
-void cleanup_and_close(int fd, char *tmpfiles, char *next_file) {
+void cleanup_and_close(t_data *data, char *tmpfiles, char *next_file, char *str) {
     if (g_sig == SIGINT) 
 	{
-        close(fd);
-        unlink(tmpfiles);
+        close(data->output->fd);
+        data->output->fd = open(tmpfiles, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		write(data->output->fd, "", 0);
+		close(data->output->fd);
+		//ajouter un free de tout tout tout
+		free(str);
         g_sig = 0;
     }
 	else 
 	{
-        close(fd);
+        close(data->output->fd);
         if (next_file != NULL)
             unlink(tmpfiles);
     }
 }
 
-void handle_heredocs(t_data *data, int i) 
+void handle_heredocs(t_data *data, int i, char *str) 
 {
 	int j;
 	char *tmpfiles ;
-	int fd;
 
 	j = 0;
-    while (data->output->h_doc[i][j] != NULL) 
+    while (data->output->h_doc[i][j]) 
 	{
 		tmpfiles = ft_strjoin("tmp_files/", data->output->h_doc[i][j]);
-        fd = create_tmp_file(tmpfiles);
-        if (fd == -1) 
+        data->output->fd = create_tmp_file(tmpfiles);
+        if (data->output->fd == -1) 
 			return;
-        handle_user_input(data, fd, data->output->h_doc[i][j]);
-        cleanup_and_close(fd, tmpfiles, data->output->h_doc[i][j + 1]);
+        handle_user_input(data, data->output->h_doc[i][j]);
+        cleanup_and_close(data, tmpfiles, data->output->h_doc[i][j + 1], str);
 		free(tmpfiles);
         j++;
     }
     signal(SIGINT, SIG_DFL);
 }
 
-void execute_heredoc(t_data *data, int i)
+void execute_heredoc(t_data *data, int i, char *str)
 {
 	pid_t pid;
 	int status;
@@ -243,8 +247,7 @@ void execute_heredoc(t_data *data, int i)
 		}
 		if (pid == 0)
 		{
-			
-			handle_heredocs(data, i);
+			handle_heredocs(data, i, str);
 			exit(EXIT_SUCCESS);
 		}
 		else
@@ -262,31 +265,30 @@ void check_open_files(t_data *data, int i)
 			create_outfiles_append(data, i);
 }
 
-void reset_fd(t_data *data)
+int is_builtin(char *cmd)
 {
-	dup2(data->fd_pipe->std_in, STDIN_FILENO);
-	close(data->fd_pipe->std_in);
-	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
-	close(data->fd_pipe->std_out);
-}
-
-int	init_fd(t_data *data)
-{
-	data->fd_pipe->std_in = dup(STDIN_FILENO);
-	if (data->fd_pipe->std_in == -1)
-	{
-        perror("dup STDIN_FILENO failed");
+	if (!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "pwd", 4)
+		|| !ft_strncmp(cmd, "env", 4) || !ft_strncmp(cmd, "export", 7)
+		|| !ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "cd", 3)
+		|| !ft_strncmp(cmd, "exit", 5))
 		return (1);
-	}
-	// close(data->fd_pipe->std_in);
-	data->fd_pipe->std_out = dup(STDOUT_FILENO);
-	if (data->fd_pipe->std_out == -1) 
-	{
-        perror("dup STDOUT_FILENO failed");
-		return (1);
-    }
-	// close(data->fd_pipe->std_out);
 	return (0);
+
+}
+int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg, char *str)
+{
+    int original_stdin;
+    int original_stdout;
+
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
+	check_open_files(data, 0);
+    exec(data, cmd, arg, str);
+    dup2(original_stdin, STDIN_FILENO);
+    dup2(original_stdout, STDOUT_FILENO);
+    close(original_stdin);
+    close(original_stdout);
+	return 0;
 }
 
 int start_process(t_data *data, char *str)
@@ -297,15 +299,19 @@ int start_process(t_data *data, char *str)
 	while (i <= data->meter->nbr_pipe)
 	{
 		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
-			execute_heredoc(data, i);
+			execute_heredoc(data, i, str);
 		i++;
 	}
 	if (data->meter->nbr_pipe == 0) 
 	{
-		init_fd(data);
-		check_open_files(data, 0);
-		exec(data, data->command->cmd[0], data->command->arg[0], str);
-		reset_fd(data);
+		if (is_builtin(data->command->cmd[0]))
+		{
+			if (execute_builtin_with_redirection(data, data->command->cmd[0], data->command->arg[0], str))
+				return (1);
+		}
+		else
+			exec(data, data->command->cmd[0], data->command->arg[0], str);
+		// reset_fd(data);
 	   return (0);
 	}
 	return (1);
@@ -324,7 +330,6 @@ void child_processus(t_data *data, int *pipefd, int i, char *str)
                 }
                 close_fd(data->fd_pipe->fd_in);
 		}
-		check_open_files(data, i);
 		if (i != data->meter->nbr_pipe) 
 		{
         	if (dup2(pipefd[1], STDOUT_FILENO) == -1) 
@@ -335,6 +340,7 @@ void child_processus(t_data *data, int *pipefd, int i, char *str)
         	close_fd(pipefd[1]);
         	close_fd(pipefd[0]);
         }
+		check_open_files(data, i);
 		exec(data, data->command->cmd[i], data->command->arg[i], str);
 
 		}
@@ -365,6 +371,7 @@ int execute_fork(t_data *data, char *str, int i, int *pipefd)
 	if (pid == 0) 
 	{
 		child_processus(data, pipefd, i, str);
+		//ajouter un free de tout tout tout
 		exit(127);
 	} 
 	else

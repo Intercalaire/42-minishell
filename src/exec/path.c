@@ -81,16 +81,25 @@ void	free_path(char *path, char **args)
 		ft_free_strtab(args);
 }
 
+void check_open_files(t_data *data, int i);
+
 void	path(t_data *data, char *cmd, char **arg)
 {
 	char	*full_path;
 	pid_t	pid;
 	char	**cpy_args;
 
-	data->sig_status = 1;
-	pid = fork();
 	cpy_args = NULL;
 	full_path = var_path(data, cmd);
+	data->sig_status = 1;
+	if (data->meter->nbr_pipe)
+	{
+		cpy_args = create_args(cmd, arg);
+		execution(data, cmd, cpy_args, full_path);
+		free_path(full_path, cpy_args);
+		return ;
+	}
+	pid = fork();
 	if (!full_path)
 		return ;
 	if (ft_sig(data))
@@ -100,8 +109,11 @@ void	path(t_data *data, char *cmd, char **arg)
 	}
 	if (pid == 0)
 	{
+		if (!data->meter->nbr_pipe)
+			check_open_files(data, 0);
 		cpy_args = create_args(cmd, arg);
 		execution(data, cmd, cpy_args, full_path);
+		// ajouter un free de tout tout tout
 	}
 	else
 		parent_process(data, pid);

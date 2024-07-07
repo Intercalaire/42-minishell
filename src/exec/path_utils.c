@@ -77,7 +77,7 @@ static void	error_manage(t_data *data, char *cmd, char **args)
 	{
 		printf("%s: command not found\n", cmd);
 		data->exit_status = 127;
-		exit(127);
+		exit(127);	
 	}
 	else if (errno == EACCES)
 	{
@@ -97,17 +97,14 @@ void	execution(t_data *data, char *cmd, char **args, char *full_path)
 {
 	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
 	{
-		if (execve(cmd, args, data->env) == -1)
-		{
-			perror(cmd);
-			exit(127);
-		}
+		execve(cmd, args, data->env);
+		perror(cmd);
+		exit(127);
 	}
 	else
 	{
-		if (execve(full_path, args, data->env) == -1)
-			error_manage(data, cmd, args);
-		else 
-			data->exit_status = 0;
+		data->exit_status = 0;
+		execve(full_path, args, data->env);
+		error_manage(data, cmd, args);
 	}
 }
