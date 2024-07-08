@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 
-void create_outfiles(t_data *data, int i)
+int create_outfiles(t_data *data, int i)
 {
 
     int outfd = -1;
@@ -24,10 +24,8 @@ void create_outfiles(t_data *data, int i)
         if (outfd < 0) 
         {
             perror("open_outfile");
-            return ;   
+            return (1);   
         }
-        if (data->output->outfile[i][j + 1])
-            close_fd(outfd);
         j++;
     }
     if (data->output->append[i] == 0)
@@ -35,9 +33,10 @@ void create_outfiles(t_data *data, int i)
         dup2(outfd, STDOUT_FILENO);
         close_fd(outfd);
     }
+    return (0);
 }
 
-void create_outfiles_append(t_data *data, int i)
+int create_outfiles_append(t_data *data, int i)
 {
     int outfd = -1;
     int j = 0;
@@ -51,19 +50,18 @@ void create_outfiles_append(t_data *data, int i)
         if (outfd < 0) 
         {
             perror("open_outfile_append");
-            return ;
+            return (1);
         }
-        if (data->output->outfile_append[i][j + 1])
-            close_fd(outfd);
         j++;
     }
     if (data->output->append[i] == 1)
     {
         dup2(outfd, STDOUT_FILENO);
         close_fd(outfd);
-    }   
+    }  
+    return (0);
 }
-void create_infiles(t_data *data, int i)
+int create_infiles(t_data *data, int i)
 {
     int infd = -1;
     int j = 0;
@@ -75,7 +73,7 @@ void create_infiles(t_data *data, int i)
         if (infd < 0) 
         {
             perror("open_infile");
-            return;
+            return (1);
         }
         j++;
     }
@@ -84,9 +82,10 @@ void create_infiles(t_data *data, int i)
         dup2(infd, STDIN_FILENO);
         close_fd(infd);
     }
+    return (0);
 }
 
-void create_infiles_heredoc(t_data *data, int i)
+int create_infiles_heredoc(t_data *data, int i)
 {
     char *tmpfile;
     int j = 0;
@@ -101,7 +100,7 @@ void create_infiles_heredoc(t_data *data, int i)
         {
             perror("open_heredoc");
             free(tmpfile);
-            return;
+            return (1);
         }
         if (data->output->here_d[i] == 1)
         {
@@ -111,4 +110,5 @@ void create_infiles_heredoc(t_data *data, int i)
         unlink(tmpfile);
         free(tmpfile);
     }
+    return (0);
 }

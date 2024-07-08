@@ -11,6 +11,17 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
+static void change_variable(t_data *data, char **arg, char *cmd)
+{	int i;
+
+	i = 0;
+	while (arg[i])
+		i++;
+	if (!arg[0] && cmd)
+		change_env(data, "_", cmd);
+	else
+		change_env(data, "_", arg[i - 1]);
+}
 
 int	exec(t_data *data, char *cmd, char **arg, char *str)
 {
@@ -29,7 +40,7 @@ int	exec(t_data *data, char *cmd, char **arg, char *str)
 	else if (!ft_strncmp(cmd, "exit", 5))
 		exit_shell(data, str, arg);
 	else if (cmd && *cmd)
-		path(data, cmd, arg);
-	change_env(data, "_", cmd);
+		path(data, cmd, arg, str);
+	change_variable(data, arg, cmd);
 	return (0);
 }

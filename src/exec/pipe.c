@@ -194,7 +194,7 @@ void handle_user_input(t_data *data, char *end_word)
     }
 }
 
-void cleanup_and_close(t_data *data, char *tmpfiles, char *next_file, char *str) {
+int cleanup_and_close(t_data *data, char *tmpfiles, char *next_file) {
     if (g_sig == SIGINT) 
 	{
         close(data->output->fd);
@@ -202,8 +202,10 @@ void cleanup_and_close(t_data *data, char *tmpfiles, char *next_file, char *str)
 		write(data->output->fd, "", 0);
 		close(data->output->fd);
 		//ajouter un free de tout tout tout
-		free(str);
+		// free(str);
+		free(tmpfiles);
         g_sig = 0;
+		return (1);
     }
 	else 
 	{
@@ -211,9 +213,10 @@ void cleanup_and_close(t_data *data, char *tmpfiles, char *next_file, char *str)
         if (next_file != NULL)
             unlink(tmpfiles);
     }
+	return 0;
 }
 
-void handle_heredocs(t_data *data, int i, char *str) 
+void handle_heredocs(t_data *data, int i) 
 {
 	int j;
 	char *tmpfiles ;
@@ -226,7 +229,8 @@ void handle_heredocs(t_data *data, int i, char *str)
         if (data->output->fd == -1) 
 			return;
         handle_user_input(data, data->output->h_doc[i][j]);
-        cleanup_and_close(data, tmpfiles, data->output->h_doc[i][j + 1], str);
+        if (cleanup_and_close(data, tmpfiles, data->output->h_doc[i][j + 1]))
+			break;
 		free(tmpfiles);
         j++;
     }
@@ -247,22 +251,27 @@ void execute_heredoc(t_data *data, int i, char *str)
 		}
 		if (pid == 0)
 		{
-			handle_heredocs(data, i, str);
+			handle_heredocs(data, i);
+			ft_end_error_prog(data, str, NULL);
 			exit(EXIT_SUCCESS);
 		}
 		else
 			waitpid(pid, &status, 0);
 }
-void check_open_files(t_data *data, int i)
+int check_open_files(t_data *data, int i)
 {
+	int return_value;
+
+	return_value = 0;
 		if (data->output->h_doc[i] && data->output->here_d[i] == 1)
-			create_infiles_heredoc(data, i);
+			return_value = create_infiles_heredoc(data, i);
 		if (data->output->infile[i] && data->output->here_d[i] == 0) 
-			create_infiles(data, i);
+			return_value = create_infiles(data, i);
 		if (data->output->outfile[i]) 
-			create_outfiles(data, i);
+			return_value = create_outfiles(data, i);
 		if (data->output->outfile_append[i]) 
-			create_outfiles_append(data, i);
+			return_value = create_outfiles_append(data, i);
+	return (return_value);
 }
 
 int is_builtin(char *cmd)
@@ -371,6 +380,7 @@ int execute_fork(t_data *data, char *str, int i, int *pipefd)
 	if (pid == 0) 
 	{
 		child_processus(data, pipefd, i, str);
+		ft_end_error_prog(data, str, NULL);
 		//ajouter un free de tout tout tout
 		exit(127);
 	} 
@@ -388,7 +398,7 @@ int my_pipe(t_data *data, char *str)
 	if (data->meter->nbr_pipe == 0)
 	{
 	if (start_process(data, str))
-		return (2);
+		return (1);
 	}
 	else
 	{
@@ -398,11 +408,11 @@ int my_pipe(t_data *data, char *str)
 			if (i != data->meter->nbr_pipe ) {
 				if (pipe(pipefd) == -1) {
 					perror("pipe");
-					return (2);
+					return (1);
 				}
 			}
-			if (execute_fork(data, str, i, pipefd) == 2)
-				return (2);
+			if (execute_fork(data, str, i, pipefd))
+				return (1);
 			i++;
 		}
 		i = 0;

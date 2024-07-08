@@ -127,7 +127,7 @@ void	init_int_values(int *i, int *j, int *in_quotes);
 //exec
 int		ft_export(t_data *data, char **arg);
 int		exec(t_data *data, char *cmd, char **arg, char *str);
-void	path(t_data *data, char *cmd, char **arg);
+void	path(t_data *data, char *cmd, char **arg, char *str);
 int		print_env(t_data *data, char **arg);
 int		echo(char **arg);
 int		cd(t_data *data, char **arg);
@@ -146,10 +146,10 @@ char    **bubble_sort(char **arr, int n);
 void	execution(t_data *data, char *cmd, char **args, char *full_path);
 char	**create_args(char *cmd, char **arg);
 char	*var_path(t_data *data, char *cmd);
-void    create_outfiles(t_data *data, int i);
-void    create_outfiles_append(t_data *data, int i);
-void    create_infiles(t_data *data, int i);
-void    create_infiles_heredoc(t_data *data, int i);
+int    create_outfiles(t_data *data, int i);
+int    create_outfiles_append(t_data *data, int i);
+int    create_infiles(t_data *data, int i);
+int    create_infiles_heredoc(t_data *data, int i);
 int     close_fd(int fd);
 
 //output

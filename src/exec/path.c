@@ -55,7 +55,7 @@ static void	signal_traitment(t_data *data, int term_sig)
 		signal_traitment_utils(data, term_sig);
 }
 
-static void	parent_process(t_data *data, pid_t pid)
+static int	parent_process(t_data *data, pid_t pid)
 {
 	int	status;
 
@@ -67,10 +67,14 @@ static void	parent_process(t_data *data, pid_t pid)
 	else
 	{
 		if (WIFEXITED(status))
-			data->exit_status = WEXITSTATUS(status);
+			{
+				data->exit_status = WEXITSTATUS(status);
+				return (1);
+			}
 		else if (WIFSIGNALED(status))
 			signal_traitment(data, WTERMSIG(status));
 	}
+	return (0);
 }
 
 void	free_path(char *path, char **args)
@@ -81,9 +85,9 @@ void	free_path(char *path, char **args)
 		ft_free_strtab(args);
 }
 
-void check_open_files(t_data *data, int i);
+int check_open_files(t_data *data, int i);
 
-void	path(t_data *data, char *cmd, char **arg)
+void	path(t_data *data, char *cmd, char **arg, char *str)
 {
 	char	*full_path;
 	pid_t	pid;
@@ -99,6 +103,7 @@ void	path(t_data *data, char *cmd, char **arg)
 		free_path(full_path, cpy_args);
 		return ;
 	}
+
 	pid = fork();
 	if (!full_path)
 		return ;
@@ -110,12 +115,22 @@ void	path(t_data *data, char *cmd, char **arg)
 	if (pid == 0)
 	{
 		if (!data->meter->nbr_pipe)
-			check_open_files(data, 0);
+			if (check_open_files(data, 0))
+			{
+				ft_end_error_prog(data, str, NULL);
+				exit(1);
+			}
+
 		cpy_args = create_args(cmd, arg);
 		execution(data, cmd, cpy_args, full_path);
+		ft_end_error_prog(data, str, NULL);
+		exit (0);
 		// ajouter un free de tout tout tout
 	}
 	else
-		parent_process(data, pid);
+	{
+		if (parent_process(data, pid))
+			return ;
+	}
 	free_path(full_path, cpy_args);
 }
