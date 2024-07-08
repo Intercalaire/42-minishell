@@ -37,6 +37,7 @@ static int	len_ft_strtok(char *str)
 	while (token != NULL)
 	{
 		count++;
+		free(token);
 		token = ft_strtok(NULL, " \t\n\v\r\f");
 	}
 	return (count);

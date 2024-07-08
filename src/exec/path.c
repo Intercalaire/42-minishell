@@ -129,6 +129,7 @@ void	path(t_data *data, char *cmd, char **arg, char *str)
 	}
 	else
 	{
+		free_path(full_path, cpy_args);
 		if (parent_process(data, pid))
 			return ;
 	}
