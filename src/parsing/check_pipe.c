@@ -34,7 +34,7 @@ int	look_pipe(t_data *data, char *str)
 
 static int	check_pipe_with_spaces(t_data *data, char *str, int i)
 {
-	while (str[i] == ' ')
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
 		i++;
 	if (str[i] == '|')
 	{

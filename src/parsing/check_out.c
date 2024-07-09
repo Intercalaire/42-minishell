@@ -47,11 +47,13 @@ static int check_symbols(t_data *data, char *str)
 		{
 			if (str[i] == '>' || str[i] == '<')
 			{
-				if (str[i + 1] == '>' || str[i + 1] == '<')
+				if (str[i + 1] && (str[i + 1] == '>' || str[i + 1] == '<'))
+					i += 2;
+				else
 					i++;
-				while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\r' || str[i] == '\f'))
+				while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\r' || str[i] == '\f' || str[i] == '|'))
 				{
-					if (str[i] == '|')
+					if (str[i] == '|' || str[i + 1] == '|')
 					{
 						ft_little_error_prog_quote(data, str, PIPE);
 						return (1);

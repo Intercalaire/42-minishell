@@ -51,7 +51,10 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 			if (env_str)
 			{
 				while (*env_str)
+				{
+					printf("env_str = %s\n", env_str);
 					str[j++] = *env_str++;
+				}
 				k += data->len_env;
 			}
 			else

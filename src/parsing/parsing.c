@@ -52,6 +52,11 @@ int	main(int argc, char **argv, char **env)
 			ft_free_data(data, str);
 			continue ;
 		}
+		if (data->size == 0)
+		{
+			ft_free_data(data, str);
+			continue ;
+		}
 		if (pars_pipe(data) == 2)
 		{
 			data->exit_status = 2;

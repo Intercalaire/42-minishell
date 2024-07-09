@@ -12,16 +12,10 @@
 
 #include "../../include/parsing/minishell.h"
 
-static int	handle_quotes(char *str, char *new_str, int i, int j);
 static int	handle_special_chars(char *str, char *new_str, int i, int j);
 static char	*init_new_str(char *new_str, char *str);
 static int	process_char(char *str, char *new_str, int *i, int *j);
 
-static int	handle_quotes(char *str, char *new_str, int i, int j)
-{
-	new_str[j++] = str[i];
-	return (j);
-}
 
 static int	handle_special_chars(char *str, char *new_str, int i, int j)
 {
@@ -60,17 +54,12 @@ char	*ft_split_delim(char *str)
 
 	new_str = NULL;
 	new_str = init_new_str(new_str, str);
-	if (!new_str)
+	if (!new_str || ft_strlen(str) == 0)
 		return (NULL);
 	init_int_values(&i, &j, &in_quotes);
 	while (str[i] != '\0')
 	{
-		if (str[i] == '"' || str[i] == '\'')
-		{
-			in_quotes = !in_quotes;
-			j = handle_quotes(str, new_str, i, j);
-		}
-		else if ((str[i] == '|' || (str[i] == '>' || str[i] == '<')) && !in_quotes)
+		if ((str[i] == '|' || (str[i] == '>' || str[i] == '<')) && know_the_delim_quote(str + i) > 2)
 			j = process_char(str, new_str, &i, &j);
 		else
 			new_str[j++] = str[i];

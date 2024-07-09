@@ -94,7 +94,7 @@ int     remove_end_space(t_data *data, char *str);
 int		handle_args(t_data *data, int *i, int *y, int *z);
 void	count_args(t_data *data, int i);
 int		look_out(t_data *data, char *str);
-
+int		know_the_delim_quote(char *str);
 //environment_variable
 int		ktq_utils(int in_qte_dble, int in_qte_sple);
 char	*ft_strdup_2(t_data *data, const char *s);
