@@ -20,16 +20,28 @@ static char		*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 char	*ft_strdup_2(t_data *data, const char *s)
 {
 	int		i;
+	int		j;
 	char	*str;
 
 	i = 0;
+	j = 0;
 	if (!s)
 		return (NULL);
-	while (s[i])
-		i++;
-	str = ft_calloc((i + 1), sizeof(char));
-	if (str == NULL)
-		return (NULL);
+	str = NULL;
+	i = ft_strlen((char *)s);
+	j = search_env(data, (char *)s + 1);
+	if (ft_find_char((char *)s, '$') == 1 && know_the_delim_quote((char *)s) > 2 && j != -1)
+	{
+			str = ft_calloc((i + ft_strlen(data->env[j]) + 1), sizeof(char));
+			if (str == NULL)
+				return (NULL);
+	}
+	else if (j == 0 || j == -1)
+	{
+		str = ft_calloc((i + 1), sizeof(char));
+		if (str == NULL)
+			return (NULL);
+	}
 	return (ft_strdup_utils(data, s, str, i));
 }
 
@@ -47,12 +59,11 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	{
 		if (s[k] == '$')
 		{
-			env_str = environment_variable(data, (char *)s);
+			env_str = environment_variable(data, (char *)s + k);
 			if (env_str)
 			{
 				while (*env_str)
 				{
-					printf("env_str = %s\n", env_str);
 					str[j++] = *env_str++;
 				}
 				k += data->len_env;
@@ -98,7 +109,7 @@ static	char	*make_the_char(t_data *data, char *str)
 		i++;
 	start = i;
 	i++;
-	while (str[i] && ft_ischar_no_quotes(str[i]) == 1)
+	while (str[i] && ft_ischar_no_quotes(str[i]) == 1 && str[i] != '$')
 		i++;
 	data->len_env = i - start;
 	return (ft_strndup(str + start, i - start));

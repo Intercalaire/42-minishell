@@ -95,6 +95,7 @@ int		handle_args(t_data *data, int *i, int *y, int *z);
 void	count_args(t_data *data, int i);
 int		look_out(t_data *data, char *str);
 int		know_the_delim_quote(char *str);
+
 //environment_variable
 int		ktq_utils(int in_qte_dble, int in_qte_sple);
 char	*ft_strdup_2(t_data *data, const char *s);
@@ -103,6 +104,7 @@ char	*char_dollar_stop(char *value);
 int		check_dollar_stop(char *value);
 int		ft_ischar_no_quotes(int c);
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k);
+int		ft_find_char(char *str, char c);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);

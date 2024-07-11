@@ -76,22 +76,3 @@ int	ft_ischar_no_quotes(int c)
 		return (1);
 	return (0);
 }
-
-char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
-{
-	if (s[*k] == '$' && !s[*k + 1])
-		str[*j++] = s[*k++];
-	if (s[*k] == '$' && s[*k + 1] == '$')
-	{
-		str[*j++] = s[*k++];
-		str[*j++] = s[*k++];
-	}
-	if (s[*k] == '$' && (s[*k + 1] == '\''  || s[*k + 1] == '\"') && s[*k + 2] == '$')
-	{
-		(*j)++;
-		(*k)++;
-		str[*j++] = s[*k++];
-		str[*j++] = s[*k++];
-	}
-	return (str);
-}
