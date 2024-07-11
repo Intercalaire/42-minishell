@@ -263,14 +263,14 @@ int check_open_files(t_data *data, int i)
 	int return_value;
 
 	return_value = 0;
-		if (data->output->h_doc[i] && data->output->here_d[i] == 1)
-			return_value = create_infiles_heredoc(data, i);
-		if (data->output->infile[i] && data->output->here_d[i] == 0) 
-			return_value = create_infiles(data, i);
-		if (data->output->outfile[i]) 
-			return_value = create_outfiles(data, i);
-		if (data->output->outfile_append[i]) 
-			return_value = create_outfiles_append(data, i);
+	if (data->output->h_doc[i] && data->output->here_d[i] == 1)
+		return_value = create_infiles_heredoc(data, i);
+	if (data->output->infile[i] && data->output->here_d[i] == 0) 
+		return_value = create_infiles(data, i);
+	if (data->output->outfile[i] && *data->output->outfile[i]) 
+		return_value = create_outfiles(data, i);
+	if (data->output->outfile_append[i] && *data->output->outfile_append[i]) 
+		return_value = create_outfiles_append(data, i);
 	return (return_value);
 }
 

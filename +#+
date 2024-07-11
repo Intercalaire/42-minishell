@@ -1,0 +1,416 @@
+Minishell >#                                                 +#+#+#+#+#+   +#+            #
+lign : #
+lign : +#+#+#+#+#+
+lign : +#+
+lign : #
+cmd[0] : #
+arg[0][0] : +#+#+#+#+#+
+arg[0][1] : +#+
+arg[0][2] : #
+#: command not found
+Minishell >#    Created: 2024/04/03 11:38:34 by vgodart           #+#    #+#              #
+lign : #
+lign : Created:
+lign : 2024/04/03
+lign : 11:38:34
+lign : by
+lign : vgodart
+lign : #+#
+lign : #+#
+lign : #
+cmd[0] : #
+arg[0][0] : Created:
+arg[0][1] : 2024/04/03
+arg[0][2] : 11:38:34
+arg[0][3] : by
+arg[0][4] : vgodart
+arg[0][5] : #+#
+arg[0][6] : #+#
+arg[0][7] : #
+#: command not found
+Minishell >#    Updated: 2024/05/02 14:56:08 by vgodart          ###   ########.fr        #
+lign : #
+lign : Updated:
+lign : 2024/05/02
+lign : 14:56:08
+lign : by
+lign : vgodart
+lign : ###
+lign : ########.fr
+lign : #
+cmd[0] : #
+arg[0][0] : Updated:
+arg[0][1] : 2024/05/02
+arg[0][2] : 14:56:08
+arg[0][3] : by
+arg[0][4] : vgodart
+arg[0][5] : ###
+arg[0][6] : ########.fr
+arg[0][7] : #
+#: command not found
+Minishell >#                                                                              #
+lign : #
+lign : #
+cmd[0] : #
+arg[0][0] : #
+#: command not found
+Minishell ># **************************************************************************** #
+syntax error near unexpected token `*'
+Minishell >
+Minishell ># Basic variables
+lign : #
+lign : Basic
+lign : variables
+cmd[0] : #
+arg[0][0] : Basic
+arg[0][1] : variables
+#: command not found
+Minishell >NAME = minishell
+lign : NAME
+lign : =
+lign : minishell
+cmd[0] : NAME
+arg[0][0] : =
+arg[0][1] : minishell
+NAME: command not found
+Minishell >CC = clang
+lign : CC
+lign : =
+lign : clang
+cmd[0] : CC
+arg[0][0] : =
+arg[0][1] : clang
+CC: command not found
+Minishell >CFLAGS = -Wall -Wextra -Werror -g
+lign : CFLAGS
+lign : =
+lign : -Wall
+lign : -Wextra
+lign : -Werror
+lign : -g
+cmd[0] : CFLAGS
+arg[0][0] : =
+arg[0][1] : -Wall
+arg[0][2] : -Wextra
+arg[0][3] : -Werror
+arg[0][4] : -g
+CFLAGS: command not found
+Minishell >RM = rm -f
+lign : RM
+lign : =
+lign : rm
+lign : -f
+cmd[0] : RM
+arg[0][0] : =
+arg[0][1] : rm
+arg[0][2] : -f
+RM: command not found
+Minishell >CLEAR = clear
+lign : CLEAR
+lign : =
+lign : clear
+cmd[0] : CLEAR
+arg[0][0] : =
+arg[0][1] : clear
+CLEAR: command not found
+Minishell >
+Minishell ># Files
+lign : #
+lign : Files
+cmd[0] : #
+arg[0][0] : Files
+#: command not found
+Minishell >SRC= ./src/parsing/init.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/parsing.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/ft_free.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/pars_pipe.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/quote.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/special_char.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/environment_variable.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/environment_variable_utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/check_pipe.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/check_out.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/ft_strtok.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/check_word.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/ft_free_two.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/ft_split_delim.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/ft_split_delim_utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/outfile.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/outfile_utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/outfile_init.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/parsing/pars_pipe_utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/cd.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/echo.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/env.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/exec.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/export.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/path.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/pipe.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/pwd.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/search_env.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/unset.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/exit.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/ctrl.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/export_utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/path_utils.c \
+syntax error near unexpected token `\'
+Minishell >
++#+        .git/      Libft/     Makefile   a.out      b          dep.sup    include/   minishell  out        src/       test       tmp_files/ tst        
+Minishell >./src/exec/create_files.c \
+syntax error near unexpected token `\'
+Minishell >
+Minishell >OBJ= $(SRC:.c=.o)
+lign : OBJ=
+lign : $(SRC:.c=.o)
+cmd[0] : OBJ=
+arg[0][0] : $(SRC:.c=.o)
+OBJ=: command not found
+Minishell >
+Minishell ># Libft
+lign : #
+lign : Libft
+cmd[0] : #
+arg[0][0] : Libft
+#: command not found
+Minishell >LIBFT_PATH= ./Libft
+lign : LIBFT_PATH=
+lign : ./Libft
+cmd[0] : LIBFT_PATH=
+arg[0][0] : ./Libft
+LIBFT_PATH=: command not found
+Minishell >LIBFT_NAME= ./Libft/Libft.a
+lign : LIBFT_NAME=
+lign : ./Libft/Libft.a
+cmd[0] : LIBFT_NAME=
+arg[0][0] : ./Libft/Libft.a
+LIBFT_NAME=: command not found
+Minishell >
+Minishell ># Compilation
+lign : #
+lign : Compilation
+cmd[0] : #
+arg[0][0] : Compilation
+#: command not found
+Minishell >all: $(NAME)
+lign : all:
+lign : $(NAME)
+cmd[0] : all:
+arg[0][0] : $(NAME)
+all:: command not found
+Minishell >
+Minishell >$(NAME): $(OBJ)
+lign : $(NAME):
+lign : $(OBJ)
+cmd[0] : $(NAME):
+arg[0][0] : $(OBJ)
+$(NAME):: command not found
+Minishell >@make -C $(LIBFT_PATH)
+lign : @make
+lign : -C
+lign : $(LIBFT_PATH)
+cmd[0] : @make
+arg[0][0] : -C
+arg[0][1] : $(LIBFT_PATH)
+@make: command not found
+Minishell >@$(CC) -lreadline $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT_NAME)
+lign : @$(CC)
+lign : -lreadline
+lign : $(CFLAGS)
+lign : -o
+lign : $(NAME)
+lign : $(OBJ)
+lign : $(LIBFT_NAME)
+cmd[0] : @$(CC)
+arg[0][0] : -lreadline
+arg[0][1] : $(CFLAGS)
+arg[0][2] : -o
+arg[0][3] : $(NAME)
+arg[0][4] : $(OBJ)
+arg[0][5] : $(LIBFT_NAME)
+@$(CC): command not found
+Minishell >
+Minishell >.c.o:
+lign : .c.o:
+cmd[0] : .c.o:
+.c.o:: command not found
+Minishell >@$(CC) $(CFLAGS) -c $< -o $@
+lign : @$(CC)
+lign : $(CFLAGS)
+lign : -c
+lign : $
+lign : < 
+lign : -o
+lign : $@
+cmd[0] : @$(CC)
+arg[0][0] : $(CFLAGS)
+arg[0][1] : -c
+arg[0][2] : $
+arg[0][3] : $@
+@$(CC): command not found
+Minishell >
+Minishell >clean:
+lign : clean:
+cmd[0] : clean:
+clean:: command not found
+Minishell >@$(RM) $(OBJ)
+lign : @$(RM)
+lign : $(OBJ)
+cmd[0] : @$(RM)
+arg[0][0] : $(OBJ)
+@$(RM): command not found
+Minishell >@make clean -C $(LIBFT_PATH)
+lign : @make
+lign : clean
+lign : -C
+lign : $(LIBFT_PATH)
+cmd[0] : @make
+arg[0][0] : clean
+arg[0][1] : -C
+arg[0][2] : $(LIBFT_PATH)
+@make: command not found
+Minishell >
+Minishell >fclean: clean
+lign : fclean:
+lign : clean
+cmd[0] : fclean:
+arg[0][0] : clean
+fclean:: command not found
+Minishell >@$(RM) $(NAME)
+lign : @$(RM)
+lign : $(NAME)
+cmd[0] : @$(RM)
+arg[0][0] : $(NAME)
+@$(RM): command not found
+Minishell >@make fclean -C $(LIBFT_PATH)
+lign : @make
+lign : fclean
+lign : -C
+lign : $(LIBFT_PATH)
+cmd[0] : @make
+arg[0][0] : fclean
+arg[0][1] : -C
+arg[0][2] : $(LIBFT_PATH)
+@make: command not found
+Minishell >
+Minishell >re: fclean all
+lign : re:
+lign : fclean
+lign : all
+cmd[0] : re:
+arg[0][0] : fclean
+arg[0][1] : all
+re:: command not found
+Minishell >
+Minishell >.PHONY: all clean fclean re
+lign : .PHONY:
+lign : all
+lign : clean
+lign : fclean
+lign : re
+cmd[0] : .PHONY:
+arg[0][0] : all
+arg[0][1] : clean
+arg[0][2] : fclean
+arg[0][3] : re
+.PHONY:: command not found
+Minishell >exit

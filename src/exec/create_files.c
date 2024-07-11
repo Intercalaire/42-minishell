@@ -23,7 +23,7 @@ int create_outfiles(t_data *data, int i)
         outfd = open(data->output->outfile[i][j], O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (outfd < 0) 
         {
-            perror("open_outfile");
+            perror(data->output->outfile[i][j]);
             return (1);   
         }
         j++;
@@ -49,7 +49,7 @@ int create_outfiles_append(t_data *data, int i)
         outfd = open(data->output->outfile_append[i][j], O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (outfd < 0) 
         {
-            perror("open_outfile_append");
+            perror(data->output->outfile_append[i][j]);
             return (1);
         }
         j++;
@@ -72,7 +72,7 @@ int create_infiles(t_data *data, int i)
         infd = open(data->output->infile[i][j], O_RDONLY);
         if (infd < 0) 
         {
-            perror("open_infile");
+            perror(data->output->infile[i][j]);
             return (1);
         }
         j++;
@@ -92,13 +92,13 @@ int create_infiles_heredoc(t_data *data, int i)
     int infd;
     while (data->output->h_doc[i][j] != NULL) 
         j++;
-    if (j > 0 && data->output->h_doc[i][j - 1]) // Vérifiez si j > 0 pour éviter un accès hors limites
+    if (j > 0 && data->output->h_doc[i][j - 1])
     {
         tmpfile = ft_strjoin("tmp_files/", data->output->h_doc[i][j - 1]);
-        infd = open(tmpfile, O_RDONLY, 0644); // Correction: O_RDONLY sans O_CREAT
+        infd = open(tmpfile, O_RDONLY, 0644);
         if (infd < 0) 
         {
-            perror("open_heredoc");
+            perror(data->output->h_doc[i][j - 1]);
             free(tmpfile);
             return (1);
         }

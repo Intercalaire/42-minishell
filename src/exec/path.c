@@ -81,7 +81,7 @@ void	free_path(char *path, char **args)
 {
 	if (path)
 		free(path);
-	if (args)
+	if (args && *args)
 		ft_free_strtab(args);
 }
 
@@ -95,6 +95,12 @@ void	path(t_data *data, char *cmd, char **arg, char *str)
 
 	cpy_args = NULL;
 	full_path = var_path(data, cmd);
+	if (!full_path)
+	{
+		data->exit_status = 127;
+		ft_end_error_prog(data, str, NULL);
+		return ;
+	}
 	data->sig_status = 1;
 	if (data->meter->nbr_pipe)
 	{
@@ -117,13 +123,15 @@ void	path(t_data *data, char *cmd, char **arg, char *str)
 		if (!data->meter->nbr_pipe)
 			if (check_open_files(data, 0))
 			{
+				free_path(full_path, cpy_args);
 				ft_end_error_prog(data, str, NULL);
 				exit(1);
 			}
 
 		cpy_args = create_args(cmd, arg);
 		execution(data, cmd, cpy_args, full_path);
-		ft_end_error_prog(data, str, NULL);
+		// ft_end_error_prog(data, str, NULL);
+		// free_path(full_path, cpy_args);
 		exit (0);
 		// ajouter un free de tout tout tout
 	}
@@ -133,5 +141,5 @@ void	path(t_data *data, char *cmd, char **arg, char *str)
 		if (parent_process(data, pid))
 			return ;
 	}
-	free_path(full_path, cpy_args);
+	//free_path(full_path, cpy_args);
 }

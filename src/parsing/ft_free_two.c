@@ -52,7 +52,8 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str)
 
 void	ft_end_error_prog(t_data *data, char *str, char *msg)
 {
-	printf("%s\n", msg);
+	//printf("%s\n", msg);
+	(void)msg;
 	if (data)
 	{
 		ft_free_data(data, str);

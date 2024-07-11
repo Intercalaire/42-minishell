@@ -30,7 +30,7 @@ char	*var_path(t_data *data, char *cmd)
 	path_index = search_env(data, "PATH");
 	if (path_index == -1)
 	{
-		printf("minishell: %s: No such file or directory\n", cmd);
+		perror(cmd);
 		data->exit_status = 127;
 		return (NULL);
 	}
@@ -70,25 +70,31 @@ char	**create_args(char *cmd, char **arg)
 	}
 	return (args);
 }
-
-static void	error_manage(t_data *data, char *cmd, char **args)
+void	free_path(char *path, char **args);
+static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 {
 	if (errno == ENOENT)
 	{
-		printf("%s: command not found\n", cmd);
+		perror(cmd);
 		data->exit_status = 127;
-		exit(127);	
+		ft_end_error_prog(data, NULL, NULL);
+		free_path(full_path, args);
+		exit(127);
 	}
 	else if (errno == EACCES)
 	{
-		printf("%s: permission denied\n", cmd);
+		perror(cmd);
 		data->exit_status = 126;
+		ft_end_error_prog(data, NULL, NULL);
+		free_path(full_path, args);
 		exit(126);
 	}
 	else
 	{
 		perror(args[0]);
 		data->exit_status = 1;
+		ft_end_error_prog(data, NULL, NULL);
+		free_path(full_path, args);
 		exit(1);
 	}
 }
@@ -97,14 +103,15 @@ void	execution(t_data *data, char *cmd, char **args, char *full_path)
 {
 	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
 	{
+		data->exit_status = 0;
 		execve(cmd, args, data->env);
-		perror(cmd);
-		exit(127);
+		//perror(cmd);
+		error_manage(data, cmd, args, full_path);
 	}
 	else
 	{
 		data->exit_status = 0;
 		execve(full_path, args, data->env);
-		error_manage(data, cmd, args);
+		error_manage(data, cmd, args, full_path);
 	}
 }

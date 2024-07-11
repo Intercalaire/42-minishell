@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 		str = readline("Minishell >");
 		if (!str)
 			exit_shell(data, str, NULL);
+		ft_sig(data);
 		if (ft_strlen(str) == 0)
 		{
 			ft_little_error_prog_no_msg(data, str);
@@ -63,7 +64,10 @@ int	main(int argc, char **argv, char **env)
 			ft_free_data(data, str);
 			continue ;
 		}
+		free(str);
 		my_pipe(data, str);
+		ft_sig(data);
+		str = NULL;
 		ft_free_data(data, str);
 	}
 	ft_end_error_prog(data, str, "exit");
