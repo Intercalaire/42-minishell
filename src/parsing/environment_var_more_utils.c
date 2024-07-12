@@ -44,3 +44,24 @@ int	ft_find_char(char *str, char c)
     }
     return (0);
 }
+
+int calloc_search_env(const char *str)
+{
+	int count = 0;
+	int i = 0;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?' || str[i + 1] == ' ' || str[i + 1] == '$' || str[i + 1] == '\'' || str[i + 1] == '\"'))
+		{
+			count++;
+			i++;
+			while (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?' || str[i] == ' ' || str[i] == '$' || str[i] == '\'' || str[i] == '\"')
+				i++;
+		}
+		else
+			i++;
+	}
+
+	return (count > 0 ? count : -1);
+}

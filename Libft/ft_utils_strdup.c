@@ -22,16 +22,17 @@ static int	is_quote(char c)
 
 static void	handle_char(char *result, char *str, t_str_index *index)
 {
-	if (str[*(index->i)] == '\\' && (str[*(index->i) + 1] == '\''
+	if (str && str[*(index->i)] && str[*(index->i)] == '\\'
+		&& (str[*(index->i) + 1] == '\''
 			|| str[*(index->i) + 1] == '\"') && *(index->quote) == '\"')
 	{
 		result[(*(index->j))++] = str[++(*(index->i))];
 	}
-	else if (is_quote(str[*(index->i)]) && *(index->quote) == 0)
+	else if (str && str[*(index->i)] && is_quote(str[*(index->i)]) && *(index->quote) == 0)
 	{
 		*(index->quote) = str[*(index->i)];
 	}
-	else if (str[*(index->i)] == *(index->quote))
+	else if (str && str[*(index->i)] && str[*(index->i)] == *(index->quote))
 	{
 		*(index->quote) = 0;
 	}

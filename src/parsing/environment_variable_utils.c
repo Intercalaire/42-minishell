@@ -63,7 +63,7 @@ char	*char_dollar_stop(char *value)
 	i = 0;
 	while(value[i])
 	{
-		if (!ft_isalnum(value[i + 1]) && value[i + 1] != '_' && value[i + 1] != '?' && value[i + 1] != ' ')
+		if (value[i] == '$' && !ft_isalnum(value[i + 1]) && value[i + 1] != '_' && value[i + 1] != '?' && value[i + 1] != ' ')
 			return (ft_strdup(value));
 		i++;
 	}

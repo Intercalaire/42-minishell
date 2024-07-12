@@ -29,7 +29,8 @@ char	*ft_strdup_2(t_data *data, const char *s)
 		return (NULL);
 	str = NULL;
 	i = ft_strlen((char *)s);
-	j = search_env(data, (char *)s + 1);
+	j = calloc_search_env(s);
+	printf("j = %d\n", j);
 	if (ft_find_char((char *)s, '$') == 1 && know_the_delim_quote((char *)s) > 2 && j != -1)
 	{
 			str = ft_calloc((i + ft_strlen(data->env[j]) + 1), sizeof(char));
