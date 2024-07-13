@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
+// static int	ft_count_char(char *str, char c);
+
 
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 {
@@ -33,35 +35,57 @@ char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 
 int	ft_find_char(char *str, char c)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == c)
-            return (1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-int calloc_search_env(const char *str)
+// static int	ft_count_char(char *str, char c)
+// {
+// 	int	i;
+// 	int	count;
+
+// 	i = 0;
+// 	count = 0;
+// 	while (str && str[i])
+// 	{
+// 		if (str[i] == c)
+// 			count++;
+// 		i++;
+// 	}
+// 	return (count);
+// }
+
+int calloc_search_env(t_data *data, const char *str)
 {
-	int count = 0;
 	int i = 0;
+	// int count = 0;
+	// int len = 0;
 
-	while (str[i] != '\0')
-	{
-		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?' || str[i + 1] == ' ' || str[i + 1] == '$' || str[i + 1] == '\'' || str[i + 1] == '\"'))
-		{
-			count++;
-			i++;
-			while (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?' || str[i] == ' ' || str[i] == '$' || str[i] == '\'' || str[i] == '\"')
-				i++;
-		}
-		else
-			i++;
-	}
-
-	return (count > 0 ? count : -1);
+	// len = 0;
+	// if (ft_count_char((char *)str, '$') >= 2)
+	// {
+	// 	while (str && str[i])
+	// 	{
+	// 		len += ft_strlen(make_the_char(data, (char *)str + i));
+	// 		i++;
+	// 	}
+	// }
+	// else if (ft_count_char((char *)str, '$') == 1)
+	// {
+	i = search_env(data, (char *)str + 1);
+	if (i == -1)
+		return (-1);
+	return (ft_strlen(data->env[i]));
+	// }
+	// else
+		// return (2);
+	// return (2);
 }

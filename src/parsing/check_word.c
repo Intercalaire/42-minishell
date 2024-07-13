@@ -73,7 +73,6 @@ static int	process_tokens(t_data *data, char *str)
 	while (token != NULL)
 	{
 		add_token(data, token);
-		printf("lign : %s\n", data->command->lign[i]);
 		token = ft_strtok(NULL, " \t\n\v\r\f");
 		if (!token)
 			return (2);

@@ -105,7 +105,7 @@ int		check_dollar_stop(char *value);
 int		ft_ischar_no_quotes(int c);
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k);
 int		ft_find_char(char *str, char c);
-int		calloc_search_env(const char *str);
+int		calloc_search_env(t_data *data, const char *str);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);

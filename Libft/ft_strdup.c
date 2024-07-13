@@ -24,6 +24,7 @@ char	*ft_strdup(const char *s)
 		return (NULL);
 	while (s[i])
 		i++;
+	str = NULL;
 	str = ft_calloc((i + 1), sizeof(char));
 	if (str == NULL)
 		return (NULL);
@@ -49,6 +50,7 @@ char	*ft_strndup(const char *s, int n)
 		return (NULL);
 	while (s[i] && i < n)
 		i++;
+	str = NULL;
 	str = ft_calloc((i + 1), sizeof(char));
 	if (str == NULL)
 		return (NULL);

@@ -29,15 +29,14 @@ char	*ft_strdup_2(t_data *data, const char *s)
 		return (NULL);
 	str = NULL;
 	i = ft_strlen((char *)s);
-	j = calloc_search_env(s);
-	printf("j = %d\n", j);
+	j = calloc_search_env(data, s);
 	if (ft_find_char((char *)s, '$') == 1 && know_the_delim_quote((char *)s) > 2 && j != -1)
 	{
-			str = ft_calloc((i + ft_strlen(data->env[j]) + 1), sizeof(char));
+			str = ft_calloc((i + j + 1), sizeof(char));
 			if (str == NULL)
 				return (NULL);
 	}
-	else if (j == 0 || j == -1)
+	else if (j <= 0)
 	{
 		str = ft_calloc((i + 1), sizeof(char));
 		if (str == NULL)
@@ -50,6 +49,7 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 {
 	int		j;
 	int		k;
+	int		z;
 	char	*env_str;
 
 	j = 0;
@@ -60,14 +60,15 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	{
 		if (s[k] == '$')
 		{
-			env_str = environment_variable(data, (char *)s + k);
+			z = 0;
+			env_str = environment_variable(data, (char *)s);
 			if (env_str)
 			{
-				while (*env_str)
-				{
-					str[j++] = *env_str++;
-				}
+				while (env_str && env_str[z])
+					str[j++] = env_str[z++];
 				k += data->len_env;
+				free(env_str);
+				env_str = NULL;
 			}
 			else
 				str[j++] = s[k++];
@@ -94,18 +95,22 @@ static char	*environment_variable(t_data *data, char *str)
 	}
 	else
 	{
-		make_the_char(data, str);
-		return (str);
+		value = make_the_char(data, str);
+		if (value == NULL)
+			return (NULL);
+		return (value);
 	}
-	return (value);
+	return (str);
 }
 
 static	char	*make_the_char(t_data *data, char *str)
 {
-	int	i;
-	int	start;
+	int		i;
+	int		start;
+	char	*value;
 
 	i = 0;
+	value = NULL;
 	while (str[i] && str[i] != '$')
 		i++;
 	start = i;
@@ -113,7 +118,8 @@ static	char	*make_the_char(t_data *data, char *str)
 	while (str[i] && ft_ischar_no_quotes(str[i]) == 1 && str[i] != '$')
 		i++;
 	data->len_env = i - start;
-	return (ft_strndup(str + start, i - start));
+	value = ft_strndup(str + start, i - start);
+	return (value);
 }
 
 static int	know_the_quote(char *str)
