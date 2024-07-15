@@ -77,7 +77,7 @@ static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 	{
 		perror(cmd);
 		data->exit_status = 127;
-		ft_end_error_prog(data, NULL, NULL);
+		ft_end_error_prog(data);
 		free_path(full_path, args);
 		exit(127);
 	}
@@ -85,7 +85,7 @@ static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 	{
 		perror(cmd);
 		data->exit_status = 126;
-		ft_end_error_prog(data, NULL, NULL);
+		ft_end_error_prog(data);
 		free_path(full_path, args);
 		exit(126);
 	}
@@ -93,7 +93,7 @@ static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 	{
 		perror(args[0]);
 		data->exit_status = 1;
-		ft_end_error_prog(data, NULL, NULL);
+		ft_end_error_prog(data);
 		free_path(full_path, args);
 		exit(1);
 	}

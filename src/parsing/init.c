@@ -49,6 +49,7 @@ static void	init_utils(t_data *data)
 	data->len_env = 0;
 	data->nbr_pipe = 0;
 	data->nbr_arg = 0;
+	data->sig_status = 0;
 	data->output->sign = 0;
 	data->meter->nbr_arg = 0;
 	data->meter->nbr_pipe = 0;
@@ -57,6 +58,8 @@ static void	init_utils(t_data *data)
 	data->meter->nbr_infile = 0;
 	data->meter->nbr_outfile_append = 0;
 	data->fd_pipe->fd_in = 0;
+	data->fd_pipe->std_in = -1;
+	data->fd_pipe->std_out = -1;
 	g_sig = 0;
 	data->in_quote = 0;
 }

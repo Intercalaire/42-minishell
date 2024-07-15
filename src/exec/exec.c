@@ -23,7 +23,7 @@ static void change_variable(t_data *data, char **arg, char *cmd)
 		change_env(data, "_", arg[i - 1]);
 }
 
-int	exec(t_data *data, char *cmd, char **arg, char *str)
+int	exec(t_data *data, char *cmd, char **arg)
 {
 	if (!ft_strncmp(cmd, "echo", 5))
 		data->exit_status = echo(arg);
@@ -38,9 +38,10 @@ int	exec(t_data *data, char *cmd, char **arg, char *str)
 	else if (!ft_strncmp(cmd, "cd", 3))
 		data->exit_status = cd(data, arg);
 	else if (!ft_strncmp(cmd, "exit", 5))
-		exit_shell(data, str, arg);
+		exit_shell(data, arg);
 	else if (cmd && *cmd)
-		path(data, cmd, arg, str);
-	change_variable(data, arg, cmd);
+		path(data, cmd, arg);
+	if (cmd || *arg)
+		change_variable(data, arg, cmd);
 	return (0);
 }

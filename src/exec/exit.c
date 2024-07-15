@@ -97,15 +97,29 @@ long long	get_exit_code(t_data *data, char **arg)
 	return (exit_code);
 }
 
-void	exit_shell(t_data *data, char *str, char **arg)
+void	exit_shell(t_data *data, char **arg)
 {
 	long long	exit_code;
-
-	exit_code = get_exit_code(data, arg);
-	ft_free_data(data, str);
+	if (arg && *arg && **arg)
+		exit_code = get_exit_code(data, arg);
+	else
+		exit_code = data->exit_status;
+	if (data->meter->nbr_pipe == 0)
+		printf("exit\n");
+	if (data->fd_pipe->std_in > -1)
+	{
+		dup2(data->fd_pipe->std_in, STDIN_FILENO);
+    	close(data->fd_pipe->std_in);
+	}
+	if (data->fd_pipe->std_out > -1)
+	{
+    	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+    	close(data->fd_pipe->std_out);
+	}
+	ft_free_data(data, NULL);
 	ft_free_strtab(data->env);
 	if (data)
 		free(data);
-    printf("exit\n");
+    
 	exit(exit_code);
 }

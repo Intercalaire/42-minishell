@@ -26,13 +26,12 @@ int	main(int argc, char **argv, char **env)
 	data->exit_status = 0;
 	while (1)
 	{
-	data->sig_status = 0;
 		init_data(data);
 		ft_sig(data);
 		str = readline("Minishell >");
-		if (!str)
-			exit_shell(data, str, NULL);
 		ft_sig(data);
+		if (!str)
+			exit_shell(data, NULL);
 		if (ft_strlen(str) == 0)
 		{
 			ft_little_error_prog_no_msg(data, str);
@@ -65,11 +64,12 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		free(str);
-		my_pipe(data, str);
+		if (my_pipe(data) == 0)
+			data->exit_status = 0;
 		ft_sig(data);
 		str = NULL;
 		ft_free_data(data, str);
 	}
-	ft_end_error_prog(data, str, "exit");
+	ft_end_error_prog(data);
 	return (0);
 }

@@ -56,9 +56,9 @@ void	add_env(t_data *data, char *key, char *value)
 	}
 	free(data->env[i - 1]);
 	data->env[i - 1] = ft_strdup(new_env);
+	free(new_env);
 	free(data->env[i]);
 	data->env[i] = NULL;
-	free(new_env);
 }
 
 void	change_env(t_data *data, char *key, char *value)

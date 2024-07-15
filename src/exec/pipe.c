@@ -237,7 +237,7 @@ void handle_heredocs(t_data *data, int i)
     signal(SIGINT, SIG_DFL);
 }
 
-void execute_heredoc(t_data *data, int i, char *str)
+void execute_heredoc(t_data *data, int i)
 {
 	pid_t pid;
 	int status;
@@ -252,7 +252,7 @@ void execute_heredoc(t_data *data, int i, char *str)
 		if (pid == 0)
 		{
 			handle_heredocs(data, i);
-			ft_end_error_prog(data, str, NULL);
+			ft_end_error_prog(data);
 			exit(EXIT_SUCCESS);
 		}
 		else
@@ -284,42 +284,31 @@ int is_builtin(char *cmd)
 	return (0);
 
 }
-int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg, char *str)
+int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg)
 {
-    int original_stdin;
-    int original_stdout;
-
-	original_stdin = dup(STDIN_FILENO);
-	original_stdout = dup(STDOUT_FILENO);
+	data->fd_pipe->std_in = dup(STDIN_FILENO);
+	data->fd_pipe->std_out = dup(STDOUT_FILENO);
 	check_open_files(data, 0);
-    exec(data, cmd, arg, str);
-    dup2(original_stdin, STDIN_FILENO);
-    dup2(original_stdout, STDOUT_FILENO);
-    close(original_stdin);
-    close(original_stdout);
+    exec(data, cmd, arg);
+    dup2(data->fd_pipe->std_in, STDIN_FILENO);
+    dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+    close(data->fd_pipe->std_in);
+    close(data->fd_pipe->std_out);
 	return 0;
 }
 
-int start_process(t_data *data, char *str)
+int start_process(t_data *data)
 {
-	int i;
 
-	i = 0;
-	while (i <= data->meter->nbr_pipe)
-	{
-		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
-			execute_heredoc(data, i, str);
-		i++;
-	}
 	if (data->meter->nbr_pipe == 0) 
 	{
 		if (is_builtin(data->command->cmd[0]))
 		{
-			if (execute_builtin_with_redirection(data, data->command->cmd[0], data->command->arg[0], str))
+			if (execute_builtin_with_redirection(data, data->command->cmd[0], data->command->arg[0]))
 				return (1);
 		}
 		else
-			exec(data, data->command->cmd[0], data->command->arg[0], str);
+			exec(data, data->command->cmd[0], data->command->arg[0]);
 		// reset_fd(data);
 	   return (0);
 	}
@@ -327,7 +316,7 @@ int start_process(t_data *data, char *str)
 }
 
 
-void child_processus(t_data *data, int *pipefd, int i, char *str)
+void child_processus(t_data *data, int *pipefd, int i)
 {
 
 		if (i != 0) 
@@ -350,7 +339,7 @@ void child_processus(t_data *data, int *pipefd, int i, char *str)
         	close_fd(pipefd[0]);
         }
 		check_open_files(data, i);
-		exec(data, data->command->cmd[i], data->command->arg[i], str);
+		exec(data, data->command->cmd[i], data->command->arg[i]);
 
 		}
 
@@ -367,7 +356,7 @@ void parent_processus(t_data *data, int *pipefd, int i)
         data->fd_pipe->fd_in = pipefd[0]; 
 	}
 }
-int execute_fork(t_data *data, char *str, int i, int *pipefd)
+int execute_fork(t_data *data, int i, int *pipefd)
 {
 	pid_t pid;
 
@@ -379,8 +368,8 @@ int execute_fork(t_data *data, char *str, int i, int *pipefd)
 	}
 	if (pid == 0) 
 	{
-		child_processus(data, pipefd, i, str);
-		ft_end_error_prog(data, str, NULL);
+		child_processus(data, pipefd, i);
+		//ft_end_error_prog(data, str, NULL);
 		//ajouter un free de tout tout tout
 		exit(127);
 	} 
@@ -389,15 +378,22 @@ int execute_fork(t_data *data, char *str, int i, int *pipefd)
 	return (0);
 }
 
-int my_pipe(t_data *data, char *str)
+int my_pipe(t_data *data)
 {
     int pipefd[2];
 	int i ;
 
 	data->fd_pipe->fd_in = 0;
+	i = 0;
+	while (i <= data->meter->nbr_pipe)
+	{
+		if (data->output->h_doc[i] && *data->output->h_doc[i] != NULL)
+			execute_heredoc(data, i);
+		i++;
+	}
 	if (data->meter->nbr_pipe == 0)
 	{
-	if (start_process(data, str))
+	if (start_process(data))
 		return (1);
 	}
 	else
@@ -411,7 +407,7 @@ int my_pipe(t_data *data, char *str)
 					return (1);
 				}
 			}
-			if (execute_fork(data, str, i, pipefd))
+			if (execute_fork(data, i, pipefd))
 				return (1);
 			i++;
 		}

@@ -98,6 +98,7 @@ int create_infiles_heredoc(t_data *data, int i)
         infd = open(tmpfile, O_RDONLY, 0644);
         if (infd < 0) 
         {
+            ft_putstr_fd("testsetsts\n\n\n", 2);
             perror(data->output->h_doc[i][j - 1]);
             free(tmpfile);
             return (1);

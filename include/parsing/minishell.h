@@ -119,7 +119,7 @@ void	ft_little_error_prog_quote(t_data *data, char *str, char *msg);
 void 	ft_error_prog(t_data *data, char *str, char *msg);
 void 	ft_free_data(t_data *data, char *str);
 void 	ft_free_strtab(char **tab);
-void 	ft_end_error_prog(t_data *data, char *str, char *msg);
+void 	ft_end_error_prog(t_data *data);
 void	ft_free_strarg(char ***tab);
 void	ft_little_error_prog_no_msg(t_data *data, char *str);
 
@@ -129,19 +129,19 @@ void	init_int_values(int *i, int *j, int *in_quotes);
 
 //exec
 int		ft_export(t_data *data, char **arg);
-int		exec(t_data *data, char *cmd, char **arg, char *str);
-void	path(t_data *data, char *cmd, char **arg, char *str);
+int		exec(t_data *data, char *cmd, char **arg);
+void	path(t_data *data, char *cmd, char **arg);
 int		print_env(t_data *data, char **arg);
 int		echo(char **arg);
 int		cd(t_data *data, char **arg);
 int		search_env(t_data *data, char *str);
-int		my_pipe(t_data *data, char *str);
+int		my_pipe(t_data *data);
 int		ft_unset(t_data *data, char **arg);
 int		pwd(void);
 void	cpy_env(t_data *data, char **environnement);
 void	change_env(t_data *data, char *key, char *value);
 void	add_env(t_data *data, char *key, char *value);
-void	exit_shell(t_data *data, char *str, char **arg);
+void	exit_shell(t_data *data, char **arg);
 int		ft_sig(t_data *data);
 char    **cpy_envir(char **env);
 void    cat_env(t_data *data, char *key, char *value);

@@ -87,7 +87,7 @@ void	free_path(char *path, char **args)
 
 int check_open_files(t_data *data, int i);
 
-void	path(t_data *data, char *cmd, char **arg, char *str)
+void	path(t_data *data, char *cmd, char **arg)
 {
 	char	*full_path;
 	pid_t	pid;
@@ -98,7 +98,7 @@ void	path(t_data *data, char *cmd, char **arg, char *str)
 	if (!full_path)
 	{
 		data->exit_status = 127;
-		ft_end_error_prog(data, str, NULL);
+		ft_end_error_prog(data);
 		return ;
 	}
 	data->sig_status = 1;
@@ -124,7 +124,7 @@ void	path(t_data *data, char *cmd, char **arg, char *str)
 			if (check_open_files(data, 0))
 			{
 				free_path(full_path, cpy_args);
-				ft_end_error_prog(data, str, NULL);
+				ft_end_error_prog(data);
 				exit(1);
 			}
 
