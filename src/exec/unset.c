@@ -42,6 +42,7 @@ int	ft_unset(t_data *data, char **arg)
 
 	i = 0;
 	j = 0;
+	key = NULL;
 	if (!*arg)
 		return (0);
 	while (data->env[j])
@@ -56,7 +57,8 @@ int	ft_unset(t_data *data, char **arg)
 		remove_var(data, env_index, new_env);
 		i++;
 	}
-	free(key);
+	if (key)
+		free(key);
 	if (new_env)
 		ft_free_strtab(new_env);
 	return (0);
