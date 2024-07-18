@@ -98,7 +98,6 @@ void	path(t_data *data, char *cmd, char **arg)
 	if (!full_path)
 	{
 		data->exit_status = 127;
-		ft_end_error_prog(data);
 		return ;
 	}
 	data->sig_status = 1;

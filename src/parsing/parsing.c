@@ -64,8 +64,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		free(str);
-		if (my_pipe(data) == 0)
-			data->exit_status = 0;
+		my_pipe(data);
 		ft_sig(data);
 		str = NULL;
 		ft_free_data(data, str);

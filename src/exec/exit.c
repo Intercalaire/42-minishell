@@ -42,7 +42,7 @@ static int	check_sign(char *str, int *i)
 	return (sign);
 }
 
-static long long	ft_atol(char *str)
+static long long	ft_atol(char *str, int *error)
 {
 	int			i;
 	int			sign;
@@ -58,9 +58,9 @@ static long long	ft_atol(char *str)
 				&& str[i] - '0' > LLONG_MAX % 10))
 		{
 			if (sign == 1)
-				return (LLONG_MAX);
+				*error = 1;
 			else
-				return (LLONG_MIN);
+				*error = 1;
 		}
 		result = result * 10 + (str[i] - '0');
 		i++;
@@ -71,15 +71,17 @@ static long long	ft_atol(char *str)
 long long	get_exit_code(t_data *data, char **arg)
 {
 	long long	exit_code;
+	int 		error;
 
+	error = 0;
 	if (!arg || !*arg)
 		exit_code = data->exit_status;
 	else
 	{
 		if (is_valid_number(arg[0]))
 		{
-			exit_code = ft_atol(arg[0]);
-			if (exit_code < LLONG_MIN || exit_code > LLONG_MAX)
+			exit_code = ft_atol(arg[0], &error);
+			if (error == 1)
 			{
 				printf("minishell: exit: %s: ", arg[0]);
 				printf("numeric argument required\n");
@@ -100,12 +102,12 @@ long long	get_exit_code(t_data *data, char **arg)
 void	exit_shell(t_data *data, char **arg)
 {
 	long long	exit_code;
+	if (data->meter->nbr_pipe == 0)
+		printf("exit\n");
 	if (arg && *arg && **arg)
 		exit_code = get_exit_code(data, arg);
 	else
 		exit_code = data->exit_status;
-	if (data->meter->nbr_pipe == 0)
-		printf("exit\n");
 	if (data->fd_pipe->std_in > -1)
 	{
 		dup2(data->fd_pipe->std_in, STDIN_FILENO);
@@ -116,10 +118,6 @@ void	exit_shell(t_data *data, char **arg)
     	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
     	close(data->fd_pipe->std_out);
 	}
-	ft_free_data(data, NULL);
-	ft_free_strtab(data->env);
-	if (data)
-		free(data);
-    
+	ft_end_error_prog(data);
 	exit(exit_code);
 }

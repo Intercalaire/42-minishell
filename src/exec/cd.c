@@ -112,7 +112,10 @@ int	cd(t_data *data, char **arg)
 		env_update(data, oldpwd);
 	}
 	else
+	{
 		directory_error(arg);
+		free(oldpwd);
+	}
 	free(home);
 	return (0);
 }

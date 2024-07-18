@@ -43,5 +43,6 @@ int	exec(t_data *data, char *cmd, char **arg)
 		path(data, cmd, arg);
 	if (cmd || *arg)
 		change_variable(data, arg, cmd);
-	return (0);
+	printf("exit status: %d\n", data->exit_status);
+	return (data->exit_status);
 }

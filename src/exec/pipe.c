@@ -299,20 +299,16 @@ int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg)
 
 int start_process(t_data *data)
 {
-
-	if (data->meter->nbr_pipe == 0) 
-	{
 		if (is_builtin(data->command->cmd[0]))
 		{
 			if (execute_builtin_with_redirection(data, data->command->cmd[0], data->command->arg[0]))
 				return (1);
 		}
 		else
-			exec(data, data->command->cmd[0], data->command->arg[0]);
+			if (exec(data, data->command->cmd[0], data->command->arg[0]))
+				return (1);
 		// reset_fd(data);
 	   return (0);
-	}
-	return (1);
 }
 
 
@@ -343,8 +339,10 @@ void child_processus(t_data *data, int *pipefd, int i)
 
 		}
 
-void parent_processus(t_data *data, int *pipefd, int i)
+int parent_processus(t_data *data, int *pipefd, int i)
 {
+	// int status;
+
 	signal(SIGINT, SIG_DFL);
 	data->sig_status = 1;
 	ft_sig(data);
@@ -355,6 +353,10 @@ void parent_processus(t_data *data, int *pipefd, int i)
         close(pipefd[1]);
         data->fd_pipe->fd_in = pipefd[0]; 
 	}
+	// waitpid(pid, &status, 0);
+    //     if (WIFEXITED(status))
+	// 		return (1);
+	return (0);
 }
 int execute_fork(t_data *data, int i, int *pipefd)
 {
@@ -373,8 +375,8 @@ int execute_fork(t_data *data, int i, int *pipefd)
 		//ajouter un free de tout tout tout
 		exit(127);
 	} 
-	else
-		parent_processus(data, pipefd, i);
+	else if (parent_processus(data, pipefd, i))
+		return (1);
 	return (0);
 }
 
@@ -393,8 +395,8 @@ int my_pipe(t_data *data)
 	}
 	if (data->meter->nbr_pipe == 0)
 	{
-	if (start_process(data))
-		return (1);
+		if (start_process(data))
+			return (1);
 	}
 	else
 	{

@@ -27,6 +27,7 @@ static void	remove_var(t_data *data, int env_index, char **new_env)
 	while (data->env[j + 1])
 	{
 		new_env[j] = ft_strdup(data->env[j + 1]);
+		free(data->env[j + 1]);
 		j++;
 	}
 	data->env = cpy_envir(new_env);
