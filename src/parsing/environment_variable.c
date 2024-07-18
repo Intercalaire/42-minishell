@@ -12,7 +12,7 @@
 
 #include "../../include/parsing/minishell.h"
 
-static char		*environment_variable(t_data *data, char *str);
+static char		*environment_variable(t_data *data, char *str, char *fullstr);
 static int		know_the_quote(char *str);
 static char		*make_the_char(t_data *data, char *str);
 static char		*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
@@ -61,7 +61,7 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 		if (s[k] == '$')
 		{
 			z = 0;
-			env_str = environment_variable(data, (char *)s);
+			env_str = environment_variable(data, (char *)s + k, (char *)s);
 			if (env_str)
 			{
 				while (env_str && env_str[z])
@@ -80,12 +80,12 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 	return (ft_trim_quote(str));
 }
 
-static char	*environment_variable(t_data *data, char *str)
+static char	*environment_variable(t_data *data, char *str, char *fullstr)
 {
 	char	*value;
 	int 	quote;
 	
-	quote = know_the_quote(str);
+	quote = know_the_quote(fullstr);
 	if (quote < 2)
 	{
 		value = make_the_char(data, str);

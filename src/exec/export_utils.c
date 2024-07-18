@@ -42,7 +42,6 @@ void	add_env(t_data *data, char *key, char *value)
 	char	*tmp;
 
 	i = 0;
-	printf("add_env\n");
 	realloc_env(data);
 	while (data->env[i])
 		i++;

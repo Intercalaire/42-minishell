@@ -27,18 +27,18 @@ char *env_var_utils(t_data *data, char *value, int quote)
 	int	value_len;
 
 	if (quote == 0 && value[1] == '\0')
-		return (ft_strdup(""));
+		return (ft_strdup_free("", value));
 	if (value[1] == '?')
-		return (ft_itoa(data->exit_status));
+		return (ft_itoa_free(data->exit_status, value));
 	if (!ft_isalnum(value[1]) && value[1] != '_')
 		return (value);
 	i = search_env(data, value + 1);
 	if (i == -1)
-		return (ft_strdup(""));
+		return (ft_strdup_free("", value));
 	if (check_dollar_stop(value) == 0)
-		return (ft_strdup(char_dollar_stop(value)));
+		return (ft_strdup_free(char_dollar_stop(value), value));
 	value_len = ft_strlen(value);
-	value = ft_strdup(data->env[i] + value_len);
+	value = ft_strdup_free(data->env[i] + value_len, value);
 	return (value);
 }
 

@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
-// static int	ft_count_char(char *str, char c);
-
 
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 {
@@ -47,45 +45,53 @@ int	ft_find_char(char *str, char c)
 	return (0);
 }
 
-// static int	ft_count_char(char *str, char c)
-// {
-// 	int	i;
-// 	int	count;
+char	*ft_strjoin_free(char *s1, char *s2, char *to_free)
+{
+	char	*str;
 
-// 	i = 0;
-// 	count = 0;
-// 	while (str && str[i])
-// 	{
-// 		if (str[i] == c)
-// 			count++;
-// 		i++;
-// 	}
-// 	return (count);
-// }
+	str = ft_strjoin(s1, s2);
+	free(to_free);
+	return (str);
+}
 
 int calloc_search_env(t_data *data, const char *str)
 {
 	int i = 0;
-	// int count = 0;
-	// int len = 0;
+	int	index_of_end = 0;
+	char *substr = NULL;
+	int	result;
+	char *finalstr;
 
-	// len = 0;
-	// if (ft_count_char((char *)str, '$') >= 2)
-	// {
-	// 	while (str && str[i])
-	// 	{
-	// 		len += ft_strlen(make_the_char(data, (char *)str + i));
-	// 		i++;
-	// 	}
-	// }
-	// else if (ft_count_char((char *)str, '$') == 1)
-	// {
-	i = search_env(data, (char *)str + 1);
-	if (i == -1)
+	i = 0;
+	finalstr = NULL;
+	if (!data || !str || !ft_strchr(str, '$'))
 		return (-1);
-	return (ft_strlen(data->env[i]));
-	// }
-	// else
-		// return (2);
-	// return (2);
+	while (str[i])
+	{
+		while (str[i] && str[i] != '$')
+			i++;
+		if (!str[i])
+			break ;
+		if (str && !str[i + 1])
+			index_of_end = 0;
+		index_of_end = i + 1;
+		while (ft_isalnum(str[index_of_end]))
+			index_of_end++;
+		substr = ft_substr(str, i + 1, index_of_end - i - 1);
+		result = search_env(data, (char *)substr);
+		if (substr)
+			free(substr);
+		if (result != -1 && finalstr)
+			finalstr = ft_strjoin_free(finalstr, data->env[result], finalstr);
+		else if (result != -1 && !finalstr)
+			finalstr = ft_strdup(data->env[result]);
+		else if (result == -1 && finalstr)
+			finalstr = ft_strjoin_free(finalstr, "", finalstr);
+		i = index_of_end;
+	}
+	i = ft_strlen(finalstr);
+	free(finalstr);
+	if (i != 0)
+		return (i);
+	return (-1);
 }

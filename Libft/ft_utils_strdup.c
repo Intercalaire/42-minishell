@@ -28,7 +28,8 @@ static void	handle_char(char *result, char *str, t_str_index *index)
 	{
 		result[(*(index->j))++] = str[++(*(index->i))];
 	}
-	else if (str && str[*(index->i)] && is_quote(str[*(index->i)]) && *(index->quote) == 0)
+	else if (str && str[*(index->i)]
+		&& is_quote(str[*(index->i)]) && *(index->quote) == 0)
 	{
 		*(index->quote) = str[*(index->i)];
 	}
