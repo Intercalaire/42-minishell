@@ -48,6 +48,7 @@ typedef struct s_output
 {
 int		*append;
 int		*here_d;
+int		*h_doc_count;
 int		sign;
 int     fd;
 char	***outfile;

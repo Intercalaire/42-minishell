@@ -14,7 +14,7 @@
 
 int	outfile(t_data *data, int *y, char *str)
 {
-	data->output->outfile[*y][data->meter->count_outfile] = ft_strdup(str);
+	data->output->outfile[*y][data->meter->count_outfile] = ft_strdup_outfile(data, str);
 	if (!data->output->outfile[*y][data->meter->count_outfile])
 	{
 		ft_free_data(data, str);
@@ -27,7 +27,7 @@ int	outfile(t_data *data, int *y, char *str)
 int	outfile_append(t_data *data, int *y, char *str)
 {
 	data->output->outfile_append[*y]
-	[data->meter->count_outfile_append] = ft_strdup(str);
+	[data->meter->count_outfile_append] = ft_strdup_outfile(data, str);
 	if (!data->output->outfile_append[*y][data->meter->count_outfile_append])
 	{
 		ft_free_data(data, str);
@@ -39,7 +39,7 @@ int	outfile_append(t_data *data, int *y, char *str)
 
 int	infile(t_data *data, int *y, char *str)
 {
-	data->output->infile[*y][data->meter->count_infile] = ft_strdup(str);
+	data->output->infile[*y][data->meter->count_infile] = ft_strdup_outfile(data, str);
 	if (!data->output->infile[*y][data->meter->count_infile])
 	{
 		ft_free_data(data, str);
@@ -51,7 +51,7 @@ int	infile(t_data *data, int *y, char *str)
 
 int	h_doc(t_data *data, int *y, char *str)
 {
-	data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup(str);
+	data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup_outfile(data, str);
 	if (!data->output->h_doc[*y][data->meter->count_h_doc])
 	{
 		ft_free_data(data, str);
@@ -80,4 +80,32 @@ int	init_global(t_data *data)
 	if (!data->output->outfile_append)
 		return (2);
 	return (0);
+}
+
+char	*ft_strdup_outfile(t_data *data, const char *s)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = 0;
+	j = 0;
+	if (!s)
+		return (NULL);
+	while (s[i])
+		i++;
+	str = NULL;
+	str = ft_calloc((i + 1), sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	while (i != 0)
+	{
+		str[j] = s[j];
+		i--;
+		j++;
+	}
+	str[j] = '\0';
+	if (ft_strrchr(str, "\'") || ft_strrchr(str, "\""))
+		data->output->h_doc_count;
+	return (ft_trim_quote(str));
 }

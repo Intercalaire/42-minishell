@@ -62,4 +62,5 @@ static void	init_utils(t_data *data)
 	data->fd_pipe->std_out = -1;
 	g_sig = 0;
 	data->in_quote = 0;
+	data->output->h_doc_count = 0;
 }
