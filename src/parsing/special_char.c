@@ -17,9 +17,6 @@ static int	double_output_utils(t_data *data, char *str, int i);
 
 int	special_char(t_data *data, char *str)
 {
-	int	i;
-
-	i = 0;
 	if (double_output(data, str) == 1)
 		return (1);
 	return (0);
