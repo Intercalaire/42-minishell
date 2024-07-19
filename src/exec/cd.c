@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "../../include/parsing/minishell.h"
 #include <limits.h>
+#include <errno.h>
 
 static void	env_update(t_data *data, char *oldpwd)
 {
@@ -59,16 +60,15 @@ static int	create_path(char *home, char **arg)
 
 static int	directory_error(char **arg)
 {
-	char	*error_msg;
 
 	if (chdir(arg[0]) != 0)
 	{
-		error_msg = ft_calloc(strlen("cd: ")
-				+ strlen(arg[0]) + 1, sizeof(char));
-		ft_strlcpy(error_msg, "cd: ", strlen("cd: ") + 1);
-		ft_strlcat(error_msg, arg[0], strlen("cd: ") + strlen(arg[0]) + 1);
-		perror(error_msg);
-		free(error_msg);
+		if (errno == ENOENT)
+			print_error("Minishell : cd: ", arg[0], " No such file or directory");
+		else if (errno == EACCES || errno == EPERM)
+			print_error("Minishell : cd: ", arg[0], " Permission denied");
+		else
+			print_error("Minishell : cd: ", arg[0], " Not a directory");
 		return (1);
 	}
 	return (0);
@@ -78,12 +78,12 @@ static int	check_arg(char **arg, int k)
 {
 	if (arg && arg[1])
 	{
-		printf("cd: too many arguments");
+		print_error("Minishell : cd: ", arg[0], "too many arguments");
 		return (1);
 	}
 	if (k == -1 && !arg)
 	{
-		printf("cd: HOME not set");
+		print_error("Minishell : cd: ", arg[0], "HOME not set");
 		return (1);
 	}
 	return (0);

@@ -38,6 +38,13 @@ void close_secure()
 		}
 	}
 
+void print_error(char *start, char *cmd, char *str)
+{
+	ft_putstr_fd(start, 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
+}
 char *get_env_value(t_data *data, char *varName)
 {
 	int index = search_env(data, varName);
@@ -112,6 +119,7 @@ void handle_special_case2(t_data *data, char **temp, char **ptr) {
     char *value = ft_itoa(data->exit_status);
     strcpy(*temp, value);
     *temp += strlen(value);
+	free(value);
     *ptr += 2;
 }
 
@@ -159,7 +167,7 @@ int create_tmp_file(char *tmpfiles)
 	int fd; 
     fd = open(tmpfiles, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd == -1) {
-        perror("open_dans_heredoc");
+        print_error("Minishell: ", tmpfiles, ": No such file or directory\n");
         free(tmpfiles);
     }
     return fd; 
