@@ -38,7 +38,7 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	}
 	else if (j <= 0)
 	{
-		str = ft_calloc((i + 1), sizeof(char));
+		str = ft_calloc((i + 2), sizeof(char));
 		if (str == NULL)
 			return (NULL);
 	}
