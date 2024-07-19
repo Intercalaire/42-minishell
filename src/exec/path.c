@@ -129,10 +129,7 @@ void	path(t_data *data, char *cmd, char **arg)
 
 		cpy_args = create_args(cmd, arg);
 		execution(data, cmd, cpy_args, full_path);
-		// ft_end_error_prog(data, str, NULL);
-		// free_path(full_path, cpy_args);
 		exit (0);
-		// ajouter un free de tout tout tout
 	}
 	else
 	{
@@ -140,5 +137,4 @@ void	path(t_data *data, char *cmd, char **arg)
 		if (parent_process(data, pid))
 			return ;
 	}
-	//free_path(full_path, cpy_args);
 }

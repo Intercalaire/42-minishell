@@ -83,7 +83,7 @@ long long	get_exit_code(t_data *data, char **arg)
 			exit_code = ft_atol(arg[0], &error);
 			if (error == 1)
 			{
-				print_error("Minishell: exit: ", arg[0], ": numeric argument required");
+				print_error("Minishell: exit: ", arg[0], ": Numeric argument required");
 				exit_code = 2;
 			}
 			else
@@ -91,7 +91,7 @@ long long	get_exit_code(t_data *data, char **arg)
 		}
 		else
 		{
-			print_error("Minishell: exit: ", arg[0], ": numeric argument required");
+			print_error("Minishell: exit: ", arg[0], ": Numeric argument required");
 			exit_code = 2;
 		}
 	}
@@ -109,7 +109,7 @@ void	exit_shell(t_data *data, char **arg)
 		exit_code = data->exit_status;
 	if (arg && arg[1])
 	{
-		ft_putstr_fd("Minishell: exit: too many arguments", 2);
+		ft_putstr_fd("Minishell: exit: Too many arguments", 2);
 		data->exit_status = 1;
 		return ;
 	}

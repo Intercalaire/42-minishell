@@ -62,10 +62,7 @@ int	ft_sig(t_data *data)
 	if (g_sig)
 	{
 		if (g_sig == SIGQUIT)
-		{
 			data->exit_status = 131;
-			write(1, "data->exit_status", 17);
-		}
 		if (g_sig == SIGINT)
 			data->exit_status = 130;
 		g_sig = 0;

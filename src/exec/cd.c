@@ -49,7 +49,7 @@ static int	create_path(char *home, char **arg)
 	}
 	if (chdir(path) != 0)
 	{
-		perror("cd: error changing directory");
+		print_error("Minishell: cd: ", path, ": No such file or directory");
 		free(path);
 		free(home);
 		return (1);
@@ -64,11 +64,11 @@ static int	directory_error(char **arg)
 	if (chdir(arg[0]) != 0)
 	{
 		if (errno == ENOENT)
-			print_error("Minishell : cd: ", arg[0], " No such file or directory");
+			print_error("Minishell: cd: ", arg[0], ": No such file or directory");
 		else if (errno == EACCES || errno == EPERM)
-			print_error("Minishell : cd: ", arg[0], " Permission denied");
+			print_error("Minishell: cd: ", arg[0], ": Permission denied");
 		else
-			print_error("Minishell : cd: ", arg[0], " Not a directory");
+			print_error("Minishell: cd: ", arg[0], ": Not a directory");
 		return (1);
 	}
 	return (0);
@@ -78,12 +78,12 @@ static int	check_arg(char **arg, int k)
 {
 	if (arg && arg[1])
 	{
-		print_error("Minishell : cd: ", arg[0], "too many arguments");
+		print_error("Minishell: cd: ", arg[0], ": Too many arguments");
 		return (1);
 	}
 	if (k == -1 && !arg)
 	{
-		print_error("Minishell : cd: ", arg[0], "HOME not set");
+		print_error("Minishell: cd: ", arg[0], ": HOME not set");
 		return (1);
 	}
 	return (0);

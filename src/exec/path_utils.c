@@ -30,7 +30,7 @@ char	*var_path(t_data *data, char *cmd)
 	path_index = search_env(data, "PATH");
 	if (path_index == -1)
 	{
-		perror(cmd);
+		print_error("Minishell: ", cmd, ": No such file or directory");
 		data->exit_status = 127;
 		return (NULL);
 	}
@@ -75,7 +75,7 @@ static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 {
 	if (errno == ENOENT)
 	{
-		perror(cmd);
+		print_error("Minishell: ", cmd, ": No such file or directory");
 		data->exit_status = 127;
 		ft_end_error_prog(data);
 		free_path(full_path, args);
@@ -83,7 +83,7 @@ static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 	}
 	else if (errno == EACCES)
 	{
-		perror(cmd);
+		print_error("Minishell: ", cmd, ": Permission denied");
 		data->exit_status = 126;
 		ft_end_error_prog(data);
 		free_path(full_path, args);

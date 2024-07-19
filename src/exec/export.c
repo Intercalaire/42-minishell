@@ -108,7 +108,7 @@ int	ft_export(t_data *data, char **arg)
 	{
 		if (!ft_isalpha(arg[i][0]) && arg[i][0] != '_')
 		{
-			print_error("Minishell: export: `", arg[i], "': not a valid identifier");
+			print_error("Minishell: export: `", arg[i], "': Not a valid identifier");
 			return (1);
 		}
 		if (!ft_strchr(arg[i], '=') && search_env(data, arg[i]) == -1)

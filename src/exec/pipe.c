@@ -128,12 +128,13 @@ void copy_normal_chars(char **temp, char **ptr) {
     (*temp)++;
     (*ptr)++;
 }
-void build_final_string(t_data *data, char *result, char *line) {
+void build_final_string(t_data *data, char *result, char *line, int i)
+{
     char *temp = result;
     char *ptr = line;
     while (*ptr) 
 	{
-        if (*ptr == '$') 
+        if (*ptr == '$' && data->output->h_doc_count[i] == 0) 
 		{
             if (*(ptr + 1) == '?')
                 handle_special_case2(data, &temp, &ptr);
@@ -146,11 +147,11 @@ void build_final_string(t_data *data, char *result, char *line) {
     *temp = '\0';
 }
 
-char *expand_env_vars(t_data *data, char *line) {
+char *expand_env_vars(t_data *data, char *line, int i) {
     int size_needed = calculate_size_needed(data, line);
     char *result = malloc(size_needed);
     if (!result) return NULL;
-    build_final_string(data, result, line);
+    build_final_string(data, result, line, i);
     return result;
 }
 
@@ -167,13 +168,13 @@ int create_tmp_file(char *tmpfiles)
 	int fd; 
     fd = open(tmpfiles, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd == -1) {
-        print_error("Minishell: ", tmpfiles, ": No such file or directory\n");
+        print_error("Minishell: ", tmpfiles, ": No such file or directory");
         free(tmpfiles);
     }
     return fd; 
 }
 
-void handle_user_input(t_data *data, char *end_word) 
+void handle_user_input(t_data *data, char *end_word , int i) 
 {
     char *line;
 	int is_interactive;
@@ -193,7 +194,7 @@ void handle_user_input(t_data *data, char *end_word)
     		free(line);
 			break;
     	}
-    	expanded_line = expand_env_vars(data, line);
+    	expanded_line = expand_env_vars(data, line, i);
     	write(data->output->fd, expanded_line, strlen(expanded_line));
     	write(data->output->fd, "\n", 1);
     	free(expanded_line);
@@ -209,8 +210,6 @@ int cleanup_and_close(t_data *data, char *tmpfiles, char *next_file) {
         data->output->fd = open(tmpfiles, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		write(data->output->fd, "", 0);
 		close(data->output->fd);
-		//ajouter un free de tout tout tout
-		// free(str);
 		free(tmpfiles);
         g_sig = 0;
 		return (1);
@@ -236,7 +235,7 @@ void handle_heredocs(t_data *data, int i)
         data->output->fd = create_tmp_file(tmpfiles);
         if (data->output->fd == -1) 
 			return;
-        handle_user_input(data, data->output->h_doc[i][j]);
+        handle_user_input(data, data->output->h_doc[i][j], i);
         if (cleanup_and_close(data, tmpfiles, data->output->h_doc[i][j + 1]))
 			break;
 		free(tmpfiles);
@@ -272,13 +271,13 @@ int check_open_files(t_data *data, int i)
 
 	return_value = 0;
 	if (data->output->h_doc[i] && data->output->here_d[i] == 1)
-		return_value = create_infiles_heredoc(data, i);
+		return_value += create_infiles_heredoc(data, i);
 	if (data->output->infile[i] && data->output->here_d[i] == 0) 
-		return_value = create_infiles(data, i);
+		return_value += create_infiles(data, i);
 	if (data->output->outfile[i] && *data->output->outfile[i]) 
-		return_value = create_outfiles(data, i);
+		return_value += create_outfiles(data, i);
 	if (data->output->outfile_append[i] && *data->output->outfile_append[i]) 
-		return_value = create_outfiles_append(data, i);
+		return_value += create_outfiles_append(data, i);
 	return (return_value);
 }
 
@@ -315,7 +314,6 @@ int start_process(t_data *data)
 		else
 			if (exec(data, data->command->cmd[0], data->command->arg[0]))
 				return (1);
-		// reset_fd(data);
 	   return (0);
 }
 
@@ -349,8 +347,6 @@ void child_processus(t_data *data, int *pipefd, int i)
 
 int parent_processus(t_data *data, int *pipefd, int i)
 {
-	// int status;
-
 	signal(SIGINT, SIG_DFL);
 	data->sig_status = 1;
 	ft_sig(data);
@@ -361,9 +357,6 @@ int parent_processus(t_data *data, int *pipefd, int i)
         close(pipefd[1]);
         data->fd_pipe->fd_in = pipefd[0]; 
 	}
-	// waitpid(pid, &status, 0);
-    //     if (WIFEXITED(status))
-	// 		return (1);
 	return (0);
 }
 int execute_fork(t_data *data, int i, int *pipefd)
@@ -379,8 +372,6 @@ int execute_fork(t_data *data, int i, int *pipefd)
 	if (pid == 0) 
 	{
 		child_processus(data, pipefd, i);
-		//ft_end_error_prog(data, str, NULL);
-		//ajouter un free de tout tout tout
 		exit(127);
 	} 
 	else if (parent_processus(data, pipefd, i))
