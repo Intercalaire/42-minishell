@@ -166,6 +166,7 @@ int		verif_lign(t_data *data, char *str);
 int		init_global(t_data *data);
 int		count_output(t_data *data, char *str, int y);
 int		count_all(t_data *data, int *y, int i);
+char	*ft_strdup_outfile(t_data *data, const char *s, int y, int hdoc);
 
 //output_init
 int		outfile(t_data *data, int *y, char *str);

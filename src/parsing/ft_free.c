@@ -51,6 +51,11 @@ void	ft_free_data(t_data *data, char *str)
 			free(data->output->here_d);
 			data->output->here_d = NULL;
 		}
+		if (data->output->h_doc_count)
+		{
+			free(data->output->h_doc_count);
+			data->output->h_doc_count = NULL;
+		}
 		free(data->output);
 	}
 	if (data->meter)

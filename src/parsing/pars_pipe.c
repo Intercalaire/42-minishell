@@ -37,6 +37,9 @@ static int	utils_pars_pipe(t_data *data)
 	data->output->here_d = ft_calloc(data->nbr_pipe + 2, sizeof(int));
 	if (!data->output->here_d)
 		return (2);
+	data->output->h_doc_count = ft_calloc(data->nbr_pipe + 2, sizeof(int));
+	if (!data->output->h_doc_count)
+		return (2);
 	data->output->append = ft_calloc(data->nbr_pipe + 2, sizeof(int));
 	if (!data->output->append)
 		return (2);

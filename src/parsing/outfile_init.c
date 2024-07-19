@@ -14,7 +14,7 @@
 
 int	outfile(t_data *data, int *y, char *str)
 {
-	data->output->outfile[*y][data->meter->count_outfile] = ft_strdup_outfile(data, str);
+	data->output->outfile[*y][data->meter->count_outfile] = ft_strdup_outfile(data, str, *y, 0);
 	if (!data->output->outfile[*y][data->meter->count_outfile])
 	{
 		ft_free_data(data, str);
@@ -27,7 +27,7 @@ int	outfile(t_data *data, int *y, char *str)
 int	outfile_append(t_data *data, int *y, char *str)
 {
 	data->output->outfile_append[*y]
-	[data->meter->count_outfile_append] = ft_strdup_outfile(data, str);
+	[data->meter->count_outfile_append] = ft_strdup_outfile(data, str, *y, 0);
 	if (!data->output->outfile_append[*y][data->meter->count_outfile_append])
 	{
 		ft_free_data(data, str);
@@ -39,7 +39,7 @@ int	outfile_append(t_data *data, int *y, char *str)
 
 int	infile(t_data *data, int *y, char *str)
 {
-	data->output->infile[*y][data->meter->count_infile] = ft_strdup_outfile(data, str);
+	data->output->infile[*y][data->meter->count_infile] = ft_strdup_outfile(data, str, *y, 0);
 	if (!data->output->infile[*y][data->meter->count_infile])
 	{
 		ft_free_data(data, str);
@@ -51,7 +51,7 @@ int	infile(t_data *data, int *y, char *str)
 
 int	h_doc(t_data *data, int *y, char *str)
 {
-	data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup_outfile(data, str);
+	data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup_outfile(data, str, *y, 1);
 	if (!data->output->h_doc[*y][data->meter->count_h_doc])
 	{
 		ft_free_data(data, str);
@@ -82,7 +82,7 @@ int	init_global(t_data *data)
 	return (0);
 }
 
-char	*ft_strdup_outfile(t_data *data, const char *s)
+char	*ft_strdup_outfile(t_data *data, const char *s, int y, int hdoc)
 {
 	int		i;
 	int		j;
@@ -105,7 +105,9 @@ char	*ft_strdup_outfile(t_data *data, const char *s)
 		j++;
 	}
 	str[j] = '\0';
-	if (ft_strrchr(str, "\'") || ft_strrchr(str, "\""))
-		data->output->h_doc_count;
+	if (hdoc == 1 && (ft_strchr(str, '\'') || ft_strchr(str, '"')))
+		data->output->h_doc_count[y] = 1;
+	else if (hdoc == 1)
+		data->output->h_doc_count[y] = 0;
 	return (ft_trim_quote(str));
 }
