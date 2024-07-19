@@ -46,7 +46,7 @@ static long long	ft_atol(char *str, int *error)
 {
 	int			i;
 	int			sign;
-	long long	result;
+	unsigned long long	result;
 
 	i = 0;
 	sign = 1;
@@ -57,13 +57,18 @@ static long long	ft_atol(char *str, int *error)
 		if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10
 				&& str[i] - '0' > LLONG_MAX % 10))
 		{
-			if (sign == 1)
-				*error = 1;
-			else
 				*error = 1;
 		}
 		result = result * 10 + (str[i] - '0');
 		i++;
+	}
+	if (*error)
+	{
+		if (sign == -1 && result == (unsigned long long)LLONG_MAX + 1)
+		{
+			*error = 0;
+			return (LLONG_MIN);
+		}
 	}
 	return (sign * result);
 }
@@ -78,7 +83,7 @@ long long	get_exit_code(t_data *data, char **arg)
 		exit_code = data->exit_status;
 	else
 	{
-		if (is_valid_number(arg[0]))
+		if (is_valid_number(arg[0]) || arg[0][0] == '-' || arg[0][0] == '+')
 		{
 			exit_code = ft_atol(arg[0], &error);
 			if (error == 1)
@@ -102,7 +107,7 @@ void	exit_shell(t_data *data, char **arg)
 {
 	long long	exit_code;
 	if (data->meter->nbr_pipe == 0)
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 2);
 	if (arg && *arg && **arg)
 		exit_code = get_exit_code(data, arg);
 	else

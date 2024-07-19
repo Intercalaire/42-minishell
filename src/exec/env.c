@@ -20,7 +20,7 @@ int	print_env(t_data *data, char **arg)
 	i = 0;
 	if (arg[0])
 	{
-		printf("env: %s: Too mush argument\n", arg[0]);
+		print_error("Minishell: env: ", arg[0], ": Too mush argument");
 		return (1);
 	}
 	while (data->env[i])

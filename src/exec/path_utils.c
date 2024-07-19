@@ -105,7 +105,6 @@ void	execution(t_data *data, char *cmd, char **args, char *full_path)
 	{
 		data->exit_status = 0;
 		execve(cmd, args, data->env);
-		//perror(cmd);
 		error_manage(data, cmd, args, full_path);
 	}
 	else
