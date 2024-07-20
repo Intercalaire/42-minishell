@@ -372,6 +372,7 @@ int execute_fork(t_data *data, int i, int *pipefd)
 	if (pid == 0) 
 	{
 		child_processus(data, pipefd, i);
+		ft_end_error_prog(data);
 		exit(127);
 	} 
 	else if (parent_processus(data, pipefd, i))

@@ -94,6 +94,12 @@ void	path(t_data *data, char *cmd, char **arg)
 	char	**cpy_args;
 
 	cpy_args = NULL;
+	if (!cmd && data->meter->nbr_pipe)
+		{
+			data->exit_status = 127;
+			ft_end_error_prog(data);
+			return ;
+		}
 	full_path = var_path(data, cmd);
 	if (!full_path)
 	{
