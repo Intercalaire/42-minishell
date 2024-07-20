@@ -12,6 +12,8 @@
 
 #include "../../include/parsing/minishell.h"
 
+// static char *calloc_search_env_utils(t_data *data, char *substr, char *finalstr, int result);
+
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 {
 	if (s[*k] == '$' && !s[*k + 1])
@@ -75,7 +77,7 @@ int calloc_search_env(t_data *data, const char *str)
 		if (str && !str[i + 1])
 			index_of_end = 0;
 		index_of_end = i + 1;
-		while (ft_isalnum(str[index_of_end]))
+		while (str[index_of_end] && ft_isalnum(str[index_of_end]))
 			index_of_end++;
 		substr = ft_substr(str, i + 1, index_of_end - i - 1);
 		result = search_env(data, (char *)substr);
@@ -95,3 +97,50 @@ int calloc_search_env(t_data *data, const char *str)
 		return (i);
 	return (-1);
 }
+
+// int calloc_search_env(t_data *data, const char *str)
+// {
+// 	int i;
+// 	int	index_of_end;
+// 	char *substr = NULL;
+// 	int	result;
+// 	char *finalstr;
+
+// 	i = 0;
+// 	index_of_end = 0;
+// 	finalstr = NULL;
+// 	substr = NULL;
+// 	if (!data || !str || !ft_strchr(str, '$'))
+// 		return (-1);
+// 	while (str[i])
+// 	{
+// 		while (str[i] && str[i] != '$')
+// 			i++;
+
+// 		index_of_end = i + 1;
+// 		while (ft_isalnum(str[index_of_end]))
+// 			index_of_end++;
+// 		substr = ft_substr(str, i + 1, index_of_end - i - 1);
+// 		result = search_env(data, (char *)substr);
+// 		finalstr = calloc_search_env_utils(data, substr, finalstr, result);
+// 		i = index_of_end;
+// 	}
+// 	i = ft_strlen(finalstr);
+// 	free(finalstr);
+// 	if (i != 0)
+// 		return (i);
+// 	return (-1);
+// }
+
+// static char *calloc_search_env_utils(t_data *data, char *substr, char *finalstr, int result)
+// {
+// 		if (substr)
+// 			free(substr);
+// 		if (result != -1 && finalstr)
+// 			finalstr = ft_strjoin_free(finalstr, data->env[result], finalstr);
+// 		else if (result != -1 && !finalstr)
+// 			finalstr = ft_strdup(data->env[result]);
+// 		else if (result == -1 && finalstr)
+// 			finalstr = ft_strjoin_free(finalstr, "", finalstr);
+// 		return (finalstr);
+// }

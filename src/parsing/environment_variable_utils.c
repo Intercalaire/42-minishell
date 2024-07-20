@@ -38,6 +38,8 @@ char *env_var_utils(t_data *data, char *value, int quote)
 	if (check_dollar_stop(value) == 0)
 		return (ft_strdup_free(char_dollar_stop(value), value));
 	value_len = ft_strlen(value);
+	if (!ft_strchr(data->env[i], '='))
+		return(ft_strdup_free("", value));
 	value = ft_strdup_free(data->env[i] + value_len, value);
 	return (value);
 }

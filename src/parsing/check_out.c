@@ -23,7 +23,11 @@ static int	check_last_character(t_data *data, char *str)
 	len = ft_strlen(str);
 	if (str[len - 1] == '>' || str[len - 1] == '<')
 	{
-		ft_little_error_prog_quote(data, str, OUT);
+		if ((str[len - 1] == '>' && str[len - 2] == '>')
+			|| (str[len - 1] == '<' && str[len - 2] == '<'))
+			ft_little_error_prog_quote(data, str, OUT);
+		else
+		ft_little_error_prog(data, str, OUT_MORE, str[len - 1]);
 		return (1);
 	}
 	return (0);
