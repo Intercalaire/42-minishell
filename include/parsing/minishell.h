@@ -179,5 +179,6 @@ int		h_doc(t_data *data, int *y, char *str);
 # define QUOTE_SMP "syntax error near unexpected token `\''"
 # define QUOTE_DBL "syntax error near unexpected token `\"'"
 # define OUT "syntax error near unexpected token `newline'"
+# define OUT_MORE "syntax error near unexpected token"
 
 #endif
