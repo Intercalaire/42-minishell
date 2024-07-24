@@ -320,7 +320,6 @@ int start_process(t_data *data)
 
 void child_processus(t_data *data, int *pipefd, int i)
 {
-
 		if (i != 0) 
 		{
                 if (dup2(data->fd_pipe->fd_in, STDIN_FILENO) == -1) 
@@ -340,7 +339,11 @@ void child_processus(t_data *data, int *pipefd, int i)
         	close_fd(pipefd[1]);
         	close_fd(pipefd[0]);
         }
-		check_open_files(data, i);
+		if (check_open_files(data, i))
+		{
+			ft_end_error_prog(data);
+			exit(EXIT_FAILURE);
+		}
 		exec(data, data->command->cmd[i], data->command->arg[i]);
 
 		}

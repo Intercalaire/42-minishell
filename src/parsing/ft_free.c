@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
+void	ft_free_cmd(t_data *data, char **cmd);
 
 void	ft_error_prog(t_data *data, char *str, char *msg)
 {
@@ -29,7 +30,7 @@ void	ft_free_data(t_data *data, char *str)
 		if (data->command->arg)
 			ft_free_strarg(data->command->arg);
 		if (data->command->cmd)
-			ft_free_strtab(data->command->cmd);
+			ft_free_cmd(data, data->command->cmd);
 		free(data->command);
 	}
 	if (data->output)
@@ -117,4 +118,21 @@ void	ft_free_strarg(char ***tab)
 		free(tab);
 		tab = NULL;
 	}
+}
+
+void	ft_free_cmd(t_data *data, char **cmd)
+{
+	int i;
+
+	i = 0;
+	while (i <= data->meter->nbr_pipe)
+	{
+		if (cmd[i])
+		{
+			free(cmd[i]);
+			cmd[i] = NULL;
+		}
+		i++;
+	}
+	free(cmd);
 }

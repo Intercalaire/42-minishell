@@ -106,18 +106,7 @@ long long	get_exit_code(t_data *data, char **arg)
 void	exit_shell(t_data *data, char **arg)
 {
 	long long	exit_code;
-	if (data->meter->nbr_pipe == 0)
-		ft_putstr_fd("exit\n", 2);
-	if (arg && *arg && **arg)
-		exit_code = get_exit_code(data, arg);
-	else
-		exit_code = data->exit_status;
-	if (arg && arg[1])
-	{
-		ft_putstr_fd("Minishell: exit: Too many arguments", 2);
-		data->exit_status = 1;
-		return ;
-	}
+	
 	if (data->fd_pipe->std_in > -1)
 	{
 		dup2(data->fd_pipe->std_in, STDIN_FILENO);
@@ -127,6 +116,18 @@ void	exit_shell(t_data *data, char **arg)
 	{
     	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
     	close(data->fd_pipe->std_out);
+	}
+	if (data->meter->nbr_pipe == 0)
+		ft_putstr_fd("exit\n", 1);
+	if (arg && *arg && **arg)
+		exit_code = get_exit_code(data, arg);
+	else
+		exit_code = data->exit_status;
+	if (arg && arg[1] && exit_code != 2)
+	{
+		ft_putstr_fd("Minishell: exit: Too many arguments\n", 2);
+		data->exit_status = 1;
+		return ;
 	}
 	ft_end_error_prog(data);
 	exit(exit_code);

@@ -95,16 +95,21 @@ void	path(t_data *data, char *cmd, char **arg)
 
 	cpy_args = NULL;
 	if (!cmd && data->meter->nbr_pipe)
-		{
-			data->exit_status = 127;
-			ft_end_error_prog(data);
-			return ;
-		}
-	full_path = var_path(data, cmd);
-	if (!full_path)
 	{
 		data->exit_status = 127;
+		ft_end_error_prog(data);
 		return ;
+	}
+	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' || cmd[1] == '.')))
+        full_path = cmd;
+    else
+    {
+		full_path = var_path(data, cmd);
+		if (!full_path)
+		{
+			data->exit_status = 127;
+			return ;
+		}
 	}
 	data->sig_status = 1;
 	if (data->meter->nbr_pipe)
@@ -139,7 +144,7 @@ void	path(t_data *data, char *cmd, char **arg)
 	}
 	else
 	{
-		free_path(full_path, cpy_args);
+		//free_path(full_path, cpy_args);
 		if (parent_process(data, pid))
 			return ;
 	}

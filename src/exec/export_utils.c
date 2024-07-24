@@ -67,6 +67,11 @@ void	change_env(t_data *data, char *key, char *value)
 	char	*tmp;
 
 	i = search_env(data, key);
+	if (i == -1)
+	{
+		add_env(data, key, value);
+		return ;
+	}
 	new_env = ft_strdup(key);
 	tmp = ft_strjoin(new_env, "=");
 	free(new_env);
