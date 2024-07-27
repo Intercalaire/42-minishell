@@ -118,7 +118,7 @@ void	exit_shell(t_data *data, char **arg)
     	close(data->fd_pipe->std_out);
 	}
 	if (data->meter->nbr_pipe == 0)
-		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", 2);
 	if (arg && *arg && **arg)
 		exit_code = get_exit_code(data, arg);
 	else

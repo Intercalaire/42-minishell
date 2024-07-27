@@ -18,41 +18,24 @@
 #include <errno.h>
 #include <fcntl.h>
 
-static void	signal_traitment_utils(t_data *data, int term_sig)
-{
-	if (term_sig == SIGFPE)
-	{
-		printf("Erreur de calcul flottant (signal SIGFPE)\n");
-		data->exit_status = 128 + SIGFPE;
-	}
-	else if (term_sig == SIGILL)
-	{
-		printf("Instruction illégale (signal SIGILL)\n");
-		data->exit_status = 128 + SIGILL;
-	}
-	else if (term_sig == SIGTERM)
-	{
-		printf("Terminaison (signal SIGTERM)\n");
-		data->exit_status = 128 + SIGTERM;
-	}
-}
 
 static void	signal_traitment(t_data *data, int term_sig)
 {
 	if (term_sig == SIGSEGV)
 	{
-		printf("Segmentation fault\n");
+		ft_putstr_fd("Segmentation fault\n", 2);
 		data->exit_status = 128 + SIGSEGV;
 	}
 	else if (term_sig == SIGINT)
 		data->exit_status = 128 + SIGINT;
 	else if (term_sig == SIGABRT)
-	{
-		printf("Abandon (signal SIGABRT)\n");
 		data->exit_status = 128 + SIGABRT;
-	}
-	else
-		signal_traitment_utils(data, term_sig);
+	else if (term_sig == SIGFPE)
+		data->exit_status = 128 + SIGFPE;
+	else if (term_sig == SIGILL)
+		data->exit_status = 128 + SIGILL;
+	else if (term_sig == SIGTERM)
+		data->exit_status = 128 + SIGTERM;
 }
 
 static int	parent_process(t_data *data, pid_t pid)
@@ -79,7 +62,7 @@ static int	parent_process(t_data *data, pid_t pid)
 
 void	free_path(char *path, char **args)
 {
-	if (path)
+	if (path != NULL)
 		free(path);
 	if (args && *args)
 		ft_free_strtab(args);
@@ -101,7 +84,7 @@ void	path(t_data *data, char *cmd, char **arg)
 		return ;
 	}
 	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' || cmd[1] == '.')))
-        full_path = cmd;
+        full_path = ft_strdup(cmd);
     else
     {
 		full_path = var_path(data, cmd);
@@ -140,11 +123,11 @@ void	path(t_data *data, char *cmd, char **arg)
 
 		cpy_args = create_args(cmd, arg);
 		execution(data, cmd, cpy_args, full_path);
-		exit (0);
+		exit(0);
 	}
 	else
 	{
-		//free_path(full_path, cpy_args);
+		free_path(full_path, cpy_args);
 		if (parent_process(data, pid))
 			return ;
 	}

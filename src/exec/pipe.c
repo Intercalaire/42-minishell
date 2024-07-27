@@ -278,6 +278,8 @@ int check_open_files(t_data *data, int i)
 		return_value += create_outfiles(data, i);
 	if (data->output->outfile_append[i] && *data->output->outfile_append[i]) 
 		return_value += create_outfiles_append(data, i);
+	if (return_value)
+		data->exit_status = 1;
 	return (return_value);
 }
 
@@ -295,7 +297,8 @@ int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg)
 {
 	data->fd_pipe->std_in = dup(STDIN_FILENO);
 	data->fd_pipe->std_out = dup(STDOUT_FILENO);
-	check_open_files(data, 0);
+	if (check_open_files(data, 0))
+		return (1);
     exec(data, cmd, arg);
     dup2(data->fd_pipe->std_in, STDIN_FILENO);
     dup2(data->fd_pipe->std_out, STDOUT_FILENO);
@@ -306,14 +309,20 @@ int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg)
 
 int start_process(t_data *data)
 {
+		// if (data->command->cmd[0] == NULL)
+		// 	return (1);
 		if (is_builtin(data->command->cmd[0]))
 		{
 			if (execute_builtin_with_redirection(data, data->command->cmd[0], data->command->arg[0]))
 				return (1);
 		}
 		else
+		{
 			if (exec(data, data->command->cmd[0], data->command->arg[0]))
+			{
 				return (1);
+			}
+		}
 	   return (0);
 }
 

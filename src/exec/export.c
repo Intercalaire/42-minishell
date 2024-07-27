@@ -98,6 +98,11 @@ int check_export(char *arg)
     int i;
 
     i = 0;
+	if (arg[i] == '=')
+	{
+		print_error("Minishell: export: `", arg, "': Not a valid identifier");
+		return (1);
+	}
     while (arg[i] && arg[i] != '=')
     {
         if (arg[i] == '+' && arg[i + 1] == '=')
