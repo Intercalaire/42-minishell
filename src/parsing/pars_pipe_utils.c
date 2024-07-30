@@ -85,7 +85,7 @@ int	handle_args(t_data *data, int *i, int *y, int *z)
 			return (2);
 		(*i)++;
 	}
-	if (data->command->cmd[0] == NULL)
+	if (data->command->cmd[0] == NULL && !data->output)
 		return (2);
 	return (0);
 }
