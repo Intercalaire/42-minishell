@@ -16,7 +16,6 @@ static int	handle_special_chars(char *str, char *new_str, int i, int j);
 static char	*init_new_str(char *new_str, char *str);
 static int	process_char(char *str, char *new_str, int *i, int *j);
 
-
 static int	handle_special_chars(char *str, char *new_str, int i, int j)
 {
 	if (i > 0 && str[i - 1] != ' ' && (str[i] == '>' || str[i] == '<'))
@@ -24,13 +23,13 @@ static int	handle_special_chars(char *str, char *new_str, int i, int j)
 		new_str[j++] = ' ';
 	}
 	new_str[j++] = str[i];
-	if ((str[i] == '>' && str[i + 1] == '>')
-		|| (str[i] == '<' && str[i + 1] == '<'))
+	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i
+				+ 1] == '<'))
 	{
 		new_str[j++] = str[++i];
 	}
-	if (str[i + 1] != '\0' && str[i + 1] != ' '
-		&& (str[i] == '>' || str[i] == '<'))
+	if (str[i + 1] != '\0' && str[i + 1] != ' ' && (str[i] == '>'
+			|| str[i] == '<'))
 	{
 		new_str[j++] = ' ';
 	}
@@ -59,7 +58,8 @@ char	*ft_split_delim(char *str)
 	init_int_values(&i, &j, &in_quotes);
 	while (str[i] != '\0')
 	{
-		if ((str[i] == '|' || (str[i] == '>' || str[i] == '<')) && know_the_delim_quote(str + i) > 2)
+		if ((str[i] == '|' || (str[i] == '>' || str[i] == '<'))
+			&& know_the_delim_quote(str + i) > 2)
 			j = process_char(str, new_str, &i, &j);
 		else
 			new_str[j++] = str[i];
@@ -69,7 +69,7 @@ char	*ft_split_delim(char *str)
 	return (new_str);
 }
 
-static int process_char(char *str, char *new_str, int *i, int *j)
+static int	process_char(char *str, char *new_str, int *i, int *j)
 {
 	if (*j > 0 && new_str[*j - 1] != ' ')
 		new_str[(*j)++] = ' ';
@@ -83,4 +83,3 @@ static int process_char(char *str, char *new_str, int *i, int *j)
 	new_str[(*j)++] = ' ';
 	return (*j);
 }
-

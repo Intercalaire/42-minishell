@@ -21,7 +21,7 @@ int	ktq_utils(int in_qte_dble, int in_qte_sple)
 	return (0);
 }
 
-char *env_var_utils(t_data *data, char *value, int quote)
+char	*env_var_utils(t_data *data, char *value, int quote)
 {
 	int	i;
 	int	value_len;
@@ -39,7 +39,7 @@ char *env_var_utils(t_data *data, char *value, int quote)
 		return (ft_strdup_free(char_dollar_stop(value), value));
 	value_len = ft_strlen(value);
 	if (!ft_strchr(data->env[i], '='))
-		return(ft_strdup_free("", value));
+		return (ft_strdup_free("", value));
 	value = ft_strdup_free(data->env[i] + value_len, value);
 	return (value);
 }
@@ -49,9 +49,10 @@ int	check_dollar_stop(char *value)
 	int	i;
 
 	i = 0;
-	while(value[i])
+	while (value[i])
 	{
-		if (value[i] == '$' && !ft_isalnum(value[i + 1]) && value[i + 1] != '_' && value[i + 1] != '?' && value[i + 1] != ' ')
+		if (value[i] == '$' && !ft_isalnum(value[i + 1]) && value[i + 1] != '_'
+			&& value[i + 1] != '?' && value[i + 1] != ' ')
 			return (0);
 		i++;
 	}
@@ -63,9 +64,10 @@ char	*char_dollar_stop(char *value)
 	int	i;
 
 	i = 0;
-	while(value[i])
+	while (value[i])
 	{
-		if (value[i] == '$' && !ft_isalnum(value[i + 1]) && value[i + 1] != '_' && value[i + 1] != '?' && value[i + 1] != ' ')
+		if (value[i] == '$' && !ft_isalnum(value[i + 1]) && value[i + 1] != '_'
+			&& value[i + 1] != '?' && value[i + 1] != ' ')
 			return (ft_strdup(value));
 		i++;
 	}

@@ -50,6 +50,7 @@ char	*ft_trim_quote(char *str)
 	char		quote;
 	char		*result;
 	t_str_index	index;
+	char		*tmp;
 
 	i = 0;
 	j = 0;
@@ -57,6 +58,7 @@ char	*ft_trim_quote(char *str)
 	index.i = &i;
 	index.j = &j;
 	index.quote = &quote;
+	tmp = ft_strdup(str);
 	result = ft_calloc((ft_strlen(str) + 1), sizeof(char));
 	if (result == NULL || str == NULL)
 		return (NULL);
@@ -68,5 +70,11 @@ char	*ft_trim_quote(char *str)
 	result[j] = '\0';
 	free(str);
 	str = NULL;
+	if (ft_strlen(result) == 0 && ft_strlen(tmp) != 0)
+	{
+		free(result);
+		result = ft_strdup(" ");
+	}
+	free(tmp);
 	return (result);
 }

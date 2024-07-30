@@ -12,10 +12,10 @@
 
 #include "../../include/parsing/minishell.h"
 
-static char		*environment_variable(t_data *data, char *str, char *fullstr);
-static int		know_the_quote(char *str);
-static char		*make_the_char(t_data *data, char *str);
-static char		*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
+static char	*environment_variable(t_data *data, char *str, char *fullstr);
+static int	know_the_quote(char *str);
+static char	*make_the_char(t_data *data, char *str);
+static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 
 char	*ft_strdup_2(t_data *data, const char *s)
 {
@@ -30,11 +30,12 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	str = NULL;
 	i = ft_strlen((char *)s);
 	j = calloc_search_env(data, s);
-	if (ft_find_char((char *)s, '$') == 1 && know_the_delim_quote((char *)s) > 2 && j != -1)
+	if (ft_find_char((char *)s, '$') == 1 && know_the_delim_quote((char *)s) > 2
+		&& j != -1)
 	{
-			str = ft_calloc((i + j + 1), sizeof(char));
-			if (str == NULL)
-				return (NULL);
+		str = ft_calloc((i + j + 1), sizeof(char));
+		if (str == NULL)
+			return (NULL);
 	}
 	else if (j <= 0)
 	{
@@ -83,8 +84,8 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 static char	*environment_variable(t_data *data, char *str, char *fullstr)
 {
 	char	*value;
-	int 	quote;
-	
+	int		quote;
+
 	quote = know_the_quote(fullstr);
 	if (quote < 2)
 	{
@@ -103,7 +104,7 @@ static char	*environment_variable(t_data *data, char *str, char *fullstr)
 	return (str);
 }
 
-static	char	*make_the_char(t_data *data, char *str)
+static char	*make_the_char(t_data *data, char *str)
 {
 	int		i;
 	int		start;

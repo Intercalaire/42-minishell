@@ -16,9 +16,9 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 	char	*str;
+
 	(void)argc;
 	(void)argv;
-
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (EXIT_FAILURE);

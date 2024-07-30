@@ -14,7 +14,8 @@
 
 int	outfile(t_data *data, int *y, char *str)
 {
-	data->output->outfile[*y][data->meter->count_outfile] = ft_strdup_outfile(data, str, *y, 0);
+	data->output->outfile[*y][data->meter->count_outfile]
+		= ft_strdup_outfile(data, str, *y, 0);
 	if (!data->output->outfile[*y][data->meter->count_outfile])
 	{
 		ft_free_data(data, str);
@@ -39,7 +40,8 @@ int	outfile_append(t_data *data, int *y, char *str)
 
 int	infile(t_data *data, int *y, char *str)
 {
-	data->output->infile[*y][data->meter->count_infile] = ft_strdup_outfile(data, str, *y, 0);
+	data->output->infile[*y][data->meter->count_infile]
+		= ft_strdup_outfile(data, str, *y, 0);
 	if (!data->output->infile[*y][data->meter->count_infile])
 	{
 		ft_free_data(data, str);
@@ -51,7 +53,8 @@ int	infile(t_data *data, int *y, char *str)
 
 int	h_doc(t_data *data, int *y, char *str)
 {
-	data->output->h_doc[*y][data->meter->count_h_doc] = ft_strdup_outfile(data, str, *y, 1);
+	data->output->h_doc[*y][data->meter->count_h_doc]
+		= ft_strdup_outfile(data, str, *y, 1);
 	if (!data->output->h_doc[*y][data->meter->count_h_doc])
 	{
 		ft_free_data(data, str);

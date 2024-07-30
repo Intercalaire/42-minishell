@@ -26,9 +26,18 @@ static int	initialize_and_check_conditions(t_data *data, int *i, int *y)
 
 static int	handle_command_arg(t_data *data, int *i, int *y, int *z)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	if (!data->command->cmd[*y])
 	{
-		data->command->cmd[*y] = ft_strdup_2(data, data->command->lign[(*i)]);
+		tmp = ft_strdup_2(data, data->command->lign[(*i)]);
+		if (ft_strlen(tmp) == 0)
+		{
+			free(tmp);
+			return(0);
+		}
+		data->command->cmd[*y] = tmp;
 		if (!data->command->cmd[*y])
 			return (2);
 	}
@@ -76,5 +85,7 @@ int	handle_args(t_data *data, int *i, int *y, int *z)
 			return (2);
 		(*i)++;
 	}
+	if (data->command->cmd[0] == NULL)
+		return (2);
 	return (0);
 }

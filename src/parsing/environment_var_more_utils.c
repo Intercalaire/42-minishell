@@ -12,7 +12,8 @@
 
 #include "../../include/parsing/minishell.h"
 
-// static char *calloc_search_env_utils(t_data *data, char *substr, char *finalstr, int result);
+// static char *calloc_search_env_utils(t
+// _data *data, char *substr, char *finalstr, int result);
 
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 {
@@ -23,7 +24,8 @@ char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 		str[*j++] = s[*k++];
 		str[*j++] = s[*k++];
 	}
-	if (s[*k] == '$' && (s[*k + 1] == '\''  || s[*k + 1] == '\"') && s[*k + 2] == '$')
+	if (s[*k] == '$' && (s[*k + 1] == '\'' || s[*k + 1] == '\"') && s[*k
+			+ 2] == '$')
 	{
 		(*j)++;
 		(*k)++;
@@ -56,14 +58,17 @@ char	*ft_strjoin_free(char *s1, char *s2, char *to_free)
 	return (str);
 }
 
-int calloc_search_env(t_data *data, const char *str)
+int	calloc_search_env(t_data *data, const char *str)
 {
-	int i = 0;
-	int	index_of_end = 0;
-	char *substr = NULL;
-	int	result;
-	char *finalstr;
+	int		i;
+	int		index_of_end;
+	char	*substr;
+	int		result;
+	char	*finalstr;
 
+	i = 0;
+	index_of_end = 0;
+	substr = NULL;
 	i = 0;
 	finalstr = NULL;
 	if (!data || !str || !ft_strchr(str, '$'))
@@ -132,7 +137,8 @@ int calloc_search_env(t_data *data, const char *str)
 // 	return (-1);
 // }
 
-// static char *calloc_search_env_utils(t_data *data, char *substr, char *finalstr, int result)
+// static char *calloc_search_env_utils(t_data *data, char *substr,
+// char *finalstr, int result)
 // {
 // 		if (substr)
 // 			free(substr);
