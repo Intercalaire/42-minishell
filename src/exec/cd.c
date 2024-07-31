@@ -113,7 +113,8 @@ int	cd(t_data *data, char **arg)
 	}
 	else
 	{
-		directory_error(arg);
+		if (directory_error(arg))
+			return (1);
 		free(oldpwd);
 	}
 	free(home);

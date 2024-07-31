@@ -35,10 +35,11 @@ char	*var_path(t_data *data, char *cmd)
 		return (NULL);
 	}
 	var = ft_split(data->env[path_index] + 5, ':');
-	while (var[i++])
+	while (var[i])
 	{
 		if (!ft_strncmp(var[i], "/bin", 5))
 			break ;
+		i++;
 	}
 	tmp = ft_strjoin(var[i], "/");
 	ft_free_strtab(var);
@@ -73,6 +74,14 @@ char	**create_args(char *cmd, char **arg)
 void	free_path(char *path, char **args);
 static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 {
+	if (ft_strncmp(cmd, "ls", 3) == 0)
+	{
+		printf("OOOOOOOH im not a ls");
+		data->exit_status = 0;
+		ft_end_error_prog(data);
+		free_path(full_path, args);
+		exit(0);
+	}
 	if (errno == ENOENT)
 	{
 		print_error("Minishell: ", cmd, ": No such file or directory");

@@ -196,7 +196,7 @@ void handle_user_input(t_data *data, char *end_word , int i)
     	}
     	expanded_line = expand_env_vars(data, line, i);
     	write(data->output->fd, expanded_line, strlen(expanded_line));
-    	write(data->output->fd, "\n", 1);
+    	write(data->output->fd, "\n", 2);
     	free(expanded_line);
     	free(line);
     	line = readline(prompt);
@@ -298,7 +298,13 @@ int execute_builtin_with_redirection(t_data *data, char *cmd, char **arg)
 	data->fd_pipe->std_in = dup(STDIN_FILENO);
 	data->fd_pipe->std_out = dup(STDOUT_FILENO);
 	if (check_open_files(data, 0))
+	{    
+		dup2(data->fd_pipe->std_in, STDIN_FILENO);
+    	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+    	close(data->fd_pipe->std_in);
+    	close(data->fd_pipe->std_out);
 		return (1);
+	}
     exec(data, cmd, arg);
     dup2(data->fd_pipe->std_in, STDIN_FILENO);
     dup2(data->fd_pipe->std_out, STDOUT_FILENO);
@@ -311,7 +317,7 @@ int start_process(t_data *data)
 {
 		// if (data->command->cmd[0] == NULL)
 		// 	return (1);
-		if (is_builtin(data->command->cmd[0]))
+		if (is_builtin(data->command->cmd[0]) || !data->command->cmd[0])
 		{
 			if (execute_builtin_with_redirection(data, data->command->cmd[0], data->command->arg[0]))
 				return (1);
@@ -354,14 +360,15 @@ void child_processus(t_data *data, int *pipefd, int i)
 			exit(EXIT_FAILURE);
 		}
 		exec(data, data->command->cmd[i], data->command->arg[i]);
-
 		}
 
 int parent_processus(t_data *data, int *pipefd, int i)
 {
+
 	signal(SIGINT, SIG_DFL);
 	data->sig_status = 1;
 	ft_sig(data);
+
 	if (i != 0) 
         close(data->fd_pipe->fd_in);
     if (i != data->meter->nbr_pipe ) 
@@ -385,7 +392,7 @@ int execute_fork(t_data *data, int i, int *pipefd)
 	{
 		child_processus(data, pipefd, i);
 		ft_end_error_prog(data);
-		exit(127);
+		exit(0);
 	} 
 	else if (parent_processus(data, pipefd, i))
 		return (1);
@@ -428,8 +435,21 @@ int my_pipe(t_data *data)
 		i = 0;
 		while (i <= data->meter->nbr_pipe) 
 		{
-			wait(NULL);
-			i++;
+			int status;
+
+			if (waitpid(-1 , &status, 0) == -1)
+			{
+				perror("waitpid");
+				data->exit_status = 1;
+			}
+			else
+			{
+				if (WIFEXITED(status))
+				{
+					data->exit_status = WEXITSTATUS(status);
+				}
+			}
+				i++;
 		}
 	}
 	return (0);

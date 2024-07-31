@@ -65,6 +65,7 @@ int create_infiles(t_data *data, int i)
 {
     int infd = -1;
     int j = 0;
+    
     while (data->output->infile[i][j] != NULL) 
     {
         if (infd != -1) 

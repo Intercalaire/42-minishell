@@ -120,7 +120,6 @@ void	path(t_data *data, char *cmd, char **arg)
 				ft_end_error_prog(data);
 				exit(1);
 			}
-
 		cpy_args = create_args(cmd, arg);
 		execution(data, cmd, cpy_args, full_path);
 		exit(0);
