@@ -25,6 +25,7 @@ char	*env_var_utils(t_data *data, char *value, int quote)
 {
 	int	i;
 	int	value_len;
+	char	*result;
 
 	if (quote == 0 && value[1] == '\0')
 		return (ft_strdup_free("", value));
@@ -36,7 +37,11 @@ char	*env_var_utils(t_data *data, char *value, int quote)
 	if (i == -1)
 		return (ft_strdup_free("", value));
 	if (check_dollar_stop(value) == 0)
-		return (ft_strdup_free(char_dollar_stop(value), value));
+	{
+		result = char_dollar_stop(value);
+		free(value);
+		return (ft_strdup_free(result, result));
+	}
 	value_len = ft_strlen(value);
 	if (!ft_strchr(data->env[i], '='))
 		return (ft_strdup_free("", value));

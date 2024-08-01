@@ -66,7 +66,11 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 			if (env_str)
 			{
 				while (env_str && env_str[z])
+				{
+					//printf("env_str[z] = %c\n", env_str[z]);
 					str[j++] = env_str[z++];
+					//printf("str[--j] = %c\n", str[--j]);
+				}
 				k += data->len_env;
 				free(env_str);
 				env_str = NULL;
@@ -134,6 +138,8 @@ static int	know_the_quote(char *str)
 	in_quote_double = 0;
 	if (str == NULL || ft_strlen(str) == 1)
 		return (2);
+	while (str[i] == '$' && str[ft_strlen(str) - 1] == '\'')
+		i++;
 	while (str[i] && str[i] != '$')
 	{
 		if (in_quote_simple == 0 && str[i] == '\'' && in_quote_double == 0)

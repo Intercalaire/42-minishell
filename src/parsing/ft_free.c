@@ -15,7 +15,7 @@ void	ft_free_cmd(t_data *data, char **cmd);
 
 void	ft_error_prog(t_data *data, char *str, char *msg)
 {
-	//printf("%s\n", msg);
+	printf("%s\n", msg);
 	(void)msg;
 	ft_free_data(data, str);
 	exit(EXIT_FAILURE);

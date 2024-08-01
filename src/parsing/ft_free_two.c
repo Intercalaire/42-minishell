@@ -14,7 +14,7 @@
 
 void	ft_little_error_prog(t_data *data, char *str, char *msg, char token)
 {
-	// printf("%s `%c'\n", msg, token);
+	printf("%s `%c'\n", msg, token);
 	(void)msg;
 	(void)token;
 	free(str);
@@ -29,7 +29,7 @@ void	ft_little_error_prog(t_data *data, char *str, char *msg, char token)
 
 void	ft_little_error_prog_quote(t_data *data, char *str, char *msg)
 {
-	// printf("%s\n", msg);
+	printf("%s\n", msg);
 	(void)msg;
 	free(str);
 	if (data)
