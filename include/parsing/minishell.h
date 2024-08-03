@@ -109,7 +109,7 @@ int		ft_find_char(char *str, char c);
 int		calloc_search_env(t_data *data, const char *str);
 char	*ft_strdup_free(const char *s, char *to_free);
 char	*ft_itoa_free(int n, char *to_free);
-char	*lign_env(t_data *data, const char *str);
+char	*ft_strjoin_free(char *s1, char *s2, char *to_free);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);

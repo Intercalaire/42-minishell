@@ -54,43 +54,6 @@ static void	handle_pipe(t_data *data, int *i, int *y)
 	(*y)++;
 }
 
-// static void	print_cmd(t_data *data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (data->command->cmd[i])
-// 	{
-// 		printf("cmd[%d] : %s\n", i, data->command->cmd[i]);
-// 		i++;
-// 	}
-// }
-
-// static void	print_arg(t_data *data)
-// {
-// 	int	i;
-// 	int	y;
-
-// 	i = 0;
-// 	if (data->command->arg != NULL)
-// 	{
-// 		while (data->command->arg[i])
-// 		{
-// 			y = 0;
-// 			if (data->command->arg[i] != NULL)
-// 			{
-// 				while (data->command->arg[i][y])
-// 				{
-// 					printf("arg[%d][%d] : %s\n", i,
-// 						y, data->command->arg[i][y]);
-// 					y++;
-// 				}
-// 			}
-// 			i++;
-// 		}
-// 	}
-// }
-
 int	pars_pipe(t_data *data)
 {
 	int	i;
@@ -114,8 +77,6 @@ int	pars_pipe(t_data *data)
 		y++;
 		i++;
 	}
-	// print_cmd(data);
-	// print_arg(data);
 	return (0);
 }
 

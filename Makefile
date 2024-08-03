@@ -29,6 +29,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/environment_variable_utils.c \
 		./src/parsing/environment_var_more_utils.c \
 		./src/parsing/environment_variable_more_more_utils.c \
+		./src/parsing/environment_variable_more_more_more_utils.c \
 		./src/parsing/check_pipe.c \
 		./src/parsing/check_out.c \
 		./src/parsing/ft_strtok.c \
@@ -39,6 +40,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/outfile.c \
 		./src/parsing/outfile_utils.c \
 		./src/parsing/outfile_init.c \
+		./src/parsing/outfile_init_utils.c \
 		./src/parsing/pars_pipe_utils.c \
 		./src/exec/cd.c \
 		./src/exec/echo.c \

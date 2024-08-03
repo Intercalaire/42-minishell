@@ -23,8 +23,8 @@ int	ktq_utils(int in_qte_dble, int in_qte_sple)
 
 char	*env_var_utils(t_data *data, char *value, int quote)
 {
-	int	i;
-	int	value_len;
+	int		i;
+	int		value_len;
 	char	*result;
 
 	if (quote == 0 && value[1] == '\0')

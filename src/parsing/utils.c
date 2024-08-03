@@ -45,7 +45,7 @@ int	init_zero(t_data *data)
 
 int	remove_end_space(t_data *data, char *str)
 {
-	int	len;
+	int		len;
 	size_t	i;
 
 	i = 0;

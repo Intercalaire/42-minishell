@@ -12,9 +12,6 @@
 
 #include "../../include/parsing/minishell.h"
 
-// static char *calloc_search_env_utils(t
-// _data *data, char *substr, char *finalstr, int result);
-
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 {
 	if (s[*k] == '$' && !s[*k + 1])
@@ -56,49 +53,4 @@ char	*ft_strjoin_free(char *s1, char *s2, char *to_free)
 	str = ft_strjoin(s1, s2);
 	free(to_free);
 	return (str);
-}
-
-int	calloc_search_env(t_data *data, const char *str)
-{
-	int		i;
-	int		index_of_end;
-	char	*substr;
-	int		result;
-	char	*finalstr;
-
-	i = 0;
-	index_of_end = 0;
-	substr = NULL;
-	i = 0;
-	finalstr = NULL;
-	if (!data || !str || !ft_strchr(str, '$'))
-		return (-1);
-	while (str[i])
-	{
-		while (str[i] && str[i] != '$')
-			i++;
-		if (!str[i])
-			break ;
-		if (str && !str[i + 1])
-			index_of_end = 0;
-		index_of_end = i + 1;
-		while (str[index_of_end] && (ft_isalnum(str[index_of_end]) || str[index_of_end] == '_'))
-			index_of_end++;
-		substr = ft_substr(str, i + 1, index_of_end - i - 1);
-		result = search_env(data, (char *)substr);
-		if (substr)
-			free(substr);
-		if (result != -1 && finalstr)
-			finalstr = ft_strjoin_free(finalstr, data->env[result], finalstr);
-		else if (result != -1 && !finalstr)
-			finalstr = ft_strdup(data->env[result]);
-		else if (result == -1 && finalstr)
-			finalstr = ft_strjoin_free(finalstr, "", finalstr);
-		i = index_of_end;
-	}
-	i = ft_strlen(finalstr);
-	free(finalstr);
-	if (i != 0)
-		return (i);
-	return (-1);
 }

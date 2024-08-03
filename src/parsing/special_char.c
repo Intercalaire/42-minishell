@@ -14,6 +14,7 @@
 
 static int	double_output(t_data *data, char *str);
 static int	double_output_utils(t_data *data, char *str, int i);
+static int	double_output_more_utils(t_data *data, char *str, int i);
 
 int	special_char(t_data *data, char *str)
 {
@@ -45,8 +46,38 @@ static int	double_output(t_data *data, char *str)
 	return (0);
 }
 
+int	ft_strstr(char *str, char *to_find, char *c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (to_find[j] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == to_find[j])
+		{
+			while (str[i + j] == to_find[j] && to_find[j])
+				j++;
+			if (to_find[j] == '\0')
+			{
+				*c = to_find[j - 1];
+				return (1);
+			}
+			j = 0;
+		}
+		i++;
+	}
+	return (0);
+}
+
 static int	double_output_utils(t_data *data, char *str, int i)
 {
+	char	tmp;
+
+	tmp = 0;
 	if (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
 	{
 		ft_little_error_prog(data, str, TOKEN, str[i]);
@@ -62,9 +93,24 @@ static int	double_output_utils(t_data *data, char *str, int i)
 		ft_little_error_prog(data, str, TOKEN, str[i]);
 		return (1);
 	}
+	if (double_output_more_utils(data, str, i) == 1)
+		return (1);
+	return (0);
+}
+
+static int	double_output_more_utils(t_data *data, char *str, int i)
+{
+	char	tmp;
+
+	tmp = 0;
 	if (str[i] == '<' && str[i + 1] == ' ' && str[i + 2] == '<')
 	{
 		ft_little_error_prog(data, str, TOKEN, str[i]);
+		return (1);
+	}
+	if (ft_strstr(str, ">>>", &tmp) == 1 || ft_strstr(str, "<<<", &tmp) == 1)
+	{
+		ft_little_error_prog(data, str, TOKEN, tmp);
 		return (1);
 	}
 	return (0);

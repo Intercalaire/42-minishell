@@ -35,7 +35,7 @@ static int	handle_command_arg(t_data *data, int *i, int *y, int *z)
 		if (ft_strlen(tmp) == 0)
 		{
 			free(tmp);
-			return(0);
+			return (0);
 		}
 		data->command->cmd[*y] = tmp;
 		if (!data->command->cmd[*y])

@@ -14,6 +14,7 @@
 
 static int	is_quote(char c);
 static void	handle_char(char *result, char *str, t_str_index *index);
+static char	*ft_trim_quote_utils(char *result, int j, char *str);
 
 static int	is_quote(char c)
 {
@@ -50,7 +51,6 @@ char	*ft_trim_quote(char *str)
 	char		quote;
 	char		*result;
 	t_str_index	index;
-	char		*tmp;
 
 	i = 0;
 	j = 0;
@@ -58,7 +58,6 @@ char	*ft_trim_quote(char *str)
 	index.i = &i;
 	index.j = &j;
 	index.quote = &quote;
-	tmp = ft_strdup(str);
 	result = ft_calloc((ft_strlen(str) + 1), sizeof(char));
 	if (result == NULL || str == NULL)
 		return (NULL);
@@ -67,6 +66,15 @@ char	*ft_trim_quote(char *str)
 		handle_char(result, str, &index);
 		i++;
 	}
+	result = ft_trim_quote_utils(result, j, str);
+	return (result);
+}
+
+static char	*ft_trim_quote_utils(char *result, int j, char *str)
+{
+	char		*tmp;
+
+	tmp = ft_strdup(str);
 	result[j] = '\0';
 	free(str);
 	str = NULL;

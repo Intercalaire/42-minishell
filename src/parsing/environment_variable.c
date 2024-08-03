@@ -66,11 +66,7 @@ static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
 			if (env_str)
 			{
 				while (env_str && env_str[z])
-				{
-					//printf("env_str[z] = %c\n", env_str[z]);
 					str[j++] = env_str[z++];
-					//printf("str[--j] = %c\n", str[--j]);
-				}
 				k += data->len_env;
 				free(env_str);
 				env_str = NULL;
