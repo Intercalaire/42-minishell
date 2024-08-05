@@ -41,6 +41,14 @@ static void	sigquit_handler(int signum)
 	rl_replace_line("", 0);
 	g_sig = signum;
 }
+static void sigquit_pipe(int signum)
+{
+	(void)signum;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	raise(SIGINT);
+}
 
 int	ft_sig(t_data *data)
 {
@@ -54,10 +62,10 @@ int	ft_sig(t_data *data)
 		signal(SIGINT, path_handler);
 		signal(SIGQUIT, sigquit_handler);
 	}
-	else
+	else if (data->sig_status == 2)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, path_handler);
+		signal(SIGQUIT, sigquit_pipe);
 	}
 	if (g_sig)
 	{

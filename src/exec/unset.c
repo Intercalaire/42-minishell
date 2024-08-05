@@ -11,12 +11,30 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
+static void free_env(t_data *data, char **env)
+{
+	int i;
+
+	i = 0;
+	while (data->env[i])
+		i++;
+	while (i >= 0)
+	{
+		free(env[i]);
+		i--;
+	}
+	free(env);
+}
+
 static void	remove_var(t_data *data, int env_index, char **new_env)
 {
 	int	j;
 
 	if (env_index == -1)
+	{
+		free(new_env);
 		return ;
+	}
 	j = 0;
 	while (j < env_index)
 	{
@@ -30,6 +48,7 @@ static void	remove_var(t_data *data, int env_index, char **new_env)
 	}
 	ft_free_strtab(data->env);
 	data->env = cpy_envir(new_env);
+	free_env(data, new_env);
 }
 
 int	ft_unset(t_data *data, char **arg)
@@ -41,17 +60,18 @@ int	ft_unset(t_data *data, char **arg)
 	char	**new_env;
 
 	i = 0;
-	j = 0;
 	key = NULL;
 	if (!*arg)
 		return (0);
-	while (data->env[j])
-		j++;
-	new_env = ft_calloc((j + 1), sizeof(char *));
-	if (!new_env)
-		return (1);
+
 	while (arg[i])
 	{
+		j = 0;
+		while (data->env[j])
+			j++;
+		new_env = ft_calloc((j), sizeof(char *));
+		if (!new_env)
+			return (1);
 		if (arg[i][0] == '-')
 		{
 			print_error("Minishell: unset: ", arg[i], ": invalid option.");
@@ -66,12 +86,10 @@ int	ft_unset(t_data *data, char **arg)
 		key = ft_strdup(arg[i]);
 		env_index = search_env(data, key);
 		remove_var(data, env_index, new_env);
+		free(key);
 		}
 		i++;
 	}
-	if (key)
-		free(key);
-	if (new_env)
-		ft_free_strtab(new_env);
+
 	return (0);
 }

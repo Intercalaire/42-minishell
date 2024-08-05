@@ -366,9 +366,8 @@ int parent_processus(t_data *data, int *pipefd, int i)
 {
 
 	signal(SIGINT, SIG_DFL);
-	data->sig_status = 1;
+	data->sig_status = 2;
 	ft_sig(data);
-
 	if (i != 0) 
         close(data->fd_pipe->fd_in);
     if (i != data->meter->nbr_pipe ) 

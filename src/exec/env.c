@@ -25,7 +25,8 @@ int	print_env(t_data *data, char **arg)
 	}
 	while (data->env[i])
 	{
-		printf("%s\n", data->env[i]);
+		if (ft_strchr(data->env[i], '='))
+			printf("%s\n", data->env[i]);
 		i++;
 	}
 	return (0);
