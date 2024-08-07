@@ -21,7 +21,7 @@ int	search_env(t_data *data, char *str)
 	while (data->env[i])
 	{
 		if (ft_strncmp(str, data->env[i], len) == 0 && (data->env[i][len] == '='
-				|| data->env[i][len] == '\0'))
+			|| data->env[i][len] == '\0'))
 			return (i);
 		i++;
 	}

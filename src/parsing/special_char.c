@@ -75,9 +75,6 @@ int	ft_strstr(char *str, char *to_find, char *c)
 
 static int	double_output_utils(t_data *data, char *str, int i)
 {
-	char	tmp;
-
-	tmp = 0;
 	if (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
 	{
 		ft_little_error_prog(data, str, TOKEN, str[i]);

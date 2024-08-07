@@ -9,6 +9,7 @@
 /*   Updated: 2024/06/30 15:18:07 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../include/parsing/minishell.h"
 
 char	**cpy_envir(char **env)
@@ -32,7 +33,7 @@ char	**cpy_envir(char **env)
 	return (new_env);
 }
 
-static void	print_declare(t_data *data, int i)
+void	print_declare(t_data *data, int i)
 {
 	char	*key;
 	char	*value;
@@ -60,21 +61,6 @@ static void	print_declare(t_data *data, int i)
 	free(new_env);
 }
 
-void	plus_equal(t_data *data, char *arg)
-{
-	char	*key;
-	char	*value;
-
-	key = ft_strtok(arg, "+=");
-	value = ft_strdup(arg + ft_strlen(key) + 2);
-	if (search_env(data, key) == -1)
-		add_env(data, key, value);
-	else
-		cat_env(data, key, value);
-	free(key);
-	free(value);
-}
-
 void	equal_sign(t_data *data, char *arg)
 {
 	char	*key;
@@ -93,6 +79,7 @@ void	equal_sign(t_data *data, char *arg)
 	if (value)
 		free(value);
 }
+
 int	check_export(char *arg)
 {
 	int	i;
@@ -118,27 +105,17 @@ int	check_export(char *arg)
 	return (0);
 }
 
-int	ft_export(t_data *data, char **arg)
+void	plus_equal(t_data *data, char *arg)
 {
-	int	i;
+	char	*key;
+	char	*value;
 
-	i = 0;
-	if (!arg || !*arg)
-	{
-		print_declare(data, i);
-		return (0);
-	}
-	while (arg[i])
-	{
-		if (check_export(arg[i]))
-			return (1);
-		if (!ft_strchr(arg[i], '=') && search_env(data, arg[i]) == -1)
-			add_env(data, arg[i], NULL);
-		else if (ft_strnstr(arg[i], "+=", ft_strlen(arg[i])) != NULL)
-			plus_equal(data, arg[i]);
-		else if (ft_strchr(arg[i], '='))
-			equal_sign(data, arg[i]);
-		i++;
-	}
-	return (0);
+	key = ft_strtok(arg, "+=");
+	value = ft_strdup(arg + ft_strlen(key) + 2);
+	if (search_env(data, key) == -1)
+		add_env(data, key, value);
+	else
+		cat_env(data, key, value);
+	free(key);
+	free(value);
 }

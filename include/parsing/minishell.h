@@ -144,6 +144,14 @@ void	ft_little_error_prog_no_msg(t_data *data, char *str);
 int		init_data(t_data *data);
 void	init_int_values(int *i, int *j, int *in_quotes);
 
+//export_more_utils
+void	plus_equal(t_data *data, char *arg);
+char	**cpy_envir(char **env);
+void	equal_sign(t_data *data, char *arg);
+int		check_export(char *arg);
+int		ft_export(t_data *data, char **arg);
+void	print_declare(t_data *data, int i);
+
 //exec
 int		ft_export(t_data *data, char **arg);
 int		exec(t_data *data, char *cmd, char **arg);

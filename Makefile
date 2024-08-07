@@ -56,6 +56,7 @@ SRC	= ./src/parsing/init.c \
 		./src/exec/exit.c \
 		./src/exec/ctrl.c \
 		./src/exec/export_utils.c \
+		./src/exec/export_more_utils.c \
 		./src/exec/path_utils.c \
 		./src/exec/create_files.c \
 

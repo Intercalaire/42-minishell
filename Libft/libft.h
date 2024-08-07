@@ -85,7 +85,6 @@ char	*ft_strchr2(const char *str, int to_find);
 size_t	ft_strlen2(char const *str);
 char	*ft_strjoin2(char const *s1, char const *s2);
 size_t	ft_strlcpy2(char *dst, const char *src, size_t size);
-//void	*ft_realloc(void *ptr, size_t newsize);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_trim_quote(char *str);
 char	*ft_strndup(const char *s, int n);
