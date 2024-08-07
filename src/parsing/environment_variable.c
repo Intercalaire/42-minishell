@@ -12,10 +12,7 @@
 
 #include "../../include/parsing/minishell.h"
 
-static char	*environment_variable(t_data *data, char *str, char *fullstr);
-static int	know_the_quote(char *str);
 static char	*make_the_char(t_data *data, char *str);
-static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 
 char	*ft_strdup_2(t_data *data, const char *s)
 {
@@ -46,42 +43,7 @@ char	*ft_strdup_2(t_data *data, const char *s)
 	return (ft_strdup_utils(data, s, str, i));
 }
 
-static char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i)
-{
-	int		j;
-	int		k;
-	int		z;
-	char	*env_str;
-
-	j = 0;
-	k = 0;
-	env_str = NULL;
-	str = ft_strdup_condition((char *)s, str, &j, &k);
-	while (k < i)
-	{
-		if (s[k] == '$')
-		{
-			z = 0;
-			env_str = environment_variable(data, (char *)s + k, (char *)s);
-			if (env_str)
-			{
-				while (env_str && env_str[z])
-					str[j++] = env_str[z++];
-				k += data->len_env;
-				free(env_str);
-				env_str = NULL;
-			}
-			else
-				str[j++] = s[k++];
-		}
-		else
-			str[j++] = s[k++];
-	}
-	str[j] = '\0';
-	return (ft_trim_quote(str));
-}
-
-static char	*environment_variable(t_data *data, char *str, char *fullstr)
+char	*environment_variable(t_data *data, char *str, char *fullstr)
 {
 	char	*value;
 	int		quote;
@@ -123,7 +85,7 @@ static char	*make_the_char(t_data *data, char *str)
 	return (value);
 }
 
-static int	know_the_quote(char *str)
+int	know_the_quote(char *str)
 {
 	int	i;
 	int	in_quote_simple;

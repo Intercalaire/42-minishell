@@ -60,6 +60,8 @@ void	ft_free_data(t_data *data, char *str)
 		}
 		free(data->output);
 	}
+	if (data->env_var)
+		free(data->env_var);
 	if (data->meter)
 		free(data->meter);
 	if (data->fd_pipe)

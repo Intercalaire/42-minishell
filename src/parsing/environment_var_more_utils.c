@@ -12,6 +12,8 @@
 
 #include "../../include/parsing/minishell.h"
 
+static char	*ft_strdup_condition_utils(char *s, char *str, int *j, int *k);
+
 char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 {
 	if (s[*k] == '$' && !s[*k + 1])
@@ -21,13 +23,34 @@ char	*ft_strdup_condition(char *s, char *str, int *j, int *k)
 		str[*j++] = s[*k++];
 		str[*j++] = s[*k++];
 	}
-	if (s[*k] == '$' && (s[*k + 1] == '\'' || s[*k + 1] == '\"') && s[*k
-			+ 2] == '$')
+	return (ft_strdup_condition_utils(s, str, j, k));
+}
+
+static char	*ft_strdup_condition_utils(char *s, char *str, int *j, int *k)
+{
+	int	z;
+
+	z = *k;
+	while (s[z] && s[z] != '$')
+		z++;
+	if (s[z] == '$' && (s[z + 1] == '\'' || s[z + 1] == '\"'))
 	{
-		(*j)++;
-		(*k)++;
-		str[*j++] = s[*k++];
-		str[*j++] = s[*k++];
+		if (s[*k + 1] == '\'' && s[*k + 2] == '$')
+		{
+			(*k) += 2;
+			while (s[*k] && s[*k] != '\'')
+			{
+				str[(*j)++] = s[(*k)++];
+			}
+			if (s[*k] == '\'')
+				(*k)++;
+		}
+		else
+		{
+			str[(*j)++] = s[(*k)++];
+			if (s[*k] == '\'' || s[*k] == '\"')
+				str[(*j)++] = s[(*k)++];
+		}
 	}
 	return (str);
 }

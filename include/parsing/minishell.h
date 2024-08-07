@@ -64,6 +64,15 @@ typedef struct s_fd_pipe
     int fd_in;
 } t_fd_pipe;
 
+typedef struct s_env_var
+{
+	int		j;
+	int		k;
+	int		x;
+	int		z;
+	int		len_env_var;
+} t_env_var;
+
 typedef struct s_data
 {
 int			count;
@@ -79,6 +88,7 @@ t_output	*output;
 t_meter		*meter;
 t_command	*command;
 t_fd_pipe	*fd_pipe;
+t_env_var	*env_var;
 }	t_data;
 
 //with ft_strtok
@@ -98,6 +108,9 @@ int		look_out(t_data *data, char *str);
 int		know_the_delim_quote(char *str);
 
 //environment_variable
+int		know_the_quote(char *str);
+char	*environment_variable(t_data *data, char *str, char *fullstr);
+char	*ft_strdup_utils(t_data *data, const char *s, char *str, int i);
 int		ktq_utils(int in_qte_dble, int in_qte_sple);
 char	*ft_strdup_2(t_data *data, const char *s);
 char	*env_var_utils(t_data *data, char *value, int quote);
@@ -158,7 +171,7 @@ int    create_outfiles_append(t_data *data, int i);
 int    create_infiles(t_data *data, int i);
 int    create_infiles_heredoc(t_data *data, int i);
 int     close_fd(int fd);
-void print_error(char *start, char *cmd, char *str);
+void	print_error(char *start, char *cmd, char *str);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

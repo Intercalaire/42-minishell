@@ -29,6 +29,9 @@ int	init_data(t_data *data)
 	data->fd_pipe = malloc(sizeof(t_fd_pipe));
 	if (!data->fd_pipe)
 		return (2);
+	data->env_var = malloc(sizeof(t_env_var));
+	if (!data->env_var)
+		return (2);
 	data->command->arg = NULL;
 	data->command->cmd = NULL;
 	data->command->lign = NULL;
@@ -37,13 +40,13 @@ int	init_data(t_data *data)
 	data->output->outfile = NULL;
 	data->output->outfile_append = NULL;
 	data->output->here_d = NULL;
-	data->output->append = NULL;
 	init_utils(data);
 	return (0);
 }
 
 static void	init_utils(t_data *data)
 {
+	data->output->append = NULL;
 	data->count = 0;
 	data->size = 0;
 	data->len_env = 0;
