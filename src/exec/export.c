@@ -93,28 +93,29 @@ void	equal_sign(t_data *data, char *arg)
 	if (value)
 		free(value);
 }
-int check_export(char *arg)
+int	check_export(char *arg)
 {
-    int i;
+	int	i;
 
-    i = 0;
+	i = 0;
 	if (arg[i] == '=')
 	{
 		print_error("Minishell: export: `", arg, "': Not a valid identifier");
 		return (1);
 	}
-    while (arg[i] && arg[i] != '=')
-    {
-        if (arg[i] == '+' && arg[i + 1] == '=')
-            break;
-        if (!ft_isalpha(arg[i]) && arg[i] != '_')
-        {
-            print_error("Minishell: export: `", arg, "': Not a valid identifier");
-            return (1);
-        }
-        i++;
-    }
-    return (0);
+	while (arg[i] && arg[i] != '=')
+	{
+		if (arg[i] == '+' && arg[i + 1] == '=')
+			break ;
+		if (!ft_isalpha(arg[i]) && arg[i] != '_')
+		{
+			print_error("Minishell: export: `", arg,
+				"': Not a valid identifier");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 int	ft_export(t_data *data, char **arg)

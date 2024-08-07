@@ -9,12 +9,12 @@
 /*   Updated: 2024/06/29 09:38:27 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "../../include/parsing/minishell.h"
-#include <limits.h>
 #include <errno.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static void	env_update(t_data *data, char *oldpwd)
 {
@@ -60,11 +60,11 @@ static int	create_path(char *home, char **arg)
 
 static int	directory_error(char **arg)
 {
-
 	if (chdir(arg[0]) != 0)
 	{
 		if (errno == ENOENT)
-			print_error("Minishell: cd: ", arg[0], ": No such file or directory");
+			print_error("Minishell: cd: ", arg[0],
+				": No such file or directory");
 		else if (errno == EACCES || errno == EPERM)
 			print_error("Minishell: cd: ", arg[0], ": Permission denied");
 		else
@@ -104,8 +104,8 @@ int	cd(t_data *data, char **arg)
 	getcwd(oldpwd, PATH_MAX);
 	if (k != -1)
 		home = ft_strdup(data->env[k] + 5);
-	if (!arg || ft_strncmp(arg[0], "~", 1) == 0
-		|| ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
+	if (!arg || ft_strncmp(arg[0], "~", 1) == 0 || ft_strncmp(arg[0], home,
+			ft_strlen(home)) == 0)
 	{
 		if (create_path(home, arg))
 			return (1);

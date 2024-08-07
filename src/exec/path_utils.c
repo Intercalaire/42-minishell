@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
+#include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
-#include <errno.h>
-#include <fcntl.h>
 
 char	*var_path(t_data *data, char *cmd)
 {
@@ -71,7 +71,7 @@ char	**create_args(char *cmd, char **arg)
 	}
 	return (args);
 }
-void	free_path(char *path, char **args);
+void		free_path(char *path, char **args);
 static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 {
 	if (ft_strncmp(cmd, "ls", 3) == 0)

@@ -11,13 +11,12 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
+#include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
-#include <errno.h>
-#include <fcntl.h>
-
 
 static void	signal_traitment(t_data *data, int term_sig)
 {
@@ -50,10 +49,10 @@ static int	parent_process(t_data *data, pid_t pid)
 	else
 	{
 		if (WIFEXITED(status))
-			{
-				data->exit_status = WEXITSTATUS(status);
-				return (1);
-			}
+		{
+			data->exit_status = WEXITSTATUS(status);
+			return (1);
+		}
 		else if (WIFSIGNALED(status))
 			signal_traitment(data, WTERMSIG(status));
 	}
@@ -68,7 +67,7 @@ void	free_path(char *path, char **args)
 		ft_free_strtab(args);
 }
 
-int check_open_files(t_data *data, int i);
+int			check_open_files(t_data *data, int i);
 
 void	path(t_data *data, char *cmd, char **arg)
 {
@@ -84,9 +83,9 @@ void	path(t_data *data, char *cmd, char **arg)
 		return ;
 	}
 	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' || cmd[1] == '.')))
-        full_path = ft_strdup(cmd);
-    else
-    {
+		full_path = ft_strdup(cmd);
+	else
+	{
 		full_path = var_path(data, cmd);
 		if (!full_path)
 		{
@@ -102,7 +101,6 @@ void	path(t_data *data, char *cmd, char **arg)
 		free_path(full_path, cpy_args);
 		return ;
 	}
-
 	pid = fork();
 	if (!full_path)
 		return ;

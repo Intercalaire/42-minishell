@@ -9,13 +9,13 @@
 /*   Updated: 2024/06/30 14:39:39 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "../../include/parsing/minishell.h"
+#include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include <readline/history.h>
-#include "../../include/parsing/minishell.h"
+#include <unistd.h>
 
 static void	handler(int signum)
 {
@@ -41,7 +41,7 @@ static void	sigquit_handler(int signum)
 	rl_replace_line("", 0);
 	g_sig = signum;
 }
-static void sigquit_pipe(int signum)
+static void	sigquit_pipe(int signum)
 {
 	(void)signum;
 	rl_on_new_line();

@@ -44,8 +44,8 @@ static int	check_sign(char *str, int *i)
 
 static long long	ft_atol(char *str, int *error)
 {
-	int			i;
-	int			sign;
+	int					i;
+	int					sign;
 	unsigned long long	result;
 
 	i = 0;
@@ -54,10 +54,10 @@ static long long	ft_atol(char *str, int *error)
 	sign = check_sign(str, &i);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10
-				&& str[i] - '0' > LLONG_MAX % 10))
+		if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10 && str[i]
+				- '0' > LLONG_MAX % 10))
 		{
-				*error = 1;
+			*error = 1;
 		}
 		result = result * 10 + (str[i] - '0');
 		i++;
@@ -76,7 +76,7 @@ static long long	ft_atol(char *str, int *error)
 long long	get_exit_code(t_data *data, char **arg)
 {
 	long long	exit_code;
-	int 		error;
+	int			error;
 
 	error = 0;
 	if (!arg || !*arg)
@@ -88,7 +88,8 @@ long long	get_exit_code(t_data *data, char **arg)
 			exit_code = ft_atol(arg[0], &error);
 			if (error == 1)
 			{
-				print_error("Minishell: exit: ", arg[0], ": Numeric argument required");
+				print_error("Minishell: exit: ", arg[0],
+					": Numeric argument required");
 				exit_code = 2;
 			}
 			else
@@ -96,7 +97,8 @@ long long	get_exit_code(t_data *data, char **arg)
 		}
 		else
 		{
-			print_error("Minishell: exit: ", arg[0], ": Numeric argument required");
+			print_error("Minishell: exit: ", arg[0],
+				": Numeric argument required");
 			exit_code = 2;
 		}
 	}
@@ -106,16 +108,16 @@ long long	get_exit_code(t_data *data, char **arg)
 void	exit_shell(t_data *data, char **arg)
 {
 	long long	exit_code;
-	
+
 	if (data->fd_pipe->std_in > -1)
 	{
 		dup2(data->fd_pipe->std_in, STDIN_FILENO);
-    	close(data->fd_pipe->std_in);
+		close(data->fd_pipe->std_in);
 	}
 	if (data->fd_pipe->std_out > -1)
 	{
-    	dup2(data->fd_pipe->std_out, STDOUT_FILENO);
-    	close(data->fd_pipe->std_out);
+		dup2(data->fd_pipe->std_out, STDOUT_FILENO);
+		close(data->fd_pipe->std_out);
 	}
 	if (data->meter->nbr_pipe == 0)
 		ft_putstr_fd("exit\n", 2);

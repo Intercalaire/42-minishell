@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
-static void change_variable(t_data *data, char **arg, char *cmd)
-{	int i;
+
+static void	change_variable(t_data *data, char **arg, char *cmd)
+{
+	int	i;
 
 	i = 0;
 	while (arg[i])

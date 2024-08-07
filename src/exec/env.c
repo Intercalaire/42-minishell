@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "../../include/parsing/minishell.h"
+#include <stdio.h>
 
 int	print_env(t_data *data, char **arg)
 {

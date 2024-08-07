@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
-static void free_env(t_data *data, char **env)
+static void	free_env(t_data *data, char **env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (data->env[i])
@@ -63,7 +63,6 @@ int	ft_unset(t_data *data, char **arg)
 	key = NULL;
 	if (!*arg)
 		return (0);
-
 	while (arg[i])
 	{
 		j = 0;
@@ -83,13 +82,12 @@ int	ft_unset(t_data *data, char **arg)
 		}
 		if (ft_isalnum(arg[i][0]))
 		{
-		key = ft_strdup(arg[i]);
-		env_index = search_env(data, key);
-		remove_var(data, env_index, new_env);
-		free(key);
+			key = ft_strdup(arg[i]);
+			env_index = search_env(data, key);
+			remove_var(data, env_index, new_env);
+			free(key);
 		}
 		i++;
 	}
-
 	return (0);
 }

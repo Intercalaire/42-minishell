@@ -9,11 +9,11 @@
 /*   Updated: 2024/05/30 10:28:05 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <limits.h>
 #include "../../include/parsing/minishell.h"
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int	pwd(void)
 {
