@@ -90,8 +90,10 @@ static void	quote_fsu(char **s, char **before, char *str_str)
 		quote = know_the_quote((char *)s + 1);
 	if (quote == 1)
 	{
-		free(s);
-		free(before);
+		if (*s && s)
+			free(*s);
+		if (*before && before)
+			free(*before);
 		*s = ft_strdup(str_str);
 		*before = ft_strdup("");
 	}
@@ -99,7 +101,10 @@ static void	quote_fsu(char **s, char **before, char *str_str)
 
 static void	free_fsu(char *str, char *s, char *before)
 {
-	free(str);
-	free(s);
-	free(before);
+	if (str)
+		free(str);
+	if (s)
+		free(s);
+	if (before)
+		free(before);
 }
