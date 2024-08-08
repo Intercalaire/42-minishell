@@ -51,10 +51,32 @@ static void	remove_var(t_data *data, int env_index, char **new_env)
 	free_env(data, new_env);
 }
 
+static int unset_utils(t_data *data, char *arg, char *key, char **new_env)
+{
+	int	env_index;
+
+	if (arg[0] == '-')
+	{
+		print_error("Minishell: unset: ", arg, ": invalid option.");
+		if (key)
+			free(key);
+		if (new_env)
+			ft_free_strtab(new_env);
+		return (2);
+	}
+	if (ft_isalnum(arg[0]))
+	{
+		key = ft_strdup(arg);
+		env_index = search_env(data, key);
+		remove_var(data, env_index, new_env);
+		free(key);
+	}
+	return (0);
+}
+
 int	ft_unset(t_data *data, char **arg)
 {
 	int		i;
-	int		env_index;
 	int		j;
 	char	*key;
 	char	**new_env;
@@ -71,22 +93,8 @@ int	ft_unset(t_data *data, char **arg)
 		new_env = ft_calloc((j), sizeof(char *));
 		if (!new_env)
 			return (1);
-		if (arg[i][0] == '-')
-		{
-			print_error("Minishell: unset: ", arg[i], ": invalid option.");
-			if (key)
-				free(key);
-			if (new_env)
-				ft_free_strtab(new_env);
+		if (unset_utils(data, arg[i], key, new_env) == 2)
 			return (2);
-		}
-		if (ft_isalnum(arg[i][0]))
-		{
-			key = ft_strdup(arg[i]);
-			env_index = search_env(data, key);
-			remove_var(data, env_index, new_env);
-			free(key);
-		}
 		i++;
 	}
 	return (0);

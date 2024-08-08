@@ -20,6 +20,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
+# include <fcntl.h>
+# include <signal.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <limits.h>
+# include <errno.h>
 
 extern int g_sig;
 
@@ -187,6 +194,16 @@ int    create_infiles(t_data *data, int i);
 int    create_infiles_heredoc(t_data *data, int i);
 int     close_fd(int fd);
 void	print_error(char *start, char *cmd, char *str);
+int	calculate_size_needed(t_data *data, char *line);
+void	handle_env_var_two(t_data *data, char **temp, char **ptr);
+char	*expand_env_vars(t_data *data, char *line, int i);
+int	create_tmp_file(char *tmpfiles);
+void	execute_heredoc(t_data *data, int i);
+int	start_process(t_data *data);
+int	check_open_files(t_data *data, int i);
+void do_wait(t_data *data);
+int do_pipe(t_data *data, int *pipefd);
+int	execute_fork(t_data *data, int i, int *pipefd);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

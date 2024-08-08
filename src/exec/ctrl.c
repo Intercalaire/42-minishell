@@ -10,12 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 
 static void	handler(int signum)
 {
@@ -41,17 +36,21 @@ static void	sigquit_handler(int signum)
 	rl_replace_line("", 0);
 	g_sig = signum;
 }
-static void	sigquit_pipe(int signum)
+static void	sigquit_pipe(int signum, siginfo_t *info, void *context)
 {
 	(void)signum;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	raise(SIGINT);
+	(void)context;
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
+	kill(info->si_pid, SIGINT);
 }
 
 int	ft_sig(t_data *data)
 {
+	struct sigaction	sa;
+
+    ft_memset(&sa, 0, sizeof(sa));
 	if (data->sig_status == 0)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -65,7 +64,9 @@ int	ft_sig(t_data *data)
 	else if (data->sig_status == 2)
 	{
 		signal(SIGINT, path_handler);
-		signal(SIGQUIT, sigquit_pipe);
+		sa.sa_flags = SA_SIGINFO;
+		sa.sa_sigaction = sigquit_pipe;
+		sigaction(SIGQUIT, &sa, NULL);
 	}
 	if (g_sig)
 	{

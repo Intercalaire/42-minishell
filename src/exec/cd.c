@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
-#include <errno.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 
 static void	env_update(t_data *data, char *oldpwd)
 {
@@ -34,18 +30,18 @@ static void	env_update(t_data *data, char *oldpwd)
 	free(oldpwd);
 }
 
-static int	create_path(char *home, char **arg)
+static int	create_path(char *home, char *arg)
 {
 	char	*path;
 
-	if (!arg || !arg[0])
+	if (!arg)
 		path = ft_strdup(home);
 	else
 	{
-		if (ft_strncmp(arg[0], home, ft_strlen(home)) == 0)
-			path = ft_strdup(arg[0]);
+		if (ft_strncmp(arg, home, ft_strlen(home)) == 0)
+			path = ft_strdup(arg);
 		else
-			path = ft_strjoin(home, arg[0] + 1);
+			path = ft_strjoin(home, arg + 1);
 	}
 	if (chdir(path) != 0)
 	{
@@ -58,17 +54,17 @@ static int	create_path(char *home, char **arg)
 	return (0);
 }
 
-static int	directory_error(char **arg)
+static int	directory_error(char *arg)
 {
-	if (chdir(arg[0]) != 0)
+	if (chdir(arg) != 0)
 	{
 		if (errno == ENOENT)
-			print_error("Minishell: cd: ", arg[0],
+			print_error("Minishell: cd: ", arg,
 				": No such file or directory");
 		else if (errno == EACCES || errno == EPERM)
-			print_error("Minishell: cd: ", arg[0], ": Permission denied");
+			print_error("Minishell: cd: ", arg, ": Permission denied");
 		else
-			print_error("Minishell: cd: ", arg[0], ": Not a directory");
+			print_error("Minishell: cd: ", arg, ": Not a directory");
 		return (1);
 	}
 	return (0);
@@ -88,6 +84,23 @@ static int	check_arg(char **arg, int k)
 	}
 	return (0);
 }
+static int do_cd(t_data *data, char *arg, char *home, char *oldpwd)
+{
+	if (arg == NULL || ft_strncmp(arg, "~", 1) == 0 || ft_strncmp(arg, home,
+		ft_strlen(home)) == 0)
+	{
+		if (create_path(home, arg))
+			return (1);
+		env_update(data, oldpwd);
+	}
+	else
+	{
+		if (directory_error(arg))
+			return (1);
+		free(oldpwd);
+	}
+	return (0);
+}
 
 int	cd(t_data *data, char **arg)
 {
@@ -104,19 +117,8 @@ int	cd(t_data *data, char **arg)
 	getcwd(oldpwd, PATH_MAX);
 	if (k != -1)
 		home = ft_strdup(data->env[k] + 5);
-	if (!arg || ft_strncmp(arg[0], "~", 1) == 0 || ft_strncmp(arg[0], home,
-			ft_strlen(home)) == 0)
-	{
-		if (create_path(home, arg))
-			return (1);
-		env_update(data, oldpwd);
-	}
-	else
-	{
-		if (directory_error(arg))
-			return (1);
-		free(oldpwd);
-	}
+	if (do_cd(data, arg[0], home, oldpwd))
+		return (1);
 	free(home);
 	return (0);
 }

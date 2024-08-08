@@ -1,12 +1,4 @@
 #include "../../include/parsing/minishell.h"
-#include <fcntl.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 int	create_outfiles(t_data *data, int i)
 {
@@ -18,9 +10,7 @@ int	create_outfiles(t_data *data, int i)
 	while (data->output->outfile[i][j] != NULL)
 	{
 		if (outfd != -1)
-		{
 			close_fd(outfd);
-		}
 		outfd = open(data->output->outfile[i][j], O_WRONLY | O_CREAT | O_TRUNC,
 				0644);
 		if (outfd < 0)
@@ -49,9 +39,7 @@ int	create_outfiles_append(t_data *data, int i)
 	while (data->output->outfile_append[i][j] != NULL)
 	{
 		if (outfd != -1)
-		{
 			close_fd(outfd);
-		}
 		outfd = open(data->output->outfile_append[i][j],
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (outfd < 0)
@@ -96,6 +84,14 @@ int	create_infiles(t_data *data, int i)
 	}
 	return (0);
 }
+static void check_output(t_data *data, int i, int infd)
+{
+	if (data->output->here_d[i] == 1)
+	{
+		dup2(infd, STDIN_FILENO);
+		close_fd(infd);
+	}
+}
 
 int	create_infiles_heredoc(t_data *data, int i)
 {
@@ -117,11 +113,7 @@ int	create_infiles_heredoc(t_data *data, int i)
 			free(tmpfile);
 			return (1);
 		}
-		if (data->output->here_d[i] == 1)
-		{
-			dup2(infd, STDIN_FILENO);
-			close_fd(infd);
-		}
+		check_output(data, i, infd);
 		unlink(tmpfile);
 		free(tmpfile);
 	}

@@ -60,6 +60,11 @@ SRC	= ./src/parsing/init.c \
 		./src/exec/export_more_utils.c \
 		./src/exec/path_utils.c \
 		./src/exec/create_files.c \
+		./src/exec/pipe_utils.c \
+		./src/exec/create_heredocs.c \
+		./src/exec/create_heredocs_utils.c \
+		./src/exec/create_heredocs_more_utils.c \
+		./src/exec/pipe_without_pipe.c \
 
 OBJ	= $(SRC:.c=.o)
 

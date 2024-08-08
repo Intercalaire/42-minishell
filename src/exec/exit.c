@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
-#include <limits.h>
+
 
 int	is_valid_number(char *str)
 {
@@ -28,18 +28,34 @@ int	is_valid_number(char *str)
 	return (1);
 }
 
-static int	check_sign(char *str, int *i)
+static int	check_sign(char *str, int *i, int *error)
 {
 	int	sign;
 
 	sign = 1;
+	while (str[*i] == ' ')
+		(*i)++;
 	if (str[*i] == '-' || str[*i] == '+')
 	{
 		if (str[*i] == '-')
 			sign = -1;
 		(*i)++;
 	}
+	if (!str[*i])
+		*error = 1;
 	return (sign);
+}
+long long check_min(int *error, int sign, unsigned long long result)
+{	
+	if (*error)
+	{
+		if (sign == -1 && result == (unsigned long long)LLONG_MAX + 1)
+		{
+			*error = 0;
+			return (LLONG_MIN);
+		}
+	}
+	return (result);
 }
 
 static long long	ft_atol(char *str, int *error)
@@ -49,28 +65,38 @@ static long long	ft_atol(char *str, int *error)
 	unsigned long long	result;
 
 	i = 0;
-	sign = 1;
 	result = 0;
-	sign = check_sign(str, &i);
-	while (str[i] >= '0' && str[i] <= '9')
+	sign = check_sign(str, &i, error);
+	while (str[i])
 	{
-		if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10 && str[i]
-				- '0' > LLONG_MAX % 10))
+		if (str[i] >= '0' && str[i] <= '9')
+		{
+			if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10 && str[i]
+					- '0' > LLONG_MAX % 10))
+				*error = 1;
+			result = result * 10 + (str[i] - '0');
+			i++;
+		}
+		else
 		{
 			*error = 1;
-		}
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	if (*error)
-	{
-		if (sign == -1 && result == (unsigned long long)LLONG_MAX + 1)
-		{
-			*error = 0;
-			return (LLONG_MIN);
+			break ;
 		}
 	}
+	result = check_min(error, sign, result);
 	return (sign * result);
+}
+static long long check_error(int error, char *arg, long long exit_code)
+{
+	if (error == 1)
+	{
+		print_error("Minishell: exit: ", arg,
+			": Numeric argument required");
+		return (2);
+	}
+	else 
+		return (exit_code % 256);
+	return (0);
 }
 
 long long	get_exit_code(t_data *data, char **arg)
@@ -83,17 +109,12 @@ long long	get_exit_code(t_data *data, char **arg)
 		exit_code = data->exit_status;
 	else
 	{
-		if (is_valid_number(arg[0]) || arg[0][0] == '-' || arg[0][0] == '+')
+		if (is_valid_number(arg[0]) || arg[0][0] == '-' || arg[0][0] == '+' ||
+				arg[0][0] == ' ' || arg[0][0] == '\t' || arg[0][0] == '\n' ||
+				arg[0][0] == '\v' || arg[0][0] == '\r' || arg[0][0] == '\f')
 		{
 			exit_code = ft_atol(arg[0], &error);
-			if (error == 1)
-			{
-				print_error("Minishell: exit: ", arg[0],
-					": Numeric argument required");
-				exit_code = 2;
-			}
-			else
-				exit_code = exit_code % 256;
+			exit_code = check_error(error, arg[0], exit_code);
 		}
 		else
 		{
@@ -105,10 +126,8 @@ long long	get_exit_code(t_data *data, char **arg)
 	return (exit_code);
 }
 
-void	exit_shell(t_data *data, char **arg)
+static void close_files(t_data *data)
 {
-	long long	exit_code;
-
 	if (data->fd_pipe->std_in > -1)
 	{
 		dup2(data->fd_pipe->std_in, STDIN_FILENO);
@@ -119,6 +138,13 @@ void	exit_shell(t_data *data, char **arg)
 		dup2(data->fd_pipe->std_out, STDOUT_FILENO);
 		close(data->fd_pipe->std_out);
 	}
+}
+
+void	exit_shell(t_data *data, char **arg)
+{
+	long long	exit_code;
+
+	close_files(data);
 	if (data->meter->nbr_pipe == 0)
 		ft_putstr_fd("exit\n", 2);
 	if (arg && *arg && **arg)

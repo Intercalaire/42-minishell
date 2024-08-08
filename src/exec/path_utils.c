@@ -11,20 +11,26 @@
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
-#include <errno.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
+
+
+static char *do_path(char *cmd, char **var, int i)
+{
+	char	*tmp;
+	char	*path;
+
+	tmp = ft_strjoin(var[i], "/");
+	path = ft_strjoin(tmp, cmd);
+	free(tmp);
+	ft_free_strtab(var);
+	return (path);
+}
 
 char	*var_path(t_data *data, char *cmd)
 {
 	int		path_index;
 	char	**var;
-	char	*path;
 	int		i;
-	char	*tmp;
+	char	*path;
 
 	i = 0;
 	path_index = search_env(data, "PATH");
@@ -41,10 +47,7 @@ char	*var_path(t_data *data, char *cmd)
 			break ;
 		i++;
 	}
-	tmp = ft_strjoin(var[i], "/");
-	ft_free_strtab(var);
-	path = ft_strjoin(tmp, cmd);
-	free(tmp);
+	path = do_path(cmd, var, i);
 	return (path);
 }
 
@@ -72,25 +75,10 @@ char	**create_args(char *cmd, char **arg)
 	return (args);
 }
 void		free_path(char *path, char **args);
-static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
+
+static void error_utils(t_data *data, char *cmd, char **args, char *full_path)
 {
-	if (ft_strncmp(cmd, "ls", 3) == 0)
-	{
-		printf("OOOOOOOH im not a ls");
-		data->exit_status = 0;
-		ft_end_error_prog(data);
-		free_path(full_path, args);
-		exit(0);
-	}
-	if (errno == ENOENT)
-	{
-		print_error("Minishell: ", cmd, ": No such file or directory");
-		data->exit_status = 127;
-		ft_end_error_prog(data);
-		free_path(full_path, args);
-		exit(127);
-	}
-	else if (errno == EACCES)
+	if (errno == EACCES)
 	{
 		print_error("Minishell: ", cmd, ": Permission denied");
 		data->exit_status = 126;
@@ -106,6 +94,28 @@ static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
 		free_path(full_path, args);
 		exit(1);
 	}
+}
+
+static void	error_manage(t_data *data, char *cmd, char **args, char *full_path)
+{
+	if (ft_strncmp(cmd, "ls", 3) == 0)
+	{
+		printf("OOOOOOOH im not a ls");
+		data->exit_status = 0;
+		ft_end_error_prog(data);
+		free_path(full_path, args);
+		exit(0);
+	}
+	if (errno == ENOENT)
+	{
+		print_error("Minishell: ", cmd, ": Command not found");
+		data->exit_status = 127;
+		ft_end_error_prog(data);
+		free_path(full_path, args);
+		exit(127);
+	}
+	else
+		error_utils(data, cmd, args, full_path);
 }
 
 void	execution(t_data *data, char *cmd, char **args, char *full_path)
