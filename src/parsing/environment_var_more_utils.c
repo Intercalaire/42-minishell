@@ -77,3 +77,15 @@ char	*ft_strjoin_free(char *s1, char *s2, char *to_free)
 	free(to_free);
 	return (str);
 }
+
+char	*ev_simple_used(t_data *data, char *str, char *tmp)
+{
+	char	*value;
+
+	value = make_the_char(data, str);
+	if (tmp)
+		free(tmp);
+	if (value == NULL)
+		return (NULL);
+	return (value);
+}

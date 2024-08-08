@@ -12,8 +12,6 @@
 
 #include "../../include/parsing/minishell.h"
 
-static char	*make_the_char(t_data *data, char *str);
-
 char	*ft_strdup_2(t_data *data, const char *s)
 {
 	int		i;
@@ -45,28 +43,27 @@ char	*ft_strdup_2(t_data *data, const char *s)
 
 char	*environment_variable(t_data *data, char *str, char *fullstr)
 {
-	char	*value;
 	int		quote;
+	int		number_dollar;
+	char	*tmp;
 
+	tmp = NULL;
 	quote = know_the_quote(fullstr);
+	number_dollar = count_dollar_not_in_quotes(str);
+	if (number_dollar > 1 && quote > 0)
+	{
+		tmp = substr_to_next_dollar(str);
+		quote = know_the_quote(tmp);
+		str = tmp;
+	}
 	if (quote < 2)
-	{
-		value = make_the_char(data, str);
-		if (value == NULL)
-			return (NULL);
-		return (env_var_utils(data, value, quote));
-	}
+		return (ev_normal_used(data, str, tmp, quote));
 	else
-	{
-		value = make_the_char(data, str);
-		if (value == NULL)
-			return (NULL);
-		return (value);
-	}
+		return (ev_simple_used(data, str, tmp));
 	return (str);
 }
 
-static char	*make_the_char(t_data *data, char *str)
+char	*make_the_char(t_data *data, char *str)
 {
 	int		i;
 	int		start;

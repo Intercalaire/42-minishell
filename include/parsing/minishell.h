@@ -123,6 +123,11 @@ int		calloc_search_env(t_data *data, const char *str);
 char	*ft_strdup_free(const char *s, char *to_free);
 char	*ft_itoa_free(int n, char *to_free);
 char	*ft_strjoin_free(char *s1, char *s2, char *to_free);
+char	*substr_to_next_dollar(char *str);
+int		count_dollar_not_in_quotes(char *str);
+char	*ev_normal_used(t_data *data, char *str, char *tmp, int quote);
+char	*ev_simple_used(t_data *data, char *str, char *tmp);
+char	*make_the_char(t_data *data, char *str);
 
 //utils
 void	count_pipes_outside_quotes(t_data *data, const char *str);
