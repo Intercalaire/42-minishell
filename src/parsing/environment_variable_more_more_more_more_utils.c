@@ -93,6 +93,7 @@ static void	quote_fsu(char **s, char **before, char *str_str)
 		free(s);
 		free(before);
 		*s = ft_strdup(str_str);
+		*before = ft_strdup("");
 	}
 }
 
