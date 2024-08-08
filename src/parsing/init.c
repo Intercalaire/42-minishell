@@ -46,6 +46,7 @@ int	init_data(t_data *data)
 
 static void	init_utils(t_data *data)
 {
+	data->co_utils = -1;
 	data->output->append = NULL;
 	data->count = 0;
 	data->size = 0;

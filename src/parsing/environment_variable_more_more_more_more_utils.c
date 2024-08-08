@@ -84,15 +84,12 @@ static void	quote_fsu(char **s, char **before, char *str_str)
 {
 	int	quote;
 
-	if (s[0] == NULL)
-		quote = know_the_quote((char *)s);
-	else
-		quote = know_the_quote((char *)s + 1);
+	quote = know_the_quote(*s);
 	if (quote == 1)
 	{
-		if (*s && s)
+		if (*s)
 			free(*s);
-		if (*before && before)
+		if (*before)
 			free(*before);
 		*s = ft_strdup(str_str);
 		*before = ft_strdup("");

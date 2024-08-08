@@ -91,5 +91,7 @@ int	look_out(t_data *data, char *str)
 {
 	if (check_last_character(data, str))
 		return (1);
+	if (check_out_following(data, str) == 1)
+		return (1);
 	return (check_symbols(data, str));
 }

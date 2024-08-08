@@ -75,6 +75,7 @@ typedef struct s_env_var
 
 typedef struct s_data
 {
+int			co_utils;
 int			count;
 int			size;
 int			nbr_pipe;
@@ -106,6 +107,7 @@ int		handle_args(t_data *data, int *i, int *y, int *z);
 void	count_args(t_data *data, int i);
 int		look_out(t_data *data, char *str);
 int		know_the_delim_quote(char *str);
+int		check_out_following(t_data *data, char *str);
 
 //environment_variable
 int		know_the_quote(char *str);
