@@ -118,7 +118,7 @@ int	create_infiles_heredoc(t_data *data, int i)
 		j++;
 	if (j > 0 && data->output->h_doc[i][j - 1])
 	{
-		tmpfile = ft_strjoin("tmp_files/", data->output->h_doc[i][j - 1]);
+		tmpfile = ft_strjoin("/tmp/", data->output->h_doc[i][j - 1]);
 		infd = open(tmpfile, O_RDONLY, 0644);
 		if (infd < 0)
 		{

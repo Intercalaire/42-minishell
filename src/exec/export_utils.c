@@ -95,7 +95,7 @@ void	cat_env(t_data *data, char *key, char *value)
 
 	i = search_env(data, key);
 	tmp = ft_strdup(data->env[i]);
-	if (!strchr(tmp, '='))
+	if (!ft_strchr(tmp, '='))
 	{
 		key_value_str = ft_strjoin(key, "=");
 		new_env = ft_strjoin(key_value_str, value);

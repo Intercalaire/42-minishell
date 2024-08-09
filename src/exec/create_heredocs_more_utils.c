@@ -34,13 +34,13 @@ static void	handle_user_input(t_data *data, char *end_word, int i)
 	line = readline(prompt);
 	while (line != NULL)
 	{
-		if (strcmp(line, end_word) == 0)
+		if (ft_strcmp(line, end_word) == 0)
 		{
 			free(line);
 			break ;
 		}
 		expanded_line = expand_env_vars(data, line, i);
-		write(data->output->fd, expanded_line, strlen(expanded_line));
+		write(data->output->fd, expanded_line, ft_strlen(expanded_line));
 		write(data->output->fd, "\n", 2);
 		free(expanded_line);
 		free(line);
@@ -77,7 +77,7 @@ static void	handle_heredocs(t_data *data, int i)
 	j = 0;
 	while (data->output->h_doc[i][j])
 	{
-		tmpfiles = ft_strjoin("tmp_files/", data->output->h_doc[i][j]);
+		tmpfiles = ft_strjoin("/tmp/", data->output->h_doc[i][j]);
 		data->output->fd = create_tmp_file(tmpfiles);
 		if (data->output->fd == -1)
 			return ;
