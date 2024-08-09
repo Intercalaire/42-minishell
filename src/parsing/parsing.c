@@ -12,6 +12,10 @@
 
 #include "../../include/parsing/minishell.h"
 
+static int	parsing(t_data *data, char *str);
+static void	end_parsing(t_data *data, char *str);
+static int	low_parsing(t_data *data, char *str);
+
 int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
@@ -30,45 +34,67 @@ int	main(int argc, char **argv, char **env)
 		ft_sig(data);
 		str = readline("Minishell >");
 		ft_sig(data);
-		if (!str)
-			exit_shell(data, NULL);
-		if (ft_strlen(str) == 0)
-		{
-			ft_little_error_prog_no_msg(data, str);
+		if (low_parsing(data, str) == 2)
 			continue ;
-		}
-		add_history(str);
-		if (remove_end_space(data, str) == 2)
+		if (parsing(data, str) == 2)
 			continue ;
-		if (quote_verif(data, str) == 1 || special_char(data, str) == 1
-			|| look_pipe(data, str) == 1 || look_out(data, str) == 1)
-		{
-			data->exit_status = 2;
-			continue ;
-		}
-		if (try_ft_strtok(data, str) == 2)
-		{
-			data->exit_status = 2;
-			ft_free_data(data, str);
-			continue ;
-		}
-		if (data->size == 0)
-		{
-			ft_free_data(data, str);
-			continue ;
-		}
-		if (pars_pipe(data) == 2)
-		{
-			data->exit_status = 2;
-			ft_free_data(data, str);
-			continue ;
-		}
-		free(str);
-		my_pipe(data);
-		ft_sig(data);
-		str = NULL;
-		ft_free_data(data, str);
+		end_parsing(data, str);
 	}
 	ft_end_error_prog(data);
+	return (0);
+}
+
+static int	low_parsing(t_data *data, char *str)
+{
+	if (!str)
+		exit_shell(data, NULL);
+	if (ft_strlen(str) == 0)
+	{
+		ft_little_error_prog_no_msg(data, str);
+		return (2);
+	}
+	add_history(str);
+	if (remove_end_space(data, str) == 2)
+	{
+		data->exit_status = 2;
+		return (2);
+	}
+	return (0);
+}
+
+static void	end_parsing(t_data *data, char *str)
+{
+	free(str);
+	my_pipe(data);
+	ft_sig(data);
+	str = NULL;
+	ft_free_data(data, str);
+}
+
+static int	parsing(t_data *data, char *str)
+{
+	if (quote_verif(data, str) == 1 || special_char(data, str) == 1
+		|| look_pipe(data, str) == 1 || look_out(data, str) == 1)
+	{
+		data->exit_status = 2;
+		return (2);
+	}
+	if (try_ft_strtok(data, str) == 2)
+	{
+		data->exit_status = 2;
+		ft_free_data(data, str);
+		return (2);
+	}
+	if (data->size == 0)
+	{
+		ft_free_data(data, str);
+		return (2);
+	}
+	if (pars_pipe(data) == 2)
+	{
+		data->exit_status = 2;
+		ft_free_data(data, str);
+		return (2);
+	}
 	return (0);
 }
