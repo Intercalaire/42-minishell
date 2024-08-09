@@ -51,7 +51,7 @@ static void	remove_var(t_data *data, int env_index, char **new_env)
 	free_env(data, new_env);
 }
 
-static int unset_utils(t_data *data, char *arg, char *key, char **new_env)
+static int	unset_utils(t_data *data, char *arg, char *key, char **new_env)
 {
 	int	env_index;
 

@@ -53,10 +53,10 @@ static int	handle_env_var(t_data *data, char **ptr)
 		varname[len] = '\0';
 		value = get_env_value(data, varname);
 		*ptr = end;
-        if (value) 
-            return (ft_strlen(value));
-         else 
-            return (0);
+		if (value)
+			return (ft_strlen(value));
+		else
+			return (0);
 	}
 	*ptr = end;
 	return (0);
@@ -89,10 +89,10 @@ int	calculate_size_needed(t_data *data, char *line)
 
 void	handle_env_var_two(t_data *data, char **temp, char **ptr)
 {
-	char	*end;
-	int		len;
-	char	varname[256];
-	char	*value;
+	char *end;
+	int len;
+	char varname[256];
+	char *value;
 
 	end = *ptr + 1;
 	while (ft_isalnum(*end) || *end == '_')

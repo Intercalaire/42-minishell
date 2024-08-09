@@ -11,15 +11,14 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
-static long long check_error(int error, char *arg, long long exit_code)
+static long long	check_error(int error, char *arg, long long exit_code)
 {
 	if (error == 1)
 	{
-		print_error("Minishell: exit: ", arg,
-			": Numeric argument required");
+		print_error("Minishell: exit: ", arg, ": Numeric argument required");
 		return (2);
 	}
-	else 
+	else
 		return (exit_code % 256);
 	return (0);
 }
@@ -34,9 +33,9 @@ long long	get_exit_code(t_data *data, char **arg)
 		exit_code = data->exit_status;
 	else
 	{
-		if (is_valid_number(arg[0]) || arg[0][0] == '-' || arg[0][0] == '+' ||
-				arg[0][0] == ' ' || arg[0][0] == '\t' || arg[0][0] == '\n' ||
-				arg[0][0] == '\v' || arg[0][0] == '\r' || arg[0][0] == '\f')
+		if (is_valid_number(arg[0]) || arg[0][0] == '-' || arg[0][0] == '+'
+			|| arg[0][0] == ' ' || arg[0][0] == '\t' || arg[0][0] == '\n'
+			|| arg[0][0] == '\v' || arg[0][0] == '\r' || arg[0][0] == '\f')
 		{
 			exit_code = ft_atol(arg[0], &error);
 			exit_code = check_error(error, arg[0], exit_code);
@@ -51,7 +50,7 @@ long long	get_exit_code(t_data *data, char **arg)
 	return (exit_code);
 }
 
-static void close_files(t_data *data)
+static void	close_files(t_data *data)
 {
 	if (data->fd_pipe->std_in > -1)
 	{

@@ -89,8 +89,8 @@ static void	handle_heredocs(t_data *data, int i)
 }
 void	execute_heredoc(t_data *data, int i)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	signal(SIGINT, SIG_IGN);
 	pid = fork();

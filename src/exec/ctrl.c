@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
-
 static void	handler(int signum)
 {
 	printf("\n");
@@ -37,7 +36,7 @@ static void	sigquit_handler(int signum)
 	g_sig = signum;
 }
 
-static int manage_sig(t_data *data)
+static int	manage_sig(t_data *data)
 {
 	if (g_sig)
 	{

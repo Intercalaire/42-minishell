@@ -29,7 +29,6 @@ static void	copy_normal_chars(char **temp, char **ptr)
 	(*ptr)++;
 }
 
-
 static void	build_final_string(t_data *data, char *result, char *line, int i)
 {
 	char	*temp;

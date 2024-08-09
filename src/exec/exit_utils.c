@@ -44,8 +44,8 @@ int	check_sign(char *str, int *i, int *error)
 		*error = 1;
 	return (sign);
 }
-long long check_min(int *error, int sign, unsigned long long result)
-{	
+long long	check_min(int *error, int sign, unsigned long long result)
+{
 	if (*error)
 	{
 		if (sign == -1 && result == (unsigned long long)LLONG_MAX + 1)

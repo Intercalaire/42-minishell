@@ -62,7 +62,7 @@ char	**create_args(char *cmd, char **arg)
 	return (args);
 }
 
-static void error_utils(t_data *data, char *cmd, char **args, char *full_path)
+static void	error_utils(t_data *data, char *cmd, char **args, char *full_path)
 {
 	if (errno == EACCES)
 	{

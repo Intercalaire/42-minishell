@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
-void duplicate_stdin(t_data *data, int i)
+void	duplicate_stdin(t_data *data, int i)
 {
 	if (i != 0)
 	{

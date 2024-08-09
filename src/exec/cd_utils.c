@@ -13,7 +13,7 @@
 
 void	env_update(t_data *data, char *oldpwd)
 {
-	char	*newpwd;
+	char *newpwd;
 
 	newpwd = ft_calloc(PATH_MAX, sizeof(char));
 	getcwd(newpwd, PATH_MAX);

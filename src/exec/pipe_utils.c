@@ -32,10 +32,10 @@ int	close_fd(int fd)
 	}
 	return (1);
 }
-void do_wait(t_data *data)
+void	do_wait(t_data *data)
 {
-	int status;
-	int i;
+	int	status;
+	int	i;
 
 	i = 0;
 	while (i <= data->meter->nbr_pipe)
@@ -52,10 +52,10 @@ void do_wait(t_data *data)
 		i++;
 	}
 }
-int do_pipe(t_data *data, int *pipefd)
+int	do_pipe(t_data *data, int *pipefd)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (i <= data->meter->nbr_pipe)
 	{

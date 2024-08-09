@@ -40,8 +40,7 @@ static int	directory_error(char *arg)
 	if (chdir(arg) != 0)
 	{
 		if (errno == ENOENT)
-			print_error("Minishell: cd: ", arg,
-				": No such file or directory");
+			print_error("Minishell: cd: ", arg, ": No such file or directory");
 		else if (errno == EACCES || errno == EPERM)
 			print_error("Minishell: cd: ", arg, ": Permission denied");
 		else
@@ -65,10 +64,10 @@ static int	check_arg(char **arg, int k)
 	}
 	return (0);
 }
-static int do_cd(t_data *data, char *arg, char *home, char *oldpwd)
+static int	do_cd(t_data *data, char *arg, char *home, char *oldpwd)
 {
 	if (arg == NULL || ft_strncmp(arg, "~", 1) == 0 || ft_strncmp(arg, home,
-		ft_strlen(home)) == 0)
+			ft_strlen(home)) == 0)
 	{
 		if (create_path(home, arg))
 			return (1);

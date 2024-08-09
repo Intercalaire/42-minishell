@@ -19,9 +19,9 @@ void	free_path(char *path, char **args)
 	if (args && *args)
 		ft_free_strtab(args);
 }
-static char *create_path(t_data *data, char *cmd)
+static char	*create_path(t_data *data, char *cmd)
 {
-	char *full_path;
+	char	*full_path;
 
 	if (!cmd && data->meter->nbr_pipe)
 	{
@@ -42,9 +42,9 @@ static char *create_path(t_data *data, char *cmd)
 	}
 	return (full_path);
 }
-static void child_process(t_data *data, char *full_path, char **arg, char *cmd)
+static void	child_process(t_data *data, char *full_path, char **arg, char *cmd)
 {
-	char **cpy_args;
+	char	**cpy_args;
 
 	cpy_args = NULL;
 	if (!data->meter->nbr_pipe)
@@ -61,9 +61,9 @@ static void child_process(t_data *data, char *full_path, char **arg, char *cmd)
 	exit(0);
 }
 
-static int execution_pipe(t_data *data, char *cmd, char **arg, char *full_path)
+static int	execution_pipe(t_data *data, char *cmd, char **arg, char *full_path)
 {
-	char **cpy_args;
+	char	**cpy_args;
 
 	if (data->meter->nbr_pipe)
 	{
@@ -74,7 +74,6 @@ static int execution_pipe(t_data *data, char *cmd, char **arg, char *full_path)
 	}
 	return (0);
 }
-
 
 void	path(t_data *data, char *cmd, char **arg)
 {

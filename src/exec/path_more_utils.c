@@ -51,10 +51,10 @@ int	parent_process(t_data *data, pid_t pid)
 	}
 	return (0);
 }
-char *do_path(char *cmd, char **var, int i)
+char	*do_path(char *cmd, char **var, int i)
 {
-	char	*tmp;
-	char	*path;
+	char *tmp;
+	char *path;
 
 	tmp = ft_strjoin(var[i], "/");
 	path = ft_strjoin(tmp, cmd);
