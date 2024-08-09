@@ -204,6 +204,15 @@ int	check_open_files(t_data *data, int i);
 void do_wait(t_data *data);
 int do_pipe(t_data *data, int *pipefd);
 int	execute_fork(t_data *data, int i, int *pipefd);
+long long	ft_atol(char *str, int *error);
+long long check_min(int *error, int sign, unsigned long long result);
+int	check_sign(char *str, int *i, int *error);
+int	is_valid_number(char *str);
+void	signal_traitment(t_data *data, int term_sig);
+int	parent_process(t_data *data, pid_t pid);
+char *do_path(char *cmd, char **var, int i);
+void	free_path(char *path, char **args);
+void	env_update(t_data *data, char *oldpwd);
 
 //output
 int		verif_output(t_data *data, int *y, char *str);

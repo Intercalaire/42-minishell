@@ -45,6 +45,7 @@ SRC	= ./src/parsing/init.c \
 		./src/parsing/outfile_init_utils.c \
 		./src/parsing/pars_pipe_utils.c \
 		./src/exec/cd.c \
+		./src/exec/cd_utils.c \
 		./src/exec/echo.c \
 		./src/exec/env.c \
 		./src/exec/exec.c \
@@ -55,10 +56,12 @@ SRC	= ./src/parsing/init.c \
 		./src/exec/search_env.c \
 		./src/exec/unset.c \
 		./src/exec/exit.c \
+		./src/exec/exit_utils.c \
 		./src/exec/ctrl.c \
 		./src/exec/export_utils.c \
 		./src/exec/export_more_utils.c \
 		./src/exec/path_utils.c \
+		./src/exec/path_more_utils.c \
 		./src/exec/create_files.c \
 		./src/exec/pipe_utils.c \
 		./src/exec/create_heredocs.c \
