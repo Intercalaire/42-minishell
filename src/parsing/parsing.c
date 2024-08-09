@@ -98,3 +98,13 @@ static int	parsing(t_data *data, char *str)
 	}
 	return (0);
 }
+
+int	get_index_end_env_var(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && ft_isalnum(str[i]) == 1)
+		i++;
+	return (i + 1);
+}

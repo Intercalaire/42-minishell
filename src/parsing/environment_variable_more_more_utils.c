@@ -79,8 +79,15 @@ char	*substr_to_next_dollar(char *str)
 char	*ev_normal_used(t_data *data, char *str, char *tmp, int quote)
 {
 	char	*value;
+	int		index_end_var;
 
 	value = make_the_char(data, str);
+	if (ft_strchr(str, '"'))
+	{
+		index_end_var = get_index_end_env_var(str + 1);
+		free(value);
+		value = ft_substr(str, 0, index_end_var);
+	}
 	if (tmp)
 		free(tmp);
 	if (value == NULL)
