@@ -58,6 +58,7 @@ int	parent_processus(t_data *data, int *pipefd, int i)
 	}
 	return (0);
 }
+
 int	execute_fork(t_data *data, int i, int *pipefd)
 {
 	pid_t	pid;

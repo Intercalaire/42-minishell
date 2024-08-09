@@ -30,6 +30,7 @@ static int	execute_builtin_with_redir(t_data *data, char *cmd, char **arg)
 	close(data->fd_pipe->std_out);
 	return (0);
 }
+
 static int	is_builtin(char *cmd)
 {
 	if (!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "pwd", 4)
@@ -39,6 +40,7 @@ static int	is_builtin(char *cmd)
 		return (1);
 	return (0);
 }
+
 int	start_process(t_data *data)
 {
 	if (is_builtin(data->command->cmd[0]) || !data->command->cmd[0])
@@ -56,6 +58,7 @@ int	start_process(t_data *data)
 	}
 	return (0);
 }
+
 int	check_open_files(t_data *data, int i)
 {
 	int	return_value;

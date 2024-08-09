@@ -69,6 +69,7 @@ int	create_outfiles_append(t_data *data, int i)
 	}
 	return (0);
 }
+
 int	create_infiles(t_data *data, int i)
 {
 	int	infd;
@@ -96,6 +97,7 @@ int	create_infiles(t_data *data, int i)
 	}
 	return (0);
 }
+
 static void	check_output(t_data *data, int i, int infd)
 {
 	if (data->output->here_d[i] == 1)

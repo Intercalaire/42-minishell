@@ -89,10 +89,10 @@ int	calculate_size_needed(t_data *data, char *line)
 
 void	handle_env_var_two(t_data *data, char **temp, char **ptr)
 {
-	char *end;
-	int len;
-	char varname[256];
-	char *value;
+	char	*end;
+	int		len;
+	char	varname[256];
+	char	*value;
 
 	end = *ptr + 1;
 	while (ft_isalnum(*end) || *end == '_')

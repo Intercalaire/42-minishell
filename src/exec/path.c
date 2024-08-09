@@ -19,6 +19,7 @@ void	free_path(char *path, char **args)
 	if (args && *args)
 		ft_free_strtab(args);
 }
+
 static char	*create_path(t_data *data, char *cmd)
 {
 	char	*full_path;
@@ -42,6 +43,7 @@ static char	*create_path(t_data *data, char *cmd)
 	}
 	return (full_path);
 }
+
 static void	child_process(t_data *data, char *full_path, char **arg, char *cmd)
 {
 	char	**cpy_args;

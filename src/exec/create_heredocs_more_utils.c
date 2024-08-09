@@ -18,6 +18,7 @@ static void	signal_handler(int signum)
 	g_sig = signum;
 	write(STDOUT_FILENO, "\n", 1);
 }
+
 static void	handle_user_input(t_data *data, char *end_word, int i)
 {
 	char	*line;
@@ -46,6 +47,7 @@ static void	handle_user_input(t_data *data, char *end_word, int i)
 		line = readline(prompt);
 	}
 }
+
 static int	cleanup_and_close(t_data *data, char *tmpfiles, char *next_file)
 {
 	if (g_sig == SIGINT)
@@ -87,10 +89,11 @@ static void	handle_heredocs(t_data *data, int i)
 	}
 	signal(SIGINT, SIG_DFL);
 }
+
 void	execute_heredoc(t_data *data, int i)
 {
-	pid_t pid;
-	int status;
+	pid_t	pid;
+	int		status;
 
 	signal(SIGINT, SIG_IGN);
 	pid = fork();

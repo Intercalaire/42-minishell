@@ -32,6 +32,7 @@ int	close_fd(int fd)
 	}
 	return (1);
 }
+
 void	do_wait(t_data *data)
 {
 	int	status;
@@ -52,6 +53,7 @@ void	do_wait(t_data *data)
 		i++;
 	}
 }
+
 int	do_pipe(t_data *data, int *pipefd)
 {
 	int	i;
@@ -73,6 +75,7 @@ int	do_pipe(t_data *data, int *pipefd)
 	}
 	return (0);
 }
+
 void	print_error(char *start, char *cmd, char *str)
 {
 	ft_putstr_fd(start, 2);

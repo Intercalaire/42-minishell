@@ -6,20 +6,46 @@
 /*   By: vgodart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:28:45 by vgodart           #+#    #+#             */
-/*   Updated: 2024/05/02 15:28:46 by vgodart          ###   ########.fr       */
+/*   Updated: 2024/08/09 04:59:28 by hsolet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing/minishell.h"
-void	ft_free_cmd(t_data *data, char **cmd);
 
 void	ft_error_prog(t_data *data, char *str, char *msg)
 {
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
-	(void)msg;
 	ft_free_data(data, str);
 	exit(EXIT_FAILURE);
+}
+
+void	ft_free_output(t_data *data)
+{
+	if (data->output->h_doc)
+		ft_free_strarg(data->output->h_doc);
+	if (data->output->infile)
+		ft_free_strarg(data->output->infile);
+	if (data->output->outfile)
+		ft_free_strarg(data->output->outfile);
+	if (data->output->outfile_append)
+		ft_free_strarg(data->output->outfile_append);
+	if (data->output->append)
+	{
+		free(data->output->append);
+		data->output->append = NULL;
+	}
+	if (data->output->here_d)
+	{
+		free(data->output->here_d);
+		data->output->here_d = NULL;
+	}
+	if (data->output->h_doc_count)
+	{
+		free(data->output->h_doc_count);
+		data->output->h_doc_count = NULL;
+	}
+	free(data->output);
 }
 
 void	ft_free_data(t_data *data, char *str)
@@ -35,32 +61,7 @@ void	ft_free_data(t_data *data, char *str)
 		free(data->command);
 	}
 	if (data->output)
-	{
-		if (data->output->h_doc)
-			ft_free_strarg(data->output->h_doc);
-		if (data->output->infile)
-			ft_free_strarg(data->output->infile);
-		if (data->output->outfile)
-			ft_free_strarg(data->output->outfile);
-		if (data->output->outfile_append)
-			ft_free_strarg(data->output->outfile_append);
-		if (data->output->append)
-		{
-			free(data->output->append);
-			data->output->append = NULL;
-		}
-		if (data->output->here_d)
-		{
-			free(data->output->here_d);
-			data->output->here_d = NULL;
-		}
-		if (data->output->h_doc_count)
-		{
-			free(data->output->h_doc_count);
-			data->output->h_doc_count = NULL;
-		}
-		free(data->output);
-	}
+		ft_free_output(data);
 	if (data->env_var)
 		free(data->env_var);
 	if (data->meter)
@@ -89,53 +90,4 @@ void	ft_free_strtab(char **tab)
 	}
 	free(tab);
 	tab = NULL;
-}
-
-void	ft_free_strarg(char ***tab)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	if (tab && *tab)
-	{
-		while (tab[i])
-		{
-			j = 0;
-			if (tab[i])
-			{
-				while (tab[i][j])
-				{
-					if (tab[i][j])
-					{
-						free(tab[i][j]);
-						tab[i][j] = NULL;
-					}
-					j++;
-				}
-				free(tab[i]);
-				tab[i] = NULL;
-				i++;
-			}
-		}
-		free(tab);
-		tab = NULL;
-	}
-}
-
-void	ft_free_cmd(t_data *data, char **cmd)
-{
-	int i;
-
-	i = 0;
-	while (i <= data->meter->nbr_pipe)
-	{
-		if (cmd[i])
-		{
-			free(cmd[i]);
-			cmd[i] = NULL;
-		}
-		i++;
-	}
-	free(cmd);
 }

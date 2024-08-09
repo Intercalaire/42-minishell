@@ -153,6 +153,7 @@ void 	ft_free_strtab(char **tab);
 void 	ft_end_error_prog(t_data *data);
 void	ft_free_strarg(char ***tab);
 void	ft_little_error_prog_no_msg(t_data *data, char *str);
+void	ft_free_cmd(t_data *data, char **cmd);
 
 //init
 int		init_data(t_data *data);

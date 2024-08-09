@@ -64,6 +64,7 @@ static int	check_arg(char **arg, int k)
 	}
 	return (0);
 }
+
 static int	do_cd(t_data *data, char *arg, char *home, char *oldpwd)
 {
 	if (arg == NULL || ft_strncmp(arg, "~", 1) == 0 || ft_strncmp(arg, home,
