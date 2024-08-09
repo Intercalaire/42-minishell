@@ -11,18 +11,7 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
-
-
-
-void	print_error(char *start, char *cmd, char *str)
-{
-	ft_putstr_fd(start, 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("\n", 2);
-}
-
-void	child_processus(t_data *data, int *pipefd, int i)
+void duplicate_stdin(t_data *data, int i)
 {
 	if (i != 0)
 	{
@@ -33,6 +22,13 @@ void	child_processus(t_data *data, int *pipefd, int i)
 		}
 		close_fd(data->fd_pipe->fd_in);
 	}
+}
+
+void	child_processus(t_data *data, int *pipefd, int i)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	duplicate_stdin(data, i);
 	if (i != data->meter->nbr_pipe)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
@@ -53,9 +49,6 @@ void	child_processus(t_data *data, int *pipefd, int i)
 
 int	parent_processus(t_data *data, int *pipefd, int i)
 {
-	signal(SIGINT, SIG_DFL);
-	data->sig_status = 2;
-	ft_sig(data);
 	if (i != 0)
 		close(data->fd_pipe->fd_in);
 	if (i != data->meter->nbr_pipe)

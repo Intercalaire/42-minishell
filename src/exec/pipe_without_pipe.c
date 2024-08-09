@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "../../include/parsing/minishell.h"
 
-static int	execute_builtin_with_redirection(t_data *data, char *cmd, char **arg)
+static int	execute_builtin_with_redir(t_data *data, char *cmd, char **arg)
 {
 	data->fd_pipe->std_in = dup(STDIN_FILENO);
 	data->fd_pipe->std_out = dup(STDOUT_FILENO);
@@ -43,7 +43,7 @@ int	start_process(t_data *data)
 {
 	if (is_builtin(data->command->cmd[0]) || !data->command->cmd[0])
 	{
-		if (execute_builtin_with_redirection(data, data->command->cmd[0],
+		if (execute_builtin_with_redir(data, data->command->cmd[0],
 				data->command->arg[0]))
 			return (1);
 	}

@@ -36,21 +36,23 @@ static void	sigquit_handler(int signum)
 	rl_replace_line("", 0);
 	g_sig = signum;
 }
-static void	sigquit_pipe(int signum, siginfo_t *info, void *context)
+
+static int manage_sig(t_data *data)
 {
-	(void)signum;
-	(void)context;
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
-	kill(info->si_pid, SIGINT);
+	if (g_sig)
+	{
+		if (g_sig == SIGQUIT)
+			data->exit_status = 131;
+		if (g_sig == SIGINT)
+			data->exit_status = 130;
+		g_sig = 0;
+		return (1);
+	}
+	return (0);
 }
 
 int	ft_sig(t_data *data)
 {
-	struct sigaction	sa;
-
-    ft_memset(&sa, 0, sizeof(sa));
 	if (data->sig_status == 0)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -61,21 +63,7 @@ int	ft_sig(t_data *data)
 		signal(SIGINT, path_handler);
 		signal(SIGQUIT, sigquit_handler);
 	}
-	else if (data->sig_status == 2)
-	{
-		signal(SIGINT, path_handler);
-		sa.sa_flags = SA_SIGINFO;
-		sa.sa_sigaction = sigquit_pipe;
-		sigaction(SIGQUIT, &sa, NULL);
-	}
-	if (g_sig)
-	{
-		if (g_sig == SIGQUIT)
-			data->exit_status = 131;
-		if (g_sig == SIGINT)
-			data->exit_status = 130;
-		g_sig = 0;
+	if (manage_sig(data))
 		return (1);
-	}
 	return (0);
 }

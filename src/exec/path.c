@@ -12,49 +12,6 @@
 
 #include "../../include/parsing/minishell.h"
 
-int		check_open_files(t_data *data, int i);
-
-static void	signal_traitment(t_data *data, int term_sig)
-{
-	if (term_sig == SIGSEGV)
-	{
-		ft_putstr_fd("Segmentation fault\n", 2);
-		data->exit_status = 128 + SIGSEGV;
-	}
-	else if (term_sig == SIGINT)
-		data->exit_status = 128 + SIGINT;
-	else if (term_sig == SIGABRT)
-		data->exit_status = 128 + SIGABRT;
-	else if (term_sig == SIGFPE)
-		data->exit_status = 128 + SIGFPE;
-	else if (term_sig == SIGILL)
-		data->exit_status = 128 + SIGILL;
-	else if (term_sig == SIGTERM)
-		data->exit_status = 128 + SIGTERM;
-}
-
-static int	parent_process(t_data *data, pid_t pid)
-{
-	int	status;
-
-	if (waitpid(pid, &status, 0) == -1)
-	{
-		perror("waitpid");
-		data->exit_status = 1;
-	}
-	else
-	{
-		if (WIFEXITED(status))
-		{
-			data->exit_status = WEXITSTATUS(status);
-			return (1);
-		}
-		else if (WIFSIGNALED(status))
-			signal_traitment(data, WTERMSIG(status));
-	}
-	return (0);
-}
-
 void	free_path(char *path, char **args)
 {
 	if (path != NULL)

@@ -73,3 +73,10 @@ int do_pipe(t_data *data, int *pipefd)
 	}
 	return (0);
 }
+void	print_error(char *start, char *cmd, char *str)
+{
+	ft_putstr_fd(start, 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
+}

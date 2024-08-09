@@ -12,19 +12,6 @@
 
 #include "../../include/parsing/minishell.h"
 
-
-static char *do_path(char *cmd, char **var, int i)
-{
-	char	*tmp;
-	char	*path;
-
-	tmp = ft_strjoin(var[i], "/");
-	path = ft_strjoin(tmp, cmd);
-	free(tmp);
-	ft_free_strtab(var);
-	return (path);
-}
-
 char	*var_path(t_data *data, char *cmd)
 {
 	int		path_index;
@@ -74,7 +61,6 @@ char	**create_args(char *cmd, char **arg)
 	}
 	return (args);
 }
-void		free_path(char *path, char **args);
 
 static void error_utils(t_data *data, char *cmd, char **args, char *full_path)
 {
